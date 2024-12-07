@@ -2,6 +2,7 @@ import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
+  session: { strategy: "jwt" },
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -18,14 +19,35 @@ export const authOptions = {
           return {
             id: "1",
             name: "Admin",
-            email: "admin@example.com",
+            role: "admin",
+          } as any;
+        }
+
+        if (
+          credentials.username === "user" &&
+          credentials.password === "user"
+        ) {
+          return {
+            id: "2",
+            name: "User",
+            role: "user",
           } as any;
         }
       },
     }),
   ],
+  callbacks: {
+    jwt({ token, user }: any) {
+      if (user) token.role = user.role;
+      return token;
+    },
+    session({ session, token }: any) {
+      session.user.role = token.role;
+      return session;
+    },
+  },
 };
 
-const handler = NextAuth(authOptions);
+const handler = NextAuth(authOptions as any);
 
 export { handler as GET, handler as POST };
