@@ -1,11 +1,16 @@
 "use client";
 
-import { Key } from "react";
+import { Key, useState } from "react";
 import { useEventContext } from "./context";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const { eventData } = useEventContext();
+  const { eventData: rawEventData } = useEventContext();
+  const [eventData, setEventData] = useState(rawEventData);
+  const [sortKey, setSortKey] = useState({
+    key: "",
+    direction: 1,
+  });
 
   // venuec	venuee	latitude	longitude	@_id	@_eventCount
   const eventKeyMap: { [key: string]: string } = {
@@ -15,14 +20,33 @@ export default function Home() {
   };
   const eventDataArray = Object.values(eventData);
 
+  const sortData = (key: string, direction: number) => {
+    eventDataArray.sort((a, b) => {
+      if (a[key] < b[key]) return -1 * direction;
+      if (a[key] > b[key]) return 1 * direction;
+      return 0;
+    });
+    setEventData({ ...eventDataArray });
+  };
+
   return (
     <div className={styles.page}>
-      {/*turn it as a table  */}
       <table>
         <thead>
           <tr>
             {Object.keys(eventKeyMap).map((key: string) => (
-              <th key={key}>{eventKeyMap[key]}</th>
+              <th
+                key={key}
+                onClick={() => {
+                  sortData(key, sortKey.direction);
+                  setSortKey({
+                    key,
+                    direction: sortKey.direction * -1,
+                  });
+                }}
+              >
+                {eventKeyMap[key]}
+              </th>
             ))}
             <th>Add to Favorite</th>
           </tr>
