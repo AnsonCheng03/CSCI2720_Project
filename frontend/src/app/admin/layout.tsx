@@ -1,5 +1,6 @@
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
+import { redirect } from "next/navigation";
 
 export default async function RootLayout({
   children,
@@ -9,10 +10,9 @@ export default async function RootLayout({
   const sessionPromise = (await getServerSession(authOptions)) as {
     user?: { role?: string };
   };
-  const userRole = sessionPromise?.user?.role;
-  if (userRole !== "admin") {
-    return <div>Unauthorized</div>;
-  }
+  if (!sessionPromise) redirect("/");
+  const userRole = sessionPromise.user?.role;
+  if (userRole !== "admin") redirect("/user");
 
   return children;
 }
