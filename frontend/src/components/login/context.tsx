@@ -4,7 +4,7 @@ import { createContext, useContext } from "react";
 
 export const SessionContext = createContext<Promise<any> | null>(null);
 
-export function LoginBtnProvider({
+export function LoginProviderElement({
   children,
   sessionPromise,
 }: {

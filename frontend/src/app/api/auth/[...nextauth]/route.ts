@@ -37,6 +37,10 @@ export const authOptions = {
     }),
   ],
   callbacks: {
+    authorized: async ({ auth }) => {
+      // Logged in users are authenticated, otherwise redirect to login page
+      return !!auth;
+    },
     jwt({ token, user }: any) {
       if (user) token.role = user.role;
       return token;
@@ -46,8 +50,9 @@ export const authOptions = {
       return session;
     },
   },
-};
+} as any;
 
-const handler = NextAuth(authOptions as any);
+export const { auth, handler, options, callbacks, providers, session, jwt } =
+  NextAuth(authOptions);
 
 export { handler as GET, handler as POST };

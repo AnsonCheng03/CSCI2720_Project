@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@emotion/cache": "^11.13.5",
+    "@emotion/react": "^11.13.5",
     "@mui/material-nextjs": "^6.1.9",
     "next": "15.0.4",
     "next-auth": "^4.24.11",
