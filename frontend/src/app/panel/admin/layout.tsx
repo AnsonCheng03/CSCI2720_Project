@@ -6,8 +6,9 @@ import EventProvider from "./context";
 import NavBar from "@/components/navBar/navBar";
 
 export const navItems = [
-  { name: "New Event", href: "/panel/admin" },
-  { name: "Download Event", href: "/panel/admin/downloadEvent" },
+  { name: "Download Event", href: "/panel/admin" },
+  { name: "New Event", href: "/panel/admin/newEvent" },
+  { name: "Modify Event", href: "/panel/admin/modifyEvent" },
   { name: "Create Users", href: "/panel/admin/createUsers" },
   { name: "Modify Users", href: "/panel/admin/modifyUsers" },
 ];
