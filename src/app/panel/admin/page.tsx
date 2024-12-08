@@ -25,7 +25,7 @@ export default function Home() {
     const filteredData = data.event.filter(
       (event) =>
         !Object.values(eventData as Record<string, any>).find(
-          (e) => e.fromDownload && e["@_id"] === event["@_id"]
+          (e) => e["@_id"] === event["@_id"]
         )
     );
     setEvents(filteredData as any[]);

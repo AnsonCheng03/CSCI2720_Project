@@ -9,6 +9,7 @@ export interface IEvent {
   desce: string;
   presenterorge: string;
   pricee: string;
+  fromDownload?: boolean;
 }
 
 export interface IEventDocument extends IEvent, Document {
@@ -41,6 +42,9 @@ const eventSchema = new mongoose.Schema<IEventDocument>(
     },
     pricee: {
       type: String,
+    },
+    fromDownload: {
+      type: Boolean,
     },
   },
   {

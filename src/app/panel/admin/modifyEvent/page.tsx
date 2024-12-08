@@ -26,6 +26,7 @@ export default function Home() {
       desce: formData.get("description"),
       presenterorge: formData.get("presenter"),
       pricee: formData.get("price"),
+      fromDownload: false,
     };
 
     let previousVenueId: string | null = null;

@@ -42,15 +42,28 @@ export async function uploadData(data: any) {
 export async function editData(data: any) {
   await connectToMongoDB();
   try {
-    const updatedEvent = await Event.findByIdAndUpdate(data["@_id"], data, {
-      new: true,
-    });
+    const elementVenue = data.venueid;
+    const venue = await Venue.find({ "@_id": elementVenue });
+    if (venue.length === 0) {
+      return JSON.stringify({
+        error: true,
+        message: "Venue not found",
+      });
+    }
+    data.venueid = venue[0]._id;
+
+    const updatedEvent = await Event.findOneAndUpdate(
+      { "@_id": data["@_id"] },
+      data,
+      { new: true }
+    );
     if (!updatedEvent) {
       return JSON.stringify({
         error: true,
         message: "Event not found",
       });
     }
+
     updatedEvent.save();
     // revalidatePath("/");
     return JSON.stringify(updatedEvent);
@@ -94,7 +107,7 @@ export async function deleteData() {
 export async function deleteEvent(eventId: string) {
   await connectToMongoDB();
   try {
-    const deletedEvent = await Event.findByIdAndDelete(eventId);
+    const deletedEvent = await Event.findOneAndDelete({ "@_id": eventId });
     if (!deletedEvent) {
       return JSON.stringify({ message: "Event not found" });
     }
