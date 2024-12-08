@@ -40,7 +40,6 @@ export default function DownloadEventPage() {
               return {
                 ...v,
                 "@_eventCount": data?.filter((doc: any) => {
-                  console.log(doc["venueid"], v);
                   return (
                     doc["venueid"] == v["@_id"] ||
                     (v["_id"] && doc["venueid"] == v["_id"])
