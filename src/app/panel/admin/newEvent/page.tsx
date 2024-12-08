@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useEventContext } from "../../context";
+import { useEventContext } from "../../EventProvider/context";
 import styles from "./page.module.css";
-import { uploadData } from "@/components/dataBase/database";
+import { uploadData } from "@/app/DatabaseProvider/Mutation/Event";
 
 export default function Home() {
   const { venueData, setEventData, setVenueData } = useEventContext();
@@ -23,7 +23,14 @@ export default function Home() {
       pricee: formData.get("price"),
     };
 
-    uploadData([event]);
+    const newEvent = JSON.parse(await uploadData(event));
+    if (newEvent.error) {
+      console.error(newEvent.message);
+      window.alert(newEvent.message);
+      return;
+    }
+    console.log("Event added to database", newEvent);
+
     setEventData((prev: Record<string, any>[]) => {
       return [...prev, event];
     });

@@ -1,8 +1,8 @@
 "use client";
 
 import { Key, useState } from "react";
-import { useEventContext } from "./context";
-import { EventTable } from "./eventDataStruct";
+import { useEventContext } from "./EventProvider/context";
+import { EventTable } from "./EventProvider/eventDataStruct";
 import styles from "./page.module.css";
 
 export default function Home() {
@@ -15,7 +15,6 @@ export default function Home() {
     "@_eventCount": "Number of Events",
   };
 
-  console.log(eventData);
   const modifiedEventData = eventData?.map((event: Record<string, any>) => {
     event.venueURL = {
       url: `/panel/location/${event["@_id"]}`,

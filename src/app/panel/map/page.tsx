@@ -7,7 +7,7 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import styles from "./page.module.css";
-import { useEventContext } from "../context";
+import { useEventContext } from "../EventProvider/context";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -41,9 +41,8 @@ export default function Home() {
           const [markerRef, markerObj] = useAdvancedMarkerRef();
           const [showInfo, setShowInfo] = useState(false);
           return (
-            <>
+            <div key={index}>
               <AdvancedMarker
-                key={index}
                 position={marker.position}
                 title={marker.title}
                 clickable
@@ -66,7 +65,7 @@ export default function Home() {
                   </Link>
                 </InfoWindow>
               )}
-            </>
+            </div>
           );
         })}
       </Map>

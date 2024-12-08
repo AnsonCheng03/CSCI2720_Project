@@ -25,7 +25,7 @@ export async function downloadData(venueIds: string[]) {
     );
 
     const output = {
-      event: {},
+      event: [],
     } as {
       event: { id: string; venueid: string }[];
     };
@@ -37,8 +37,8 @@ export async function downloadData(venueIds: string[]) {
       ? events.filter((e) => venueIds.includes(e["venueid"].toString()))
       : [];
 
-    return output;
+    return JSON.stringify(output);
   } catch (e) {
-    return {};
+    return JSON.stringify([]);
   }
 }

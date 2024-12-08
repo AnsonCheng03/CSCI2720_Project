@@ -1,10 +1,10 @@
 "use client";
-import { deleteData, uploadData } from "@/components/dataBase/database";
-import { EventTable } from "../eventDataStruct";
+import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
+import { EventTable } from "../EventProvider/eventDataStruct";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
-import { useEventContext } from "../context";
+import { useEventContext } from "../EventProvider/context";
 
 export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =
@@ -14,21 +14,32 @@ export default function Home() {
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
 
   const handleDownload = async () => {
-    const data = (await downloadData(venueIds)) as {
+    if (!venueIds) {
+      console.error("Venue IDs are undefined");
+      return;
+    }
+    const data = JSON.parse(await downloadData(venueIds)) as {
       event: Record<string, any>[];
       venue: Record<string, any>[];
     };
     const filteredData = data.event.filter(
       (event) =>
         !Object.values(eventData as Record<string, any>).find(
-          (e) => e.fromDownload && e["@_id"] === event["@_id"]
+          (e) => e["@_id"] === event["@_id"]
         )
     );
     setEvents(filteredData as any[]);
   };
 
-  const handleAddToDatabase = (event: any) => {
-    uploadData([event]);
+  const handleAddToDatabase = async (event: any) => {
+    const newEvent = JSON.parse(await uploadData(event));
+    if (newEvent.error) {
+      console.error(newEvent.message);
+      window.alert(newEvent.message);
+      return;
+    }
+
+    console.log("Event added to database", newEvent);
     setEventData((prev: Record<string, any>[]) => {
       return [...prev, event];
     });
@@ -52,8 +63,14 @@ export default function Home() {
     });
   };
 
-  const deleteAll = () => {
-    deleteData();
+  const deleteAll = async () => {
+    const returnData = JSON.parse(await deleteData());
+    if (returnData.error) {
+      console.error(returnData.message);
+      window.alert(returnData.message);
+      return;
+    }
+
     setEventData([]);
     setEvents([]);
   };

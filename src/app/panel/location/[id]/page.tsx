@@ -8,7 +8,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useRouter } from "next/compat/router";
 import { useState } from "react";
-import { useEventContext } from "../../context";
+import { useEventContext } from "../../EventProvider/context";
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;
@@ -44,9 +44,8 @@ export default function Page({ params }: { params: { id: string } }) {
           {markerDetails.map((marker, index) => {
             const [markerRef, markerObj] = useAdvancedMarkerRef();
             return (
-              <>
+              <div key={index}>
                 <AdvancedMarker
-                  key={index}
                   position={marker.position}
                   title={marker.title}
                   clickable
@@ -62,7 +61,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     {marker.title}
                   </a>
                 </InfoWindow>
-              </>
+              </div>
             );
           })}
         </Map>
@@ -76,7 +75,11 @@ export default function Page({ params }: { params: { id: string } }) {
               {Object.entries(venue).map(([key, value]: [string, any]) => {
                 return (
                   <div key={key}>
-                    <b>{key}</b>: {value}
+                    {typeof value === "string" && (
+                      <>
+                        <b>{key}</b>: {value}
+                      </>
+                    )}
                   </div>
                 );
               })}
