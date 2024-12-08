@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEventContext } from "../../context";
+import { useEventContext } from "../../EventProvider/context";
 import styles from "./page.module.css";
 import { uploadData } from "@/components/dataBase/database";
 

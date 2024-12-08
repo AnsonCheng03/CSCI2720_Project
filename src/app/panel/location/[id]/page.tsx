@@ -8,7 +8,7 @@ import {
 } from "@vis.gl/react-google-maps";
 import { useRouter } from "next/compat/router";
 import { useState } from "react";
-import { useEventContext } from "../../context";
+import { useEventContext } from "../../EventProvider/context";
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;

@@ -7,7 +7,7 @@ import {
   InfoWindow,
 } from "@vis.gl/react-google-maps";
 import styles from "./page.module.css";
-import { useEventContext } from "../context";
+import { useEventContext } from "../EventProvider/context";
 import { useState } from "react";
 import Link from "next/link";
 
