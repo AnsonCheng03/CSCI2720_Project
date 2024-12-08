@@ -9,6 +9,7 @@ import {
 import styles from "./page.module.css";
 import { useEventContext } from "../context";
 import { useState } from "react";
+import Link from "next/link";
 
 const Loader = () => (
   <div>
@@ -22,7 +23,7 @@ export default function Home() {
   const markerDetails =
     venueData?.map((venue: any) => ({
       title: venue.venuee,
-      url: `https://www.google.com/maps/search/?api=1&query=${venue.latitude},${venue.longitude}`,
+      url: `/panel/location/${venue["@_id"]}`,
       position: { lat: venue.latitude, lng: venue.longitude },
     })) || [];
 
@@ -54,16 +55,15 @@ export default function Home() {
                   anchor={markerObj}
                   onCloseClick={() => setShowInfo(false)}
                 >
-                  <a
+                  <Link
                     style={{
                       color: "black",
                       backgroundColor: "white",
                     }}
                     href={marker.url}
-                    target="_blank"
                   >
                     {marker.title}
-                  </a>
+                  </Link>
                 </InfoWindow>
               )}
             </>

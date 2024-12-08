@@ -11,11 +11,22 @@ export default function Home() {
 
   const eventKeyMap: { [key: string]: string } = {
     "@_id": "ID",
-    venuee: "Location",
+    venueURL: "Location",
     "@_eventCount": "Number of Events",
   };
 
-  const eventDataArray = Object.values(eventData as Record<string, any>);
+  console.log(eventData);
+  const modifiedEventData = eventData?.map((event: Record<string, any>) => {
+    event.venueURL = {
+      url: `/panel/location/${event["@_id"]}`,
+      name: event.venuee,
+    };
+    return event;
+  });
+
+  const eventDataArray = Object.values(
+    modifiedEventData as Record<string, any>
+  );
   return (
     <div className={styles.page}>
       <EventTable
