@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useEventContext } from "./context";
 import styles from "./page.module.css";
-import { downloadEventData } from "@/components/dataBase/database";
+import { downloadEventData } from "@/app/DatabaseProvider/database";
 import { XMLParser } from "fast-xml-parser";
 
 export default function DownloadEventPage() {

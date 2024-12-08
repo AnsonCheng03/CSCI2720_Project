@@ -61,7 +61,6 @@ export const EventTable = ({
           <tr key={index}>
             {Object.keys(mapTable).map((key: string) => {
               const value = data[key as keyof typeof data];
-              console.log(value);
               return (
                 <td key={key}>
                   {typeof value === "object" ? (

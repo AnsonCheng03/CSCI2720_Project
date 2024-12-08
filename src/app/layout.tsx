@@ -1,8 +1,9 @@
-import type { GetServerSideProps, Metadata } from "next";
+import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import DatabaseProvider from "./DatabaseProvider/context";
 import localFont from "next/font/local";
-import client from "@/lib/mongodb";
 import "./globals.css";
+import { connectToMongoDB } from "./DatabaseProvider/db";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -25,6 +26,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  connectToMongoDB();
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>

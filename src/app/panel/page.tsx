@@ -15,7 +15,6 @@ export default function Home() {
     "@_eventCount": "Number of Events",
   };
 
-  console.log(eventData);
   const modifiedEventData = eventData?.map((event: Record<string, any>) => {
     event.venueURL = {
       url: `/panel/location/${event["@_id"]}`,
