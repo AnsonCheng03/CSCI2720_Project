@@ -73,7 +73,7 @@ export default function Page({ params }: { params: { id: string } }) {
           return (
             <div key={index}>
               <h2>{venue.venuee}</h2>
-              {Object.entries(venue).map(([key, value]) => {
+              {Object.entries(venue).map(([key, value]: [string, any]) => {
                 return (
                   <div key={key}>
                     <b>{key}</b>: {value}
@@ -83,6 +83,19 @@ export default function Page({ params }: { params: { id: string } }) {
             </div>
           );
         })}
+      </div>
+      {/* // Show Comments */}
+      <div>
+        <h2>Comments</h2>
+        <p>Comments will be shown here</p>
+      </div>
+      {/* // Add Comment */}
+      <div>
+        <h2>Add Comment</h2>
+        <form>
+          <textarea placeholder="Comment" />
+          <button type="submit">Submit</button>
+        </form>
       </div>
     </>
   );
