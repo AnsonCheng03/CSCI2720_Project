@@ -25,7 +25,7 @@ export async function downloadData(venueIds: string[]) {
     );
 
     const output = {
-      event: {},
+      event: [],
     } as {
       event: { id: string; venueid: string }[];
     };
@@ -39,6 +39,6 @@ export async function downloadData(venueIds: string[]) {
 
     return JSON.stringify(output);
   } catch (e) {
-    return JSON.stringify({});
+    return JSON.stringify([]);
   }
 }

@@ -26,7 +26,7 @@ export async function downloadVenueData(rawData: string) {
     );
 
     const output = {
-      venue: {},
+      venue: [],
     } as {
       venue: {
         "@_id": string;
