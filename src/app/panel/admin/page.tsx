@@ -14,7 +14,11 @@ export default function Home() {
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
 
   const handleDownload = async () => {
-    const data = (await downloadData(venueIds)) as {
+    if (!venueIds) {
+      console.error("Venue IDs are undefined");
+      return;
+    }
+    const data = JSON.parse(await downloadData(venueIds)) as {
       event: Record<string, any>[];
       venue: Record<string, any>[];
     };

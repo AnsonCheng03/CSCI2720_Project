@@ -42,10 +42,10 @@ export async function downloadEventData() {
   await connectToMongoDB();
   try {
     const events = await Event.find();
-    return events;
+    return JSON.stringify(events);
   } catch (error) {
     console.log(error);
-    return { message: "error fetching todos" };
+    return JSON.stringify({ message: "error fetching todos" });
   }
 }
 
@@ -53,10 +53,10 @@ export async function deleteData() {
   await connectToMongoDB();
   try {
     const deletedEvents = await Event.deleteMany({});
-    return deletedEvents;
+    return JSON.stringify(deletedEvents);
   } catch (error) {
     console.log(error);
-    return { message: "error deleting todos" };
+    return JSON.stringify({ message: "error deleting todos" });
   }
 }
 
@@ -65,11 +65,11 @@ export async function deleteEvent(eventId: string) {
   try {
     const deletedEvent = await Event.findByIdAndDelete(eventId);
     if (!deletedEvent) {
-      return { message: "Event not found" };
+      return JSON.stringify({ message: "Event not found" });
     }
-    return deletedEvent;
+    return JSON.stringify(deletedEvent);
   } catch (error) {
     console.log(error);
-    return { message: "error deleting todo" };
+    return JSON.stringify({ message: "error deleting todo" });
   }
 }

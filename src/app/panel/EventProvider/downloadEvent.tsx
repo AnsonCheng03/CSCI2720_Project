@@ -10,8 +10,9 @@ export default function DownloadEventPage() {
   const { setEventData, setVenueData } = useEventContext();
 
   useEffect(() => {
-    downloadEventData().then(async (data) => {
+    downloadEventData().then(async (rawData) => {
       try {
+        const data = JSON.parse(rawData);
         const parser = new XMLParser({
           ignoreAttributes: false,
           attributeNamePrefix: "@_",
