@@ -14,6 +14,7 @@
     "@mui/material-nextjs": "^6.1.9",
     "@vis.gl/react-google-maps": "^1.4.2",
     "fast-xml-parser": "^4.5.0",
+    "geolib": "^3.3.4",
     "mongoose": "^8.8.4",
     "next": "^14.2.20",
     "next-auth": "^4.24.11",
