@@ -34,7 +34,15 @@ export default function Home() {
     modifiedEventData as Record<string, any>
   );
 
-  console.log(eventDataArray);
+  const mostAppearWords = eventDataArray
+    .map((event) => event.venuee.split(" "))
+    .flat()
+    .reduce((acc: Record<string, number>, word: string) => {
+      word = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
+      acc[word] = (acc[word] || 0) + 1;
+      return acc;
+    }, {}) as Record<string, number>;
+
   return (
     <div className={styles.page}>
       {/* filters 1. gps meter - latitude,longitude(slider)  2. venuee(input) 3.Catagory (contain specific words like 2)  */}
@@ -66,6 +74,17 @@ export default function Home() {
         }
       >
         <option value="">All</option>
+        {Object.entries(mostAppearWords)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 4)
+          .map(
+            (word) =>
+              word[0] && (
+                <option key={word[0]} value={word[0]}>
+                  {word[0]}
+                </option>
+              )
+          )}
       </select>
 
       <EventTable
@@ -86,12 +105,15 @@ export default function Home() {
             console.log(eventDistance, gpsMeter * 1000);
             return eventDistance <= gpsMeter * 1000;
           }
-          // if (filterSettings.venue) {
-          //   return event.venuee.includes(filterSettings.venue);
-          // }
-          // if (filterSettings.category) {
-          //   return event.category.includes(filterSettings.category);
-          // }
+          if (filterSettings.venue) {
+            return event.venuee
+              .toLowerCase()
+              .includes(filterSettings.venue.toLowerCase());
+          }
+          if (filterSettings.category) {
+            console.log(filterSettings.category);
+            return event.venuee.toLowerCase().includes(filterSettings.category);
+          }
           return true;
         })}
         setEventData={setEventData}
