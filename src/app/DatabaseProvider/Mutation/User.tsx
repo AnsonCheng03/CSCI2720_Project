@@ -10,10 +10,10 @@ export async function createUsers(data: any) {
     return JSON.stringify(newUser);
   } catch (error) {
     console.log(error);
-    return {
+    return JSON.stringify({
       error: true,
       message: "error creating user",
-    };
+    });
   }
 }
 
@@ -26,9 +26,9 @@ export async function modifyUsers(data: any) {
     return JSON.stringify(updatedUser);
   } catch (error) {
     console.log(error);
-    return {
+    return JSON.stringify({
       error: true,
       message: "error updating user",
-    };
+    });
   }
 }
