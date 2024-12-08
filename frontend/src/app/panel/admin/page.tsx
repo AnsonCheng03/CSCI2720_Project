@@ -8,8 +8,12 @@ export default function Home() {
   const [events, setEvents] = useState<any[]>([]);
 
   const handleDownload = async () => {
-    const data = (await downloadData()) as any[];
-    setEvents(data);
+    const data = await downloadData();
+    setEvents(data as any[]);
+  };
+
+  const handleAddToDatabase = (event: any) => {
+    console.log("Add to database", event);
   };
 
   return (
@@ -25,7 +29,10 @@ export default function Home() {
         renderActionColumn={(event) => (
           <button
             onClick={() => {
-              console.log("Add to database", event);
+              console.log("Add to database", {
+                ...event,
+                fromDownload: true,
+              });
             }}
           >
             Add

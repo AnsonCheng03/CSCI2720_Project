@@ -60,8 +60,8 @@ export const EventTable = ({
         </tr>
       </thead>
       <tbody>
-        {eventDataArray.map((data) => (
-          <tr key={data.id}>
+        {eventDataArray.map((data, index) => (
+          <tr key={index}>
             {Object.keys(eventKeyMap).map((key: string) => (
               <td key={key}>{data[key as keyof typeof data]}</td>
             ))}
