@@ -13,7 +13,10 @@ export async function insertORupdateVenue(data: any) {
       return newVenue.toString();
     } catch (error) {
       console.log(error);
-      return { message: "error creating venue" };
+      return {
+        error: true,
+        message: "error creating venue",
+      };
     }
   } catch (e) {
     console.error(e);
@@ -27,14 +30,16 @@ export async function downloadVenueData() {
     return JSON.stringify(venues);
   } catch (error) {
     console.log(error);
-    return JSON.stringify({ message: "error fetching venues" });
+    return JSON.stringify({
+      error: true,
+      message: "error fetching venues",
+    });
   }
 }
 
 export async function handleVenueData(data: any[]) {
   try {
     await connectToMongoDB();
-
     const results = {
       insertedOrUpdated: [],
       downloaded: [],
@@ -63,6 +68,10 @@ export async function handleVenueData(data: any[]) {
     return JSON.stringify(results);
   } catch (error) {
     console.error(error);
-    return JSON.stringify({ message: "error handling venues" });
+
+    return JSON.stringify({
+      error: true,
+      message: "error handling venues",
+    });
   }
 }

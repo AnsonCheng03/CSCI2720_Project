@@ -38,7 +38,13 @@ export default function Home() {
   };
 
   const deleteData = async (event: any, eventId: any) => {
-    deleteEvent(eventId);
+    const deletedEvent = JSON.parse(await deleteEvent(eventId));
+    if (deletedEvent.error) {
+      console.error(deletedEvent.message);
+      window.alert(deletedEvent.message);
+      return;
+    }
+
     setEventData((prev: Record<string, any>[]) => {
       return prev.filter((e) => e["@_id"] !== eventId);
     });
@@ -60,7 +66,13 @@ export default function Home() {
   };
 
   const updateData = async (event: any, previousVenueId: string | null) => {
-    editData(event);
+    const newData = JSON.parse(await editData(event));
+    if (newData.error) {
+      console.error(newData.message);
+      window.alert(newData.message);
+      return;
+    }
+
     setEventData((prev: Record<string, any>[]) => {
       const index = prev.findIndex((e) => e["@_id"] == event["@_id"]);
       if (index >= 0) {

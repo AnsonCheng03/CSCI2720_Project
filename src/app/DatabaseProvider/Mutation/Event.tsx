@@ -7,16 +7,25 @@ export async function uploadData(data: any) {
   try {
     await connectToMongoDB();
     try {
+      // get the event id and transform it to object id
+
       const newEvent = await Event.create(data);
       newEvent.save();
       // revalidatePath("/");
-      return newEvent.toString();
+      return JSON.stringify(newEvent);
     } catch (error) {
       console.log(error);
-      return { message: "error creating todo" };
+      return JSON.stringify({
+        error: true,
+        message: "error adding data",
+      });
     }
   } catch (e) {
     console.error(e);
+    return JSON.stringify({
+      error: true,
+      message: "error connecting to database",
+    });
   }
 }
 
@@ -27,14 +36,20 @@ export async function editData(data: any) {
       new: true,
     });
     if (!updatedEvent) {
-      return { message: "Event not found" };
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
     updatedEvent.save();
     // revalidatePath("/");
-    return updatedEvent.toString();
+    return JSON.stringify(updatedEvent);
   } catch (error) {
     console.log(error);
-    return { message: "error updating todo" };
+    return JSON.stringify({
+      error: true,
+      message: "error updating todo",
+    });
   }
 }
 
@@ -45,7 +60,10 @@ export async function downloadEventData() {
     return JSON.stringify(events);
   } catch (error) {
     console.log(error);
-    return JSON.stringify({ message: "error fetching todos" });
+    return JSON.stringify({
+      error: true,
+      message: "error fetching todos",
+    });
   }
 }
 
@@ -56,7 +74,10 @@ export async function deleteData() {
     return JSON.stringify(deletedEvents);
   } catch (error) {
     console.log(error);
-    return JSON.stringify({ message: "error deleting todos" });
+    return JSON.stringify({
+      error: true,
+      message: "error deleting todos",
+    });
   }
 }
 
@@ -70,6 +91,9 @@ export async function deleteEvent(eventId: string) {
     return JSON.stringify(deletedEvent);
   } catch (error) {
     console.log(error);
-    return JSON.stringify({ message: "error deleting todo" });
+    return JSON.stringify({
+      error: true,
+      message: "error deleting todo",
+    });
   }
 }

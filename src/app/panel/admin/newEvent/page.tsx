@@ -23,7 +23,14 @@ export default function Home() {
       pricee: formData.get("price"),
     };
 
-    uploadData([event]);
+    const newEvent = JSON.parse(await uploadData(event));
+    if (newEvent.error) {
+      console.error(newEvent.message);
+      window.alert(newEvent.message);
+      return;
+    }
+    console.log("Event added to database", newEvent);
+
     setEventData((prev: Record<string, any>[]) => {
       return [...prev, event];
     });

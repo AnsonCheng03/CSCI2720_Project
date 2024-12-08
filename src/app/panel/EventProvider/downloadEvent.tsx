@@ -13,19 +13,27 @@ export default function DownloadEventPage() {
 
   useEffect(() => {
     downloadEventData().then(async (rawData) => {
-      try {
-        const venue = await downloadVenueData(rawData);
+      const data = JSON.parse(rawData);
+      if (data.error) {
+        setEventData([]);
+        setVenueData([]);
+        return;
+      }
 
+      try {
+        setEventData(data || []);
+        const venue = await downloadVenueData(rawData);
         const handleServerSideVenueDataResponse = JSON.parse(
           await handleVenueData(JSON.parse(venue))
         );
-
-        setEventData(JSON.parse(rawData));
-
-        setVenueData([
-          ...JSON.parse(venue),
-          ...(handleServerSideVenueDataResponse.downloaded || []),
-        ]);
+        setVenueData(
+          handleServerSideVenueDataResponse.error
+            ? JSON.parse(venue)
+            : [
+                ...JSON.parse(venue),
+                ...(handleServerSideVenueDataResponse.downloaded || []),
+              ]
+        );
       } catch (e) {
         setEventData([]);
         setVenueData([]);

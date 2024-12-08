@@ -31,8 +31,15 @@ export default function Home() {
     setEvents(filteredData as any[]);
   };
 
-  const handleAddToDatabase = (event: any) => {
-    uploadData([event]);
+  const handleAddToDatabase = async (event: any) => {
+    const newEvent = JSON.parse(await uploadData(event));
+    if (newEvent.error) {
+      console.error(newEvent.message);
+      window.alert(newEvent.message);
+      return;
+    }
+
+    console.log("Event added to database", newEvent);
     setEventData((prev: Record<string, any>[]) => {
       return [...prev, event];
     });
@@ -56,8 +63,14 @@ export default function Home() {
     });
   };
 
-  const deleteAll = () => {
-    deleteData();
+  const deleteAll = async () => {
+    const returnData = JSON.parse(await deleteData());
+    if (returnData.error) {
+      console.error(returnData.message);
+      window.alert(returnData.message);
+      return;
+    }
+
     setEventData([]);
     setEvents([]);
   };
