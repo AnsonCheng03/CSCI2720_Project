@@ -1,13 +1,10 @@
 "use client";
 
 import { Key, useState } from "react";
+import { getDistance } from "geolib";
 import { useEventContext } from "./EventProvider/context";
 import { EventTable } from "./EventProvider/eventDataStruct";
 import styles from "./page.module.css";
-
-const latlngConverter = (lat: number, lng: number) => {
-  // convert lat and lng to gps meter
-};
 
 export default function Home() {
   const { venueData: rawEventData } = useEventContext();
@@ -37,17 +34,66 @@ export default function Home() {
     modifiedEventData as Record<string, any>
   );
 
-  // console.log(eventDataArray);
+  console.log(eventDataArray);
   return (
     <div className={styles.page}>
       {/* filters 1. gps meter - latitude,longitude(slider)  2. venuee(input) 3.Catagory (contain specific words like 2)  */}
       <h1>Events</h1>
-      <input type="range" min="0" max="100" />
-      <input type="text" placeholder="Search by venue" />
-      <input type="select" placeholder="Category" />
+      <input
+        type="range"
+        min="0"
+        max="100"
+        value={filterSettings.gpsMeter}
+        onChange={(e) =>
+          setFilterSettings({
+            ...filterSettings,
+            gpsMeter: parseInt(e.target.value),
+          })
+        }
+      />
+      <input
+        type="text"
+        placeholder="Search by venue"
+        value={filterSettings.venue}
+        onChange={(e) =>
+          setFilterSettings({ ...filterSettings, venue: e.target.value })
+        }
+      />
+      <select
+        value={filterSettings.category}
+        onChange={(e) =>
+          setFilterSettings({ ...filterSettings, category: e.target.value })
+        }
+      >
+        <option value="">All</option>
+      </select>
+
       <EventTable
         mapTable={eventKeyMap}
-        eventDataArray={eventDataArray}
+        eventDataArray={eventDataArray.filter((event) => {
+          if (filterSettings.gpsMeter) {
+            const gpsMeter = filterSettings.gpsMeter;
+            const eventDistance = getDistance(
+              {
+                latitude: event.latitude,
+                longitude: event.longitude,
+              },
+              {
+                latitude: eventDataArray[0].latitude,
+                longitude: eventDataArray[0].longitude,
+              }
+            );
+            console.log(eventDistance, gpsMeter * 1000);
+            return eventDistance <= gpsMeter * 1000;
+          }
+          // if (filterSettings.venue) {
+          //   return event.venuee.includes(filterSettings.venue);
+          // }
+          // if (filterSettings.category) {
+          //   return event.category.includes(filterSettings.category);
+          // }
+          return true;
+        })}
         setEventData={setEventData}
       />
     </div>
