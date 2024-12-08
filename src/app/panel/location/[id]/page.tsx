@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { id: string } }) {
 
   const markerDetails =
     venueData
-      ?.filter((venue: any) => venue.id == params.id)
+      ?.filter((venue: any) => venue["@_id"] == params.id)
       ?.map((venue: any) => ({
         title: venue.venuee,
         url: `https://www.google.com/maps/search/?api=1&query=${venue.latitude},${venue.longitude}`,
@@ -40,7 +40,6 @@ export default function Page({ params }: { params: { id: string } }) {
       >
         {markerDetails.map((marker, index) => {
           const [markerRef, markerObj] = useAdvancedMarkerRef();
-          const [showInfo, setShowInfo] = useState(false);
           return (
             <>
               <AdvancedMarker
@@ -49,25 +48,17 @@ export default function Page({ params }: { params: { id: string } }) {
                 title={marker.title}
                 clickable
                 ref={markerRef}
-                onClick={() => setShowInfo(true)}
               />
-              {showInfo && (
-                <InfoWindow
-                  anchor={markerObj}
-                  onCloseClick={() => setShowInfo(false)}
+              <InfoWindow anchor={markerObj}>
+                <a
+                  style={{
+                    color: "black",
+                    backgroundColor: "white",
+                  }}
                 >
-                  <a
-                    style={{
-                      color: "black",
-                      backgroundColor: "white",
-                    }}
-                    href={marker.url}
-                    target="_blank"
-                  >
-                    {marker.title}
-                  </a>
-                </InfoWindow>
-              )}
+                  {marker.title}
+                </a>
+              </InfoWindow>
             </>
           );
         })}
