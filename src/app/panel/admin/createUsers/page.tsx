@@ -22,11 +22,7 @@ export default function Home() {
       window.alert("Passwords do not match");
       return;
     }
-    event.password = bcrypt.hashSync(
-      event.password,
-      bcrypt.genSaltSync(8),
-      null
-    );
+    event.password = bcrypt.hashSync(event.password, bcrypt.genSaltSync(8));
 
     const newEvent = JSON.parse(await createUsers(event));
     if (newEvent.error) {

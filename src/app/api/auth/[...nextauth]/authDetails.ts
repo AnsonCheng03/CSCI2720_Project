@@ -1,3 +1,7 @@
+import {
+  checkNoOfAdmins,
+  userLogin,
+} from "@/app/DatabaseProvider/Mutation/User";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
@@ -11,27 +15,32 @@ export const authOptions = {
       },
       async authorize(credentials, req) {
         if (!credentials?.username || !credentials?.password) return null;
-        if (
-          credentials.username === "admin" &&
-          credentials.password === "admin"
-        ) {
-          return {
-            id: "1",
-            name: "Admin",
-            role: "admin",
-          } as any;
-        }
 
-        if (
-          credentials.username === "user" &&
-          credentials.password === "user"
-        ) {
-          return {
-            id: "2",
-            name: "User",
-            role: "user",
-          } as any;
+        const user = JSON.parse(await userLogin(credentials));
+        if (user.error) {
+          const adminCount = JSON.parse(await checkNoOfAdmins());
+          if (adminCount.error) {
+            return null;
+          }
+          if (
+            credentials.username === "admin" &&
+            credentials.password === "admin" &&
+            adminCount === 0
+          ) {
+            return {
+              id: "-1",
+              name: "Admin",
+              role: "admin",
+            } as any;
+          }
+          return null;
         }
+        console.log("user", user);
+        return {
+          id: user._id,
+          name: user.userName,
+          role: user.role,
+        } as any;
       },
     }),
   ],
