@@ -8,7 +8,6 @@ import { uploadData } from "@/components/dataBase/database";
 export default function Home() {
   const { venueData, setEventData, setVenueData } = useEventContext();
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
-  console.log(venueIds);
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();

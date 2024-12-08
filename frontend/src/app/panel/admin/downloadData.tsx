@@ -1,7 +1,7 @@
 "use server";
 import { XMLParser } from "fast-xml-parser";
 
-export async function downloadData() {
+export async function downloadData(venueIds: string[]) {
   try {
     const parser = new XMLParser({
       ignoreAttributes: false,
@@ -32,7 +32,10 @@ export async function downloadData() {
     const [event] = data;
 
     const events = event?.event?.events?.event;
-    output.event = Array.isArray(events) ? events : [];
+
+    output.event = Array.isArray(events)
+      ? events.filter((e) => venueIds.includes(e["venueid"].toString()))
+      : [];
 
     return output;
   } catch (e) {

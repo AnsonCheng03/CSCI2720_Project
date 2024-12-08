@@ -56,7 +56,6 @@ export default function DownloadEventPage() {
                     return {
                       ...v,
                       "@_eventCount": data?.filter((doc) => {
-                        console.log(doc["venueid"], v["@_id"]);
                         return doc["venueid"] == v["@_id"];
                       }).length,
                     };

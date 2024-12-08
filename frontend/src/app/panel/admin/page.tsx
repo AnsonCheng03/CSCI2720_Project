@@ -7,15 +7,17 @@ import { useEffect, useState } from "react";
 import { useEventContext } from "../context";
 
 export default function Home() {
-  const { eventData, setEventData, setVenueData } = useEventContext();
+  const { eventData, venueData, setEventData, setVenueData } =
+    useEventContext();
   const [events, setEvents] = useState<any[]>([]);
 
+  const venueIds = venueData?.map((venue: any) => venue["@_id"]);
+
   const handleDownload = async () => {
-    const data = (await downloadData()) as {
+    const data = (await downloadData(venueIds)) as {
       event: Record<string, any>[];
       venue: Record<string, any>[];
     };
-    console.log(data);
     const filteredData = data.event.filter(
       (event) =>
         !Object.values(eventData as Record<string, any>).find(
@@ -37,15 +39,7 @@ export default function Home() {
       // change the event count for the venue matching the event
       const venueId = event.venueid;
       const venue = prev.find((v) => v["@_id"] == venueId);
-      console.log(venue, venueId);
       if (venue) {
-        console.log([
-          ...prev.filter((v) => v["@_id"] != venueId),
-          {
-            ...venue,
-            "@_eventCount": (venue["@_eventCount"] || 0) + 1,
-          },
-        ]);
         return [
           ...prev.filter((v) => v["@_id"] != venueId),
           {
