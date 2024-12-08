@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function NavBar({
   navItems,
 }: {
@@ -12,7 +14,7 @@ export default function NavBar({
         <ul>
           {navItems.map((item) => (
             <li key={item.href + item.name}>
-              <a href={item.href}>{item.name}</a>
+              <Link href={item.href}>{item.name}</Link>
             </li>
           ))}
         </ul>

@@ -10,7 +10,7 @@ export const userNavItems = [
   { name: "List of Locations", href: "/panel" },
   { name: "List of Events", href: "/panel/events" },
   { name: "Map", href: "/panel/map" },
-  { name: "Favorite", href: "/panel/favorite" },
+  { name: "Favourites", href: "/panel/favourite" },
   { name: "No Idea?", href: "/panel/noidea" },
   { name: "Logout", href: "/api/auth/signout" },
 ];
