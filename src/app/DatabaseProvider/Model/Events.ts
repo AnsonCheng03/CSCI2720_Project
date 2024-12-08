@@ -4,7 +4,7 @@ import mongoose, { Document, Model } from "mongoose";
 export interface IEvent {
   "@_id": string;
   titlee: string;
-  venueid: string;
+  venueid: mongoose.Schema.Types.ObjectId;
   predateE: string;
   desce: string;
   presenterorge: string;
@@ -26,7 +26,9 @@ const eventSchema = new mongoose.Schema<IEventDocument>(
       type: String,
     },
     venueid: {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "venue",
+      required: true,
     },
     predateE: {
       type: String,
@@ -46,7 +48,6 @@ const eventSchema = new mongoose.Schema<IEventDocument>(
   }
 );
 
-const Event: Model<IEventDocument> =
-  mongoose.models?.Event || mongoose.model("Event", eventSchema);
+const Event: Model<IEventDocument> = mongoose.model("Event", eventSchema);
 
 export default Event;

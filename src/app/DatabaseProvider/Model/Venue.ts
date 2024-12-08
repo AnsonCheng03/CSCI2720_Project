@@ -42,7 +42,6 @@ const venueSchema = new mongoose.Schema<IVenueDocument>(
   }
 );
 
-const Venue: Model<IVenueDocument> =
-  mongoose.models?.Venue || mongoose.model("Venue", venueSchema);
+const Venue: Model<IVenueDocument> = mongoose.model("Venue", venueSchema);
 
 export default Venue;
