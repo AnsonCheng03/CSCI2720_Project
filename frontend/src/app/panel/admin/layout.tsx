@@ -2,7 +2,6 @@ import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import { redirect } from "next/navigation";
-import EventProvider from "./context";
 import NavBar from "@/components/navBar/navBar";
 
 export const navItems = [

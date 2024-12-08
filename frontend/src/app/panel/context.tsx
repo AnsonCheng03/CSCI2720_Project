@@ -3,7 +3,10 @@
 import { createContext, useContext, useState } from "react";
 import DownloadEventPage from "./downloadEvent";
 
-const EventContext = createContext<{ eventData: object; setEventData: any }>({
+const EventContext = createContext<{
+  eventData: object | null;
+  setEventData: any;
+}>({
   eventData: {},
   setEventData: () => {},
 });
@@ -17,12 +20,15 @@ export default function EventProvider({
   data,
 }: {
   children: React.ReactNode;
-  data: object;
+  data: object | null;
 }) {
   const [eventData, setEventData] = useState(data);
   return (
     <EventContext.Provider value={{ eventData, setEventData }}>
-      {Object.keys(eventData).length === 0 ? <DownloadEventPage /> : children}
+      {
+        // Object.keys(eventData).length === 0
+        eventData === null ? <DownloadEventPage /> : children
+      }
     </EventContext.Provider>
   );
 }

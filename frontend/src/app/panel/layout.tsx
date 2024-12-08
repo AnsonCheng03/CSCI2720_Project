@@ -32,7 +32,7 @@ export default async function RootLayout({
   if (userRole !== "user" && userRole !== "admin") redirect("/panel");
 
   return (
-    <EventProvider data={{}}>
+    <EventProvider data={null}>
       {
         <>
           <NavBar

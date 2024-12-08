@@ -12,8 +12,20 @@ export function middleware(request: Request) {
 
   return NextResponse.next({
     request: {
-      // Apply new request headers
       headers: requestHeaders,
     },
   });
 }
+
+export const config = {
+  matcher: [
+    {
+      source: "/((?!api|_next/static|_next/image|favicon.ico).*)",
+      missing: [
+        { type: "header", key: "next-router-prefetch" },
+        { type: "header", key: "next-action" },
+        { type: "header", key: "purpose", value: "prefetch" },
+      ],
+    },
+  ],
+};
