@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { JSX, useState } from "react";
 
 export const sortData = (
@@ -58,9 +59,19 @@ export const EventTable = ({
       <tbody>
         {eventDataArray?.map((data, index) => (
           <tr key={index}>
-            {Object.keys(mapTable).map((key: string) => (
-              <td key={key}>{data[key as keyof typeof data]}</td>
-            ))}
+            {Object.keys(mapTable).map((key: string) => {
+              const value = data[key as keyof typeof data];
+              console.log(value);
+              return (
+                <td key={key}>
+                  {typeof value === "object" ? (
+                    <Link href={value.url}>{value.name}</Link>
+                  ) : (
+                    value
+                  )}
+                </td>
+              );
+            })}
             {renderActionColumn && <td>{renderActionColumn(data)}</td>}
           </tr>
         ))}
