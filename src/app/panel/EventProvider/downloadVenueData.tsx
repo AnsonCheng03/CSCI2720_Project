@@ -1,8 +1,9 @@
 "use server";
 import { XMLParser } from "fast-xml-parser";
 
-export async function downloadData(venueIds: string[]) {
+export async function downloadVenueData(rawData: string) {
   try {
+    const data = JSON.parse(rawData);
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: "@_",
@@ -10,10 +11,10 @@ export async function downloadData(venueIds: string[]) {
 
     // get multiple XML files
     const urls: { [key: string]: string } = {
-      event:
-        "https://res.data.gov.hk/api/get-download-file?name=https%3A%2F%2Fwww.lcsd.gov.hk%2Fdatagovhk%2Fevent%2Fevents.xml",
+      venue:
+        "https://res.data.gov.hk/api/get-download-file?name=https%3A%2F%2Fwww.lcsd.gov.hk%2Fdatagovhk%2Fevent%2Fvenues.xml",
     };
-    const data = await Promise.all(
+    const venueData = await Promise.all(
       Object.entries(urls).map(([key, url]) =>
         fetch(url)
           .then((res) => res.text())
@@ -25,20 +26,38 @@ export async function downloadData(venueIds: string[]) {
     );
 
     const output = {
-      event: {},
+      venue: {},
     } as {
-      event: { id: string; venueid: string }[];
+      venue: {
+        "@_id": string;
+        "@_eventCount": number;
+        latitude: number;
+        longitude: number;
+      }[];
     };
-    const [event] = data;
+    const [venue] = venueData;
 
-    const events = event?.event?.events?.event;
+    if (venue) {
+      const venues = venue?.venue?.venues?.venue;
+      output.venue = Array.isArray(venues)
+        ? venues
+            .filter((v) => v["latitude"] && v["longitude"])
+            .map(
+              // get event count for each venue
+              (v) => {
+                return {
+                  ...v,
+                  "@_eventCount": data?.filter((doc) => {
+                    return doc["venueid"] == v["@_id"];
+                  }).length,
+                };
+              }
+            )
+        : [];
+    }
 
-    output.event = Array.isArray(events)
-      ? events.filter((e) => venueIds.includes(e["venueid"].toString()))
-      : [];
-
-    return output;
+    return JSON.stringify(output.venue);
   } catch (e) {
-    return {};
+    return JSON.stringify([]);
   }
 }
