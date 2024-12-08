@@ -1,7 +1,7 @@
 "use server";
 
-import { connectToMongoDB } from "./db";
-import Event from "./Model/Events";
+import { connectToMongoDB } from "../db";
+import Event from "../Model/Events";
 
 export async function uploadData(data: any) {
   try {

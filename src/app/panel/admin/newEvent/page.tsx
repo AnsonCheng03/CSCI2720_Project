@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEventContext } from "../../EventProvider/context";
 import styles from "./page.module.css";
-import { uploadData } from "@/app/DatabaseProvider/database";
+import { uploadData } from "@/app/DatabaseProvider/Mutation/Event";
 
 export default function Home() {
   const { venueData, setEventData, setVenueData } = useEventContext();

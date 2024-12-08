@@ -1,5 +1,5 @@
 "use client";
-import { deleteData, uploadData } from "@/app/DatabaseProvider/database";
+import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
 import { EventTable } from "../EventProvider/eventDataStruct";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";

@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import { useEventContext } from "./context";
 import styles from "./page.module.css";
-import { downloadEventData } from "@/app/DatabaseProvider/database";
+import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
 import { XMLParser } from "fast-xml-parser";
 import { downloadVenueData } from "./downloadVenueData";
 

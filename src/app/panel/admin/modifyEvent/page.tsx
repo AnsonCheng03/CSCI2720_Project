@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEventContext } from "../../EventProvider/context";
 import styles from "./page.module.css";
-import { deleteEvent, editData } from "@/app/DatabaseProvider/database";
+import { deleteEvent, editData } from "@/app/DatabaseProvider/Mutation/Event";
 import { useRef } from "react";
 
 export default function Home() {
