@@ -11,6 +11,20 @@ export async function uploadData(data: any) {
   }
 }
 
+export async function editData(data: any) {
+  try {
+    const db = client.db("project");
+    const collection = db.collection("events");
+    await collection
+      .updateOne({ _id: data["@_id"] }, { $set: { ...data } })
+      .then((result) => {
+        console.log(`Successfully updated document: ${result}`);
+      });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export async function downloadEventData() {
   try {
     const db = client.db("project");

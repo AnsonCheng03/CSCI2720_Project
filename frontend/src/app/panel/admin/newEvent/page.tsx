@@ -6,8 +6,7 @@ import styles from "./page.module.css";
 import { uploadData } from "@/components/dataBase/database";
 
 export default function Home() {
-  const { eventData, venueData, setEventData, setVenueData } =
-    useEventContext();
+  const { venueData, setEventData, setVenueData } = useEventContext();
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
   console.log(venueIds);
 
@@ -33,15 +32,7 @@ export default function Home() {
       // change the event count for the venue matching the event
       const venueId = event.venueid;
       const venue = prev.find((v) => v["@_id"] == venueId);
-      console.log(venue, venueId);
       if (venue) {
-        console.log([
-          ...prev.filter((v) => v["@_id"] != venueId),
-          {
-            ...venue,
-            "@_eventCount": (venue["@_eventCount"] || 0) + 1,
-          },
-        ]);
         return [
           ...prev.filter((v) => v["@_id"] != venueId),
           {
