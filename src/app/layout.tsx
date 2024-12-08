@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
-import DatabaseProvider from "./DatabaseProvider/context";
 import localFont from "next/font/local";
 import "./globals.css";
 import { connectToMongoDB } from "./DatabaseProvider/db";

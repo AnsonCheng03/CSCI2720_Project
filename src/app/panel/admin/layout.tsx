@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/navBar/navBar";
 
-export const navItems = [
+const navItems = [
   { name: "Download Event", href: "/panel/admin" },
   { name: "New Event", href: "/panel/admin/newEvent" },
   { name: "Modify Event", href: "/panel/admin/modifyEvent" },

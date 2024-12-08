@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 import EventProvider from "./EventProvider/context";
 import NavBar from "@/components/navBar/navBar";
 
-export const userNavItems = [
+const userNavItems = [
   { name: "Home", href: "/" },
   { name: "List of Locations", href: "/panel" },
   { name: "List of Events", href: "/panel/events" },
@@ -15,9 +15,7 @@ export const userNavItems = [
   { name: "Logout", href: "/api/auth/signout" },
 ];
 
-export const adminNavItems = [
-  { name: "Manage Database", href: "/panel/admin" },
-];
+const adminNavItems = [{ name: "Manage Database", href: "/panel/admin" }];
 
 export default async function RootLayout({
   children,
