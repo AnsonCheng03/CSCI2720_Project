@@ -6,9 +6,6 @@ import Event from "./Model/Events";
 export async function uploadData(data: any) {
   try {
     await connectToMongoDB();
-    // const db = client.db("project");
-    // const collection = db.collection("events");
-    // await collection.insertMany(data);
     try {
       const newEvent = await Event.create(data);
       newEvent.save();
@@ -24,17 +21,6 @@ export async function uploadData(data: any) {
 }
 
 export async function editData(data: any) {
-  // try {
-  //   const db = client.db("project");
-  //   const collection = db.collection("events");
-  //   await collection
-  //     .updateOne({ "@_id": data["@_id"] }, { $set: { ...data } })
-  //     .then((result) => {
-  //       console.log(`Successfully updated document: ${result}`);
-  //     });
-  // } catch (e) {
-  //   console.error(e);
-  // }
   await connectToMongoDB();
   try {
     const updatedEvent = await Event.findByIdAndUpdate(data["@_id"], data, {
@@ -53,14 +39,6 @@ export async function editData(data: any) {
 }
 
 export async function downloadEventData() {
-  // try {
-  //   const db = client.db("project");
-  //   const collection = db.collection("events");
-  //   const data = await collection.find().toArray();
-  //   return data;
-  // } catch (e) {
-  //   console.error(e);
-  // }
   await connectToMongoDB();
   try {
     const events = await Event.find();
@@ -72,12 +50,6 @@ export async function downloadEventData() {
 }
 
 export async function deleteData() {
-  // try {
-  //   const db = client.db("project");
-  //   const collection = db.dropCollection("events");
-  // } catch (e) {
-  //   console.error(e);
-  // }
   await connectToMongoDB();
   try {
     const deletedEvents = await Event.deleteMany({});
@@ -89,13 +61,6 @@ export async function deleteData() {
 }
 
 export async function deleteEvent(eventId: string) {
-  // try {
-  //   const db = client.db("project");
-  //   const collection = db.collection("events");
-  //   await collection.deleteOne({ "@_id": eventId });
-  // } catch (e) {
-  //   console.error(e);
-  // }
   await connectToMongoDB();
   try {
     const deletedEvent = await Event.findByIdAndDelete(eventId);
