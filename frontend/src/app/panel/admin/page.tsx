@@ -18,7 +18,20 @@ export default function Home() {
       <button className={styles.button} onClick={handleDownload}>
         Download
       </button>
-      <EventTable eventDataArray={events} setEventData={setEvents} />
+      <EventTable
+        eventDataArray={events}
+        setEventData={setEvents}
+        actionColumnTitle={"Add to database"}
+        renderActionColumn={(event) => (
+          <button
+            onClick={() => {
+              console.log("Add to database", event);
+            }}
+          >
+            Add
+          </button>
+        )}
+      />
     </div>
   );
 }

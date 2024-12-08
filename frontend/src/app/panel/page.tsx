@@ -9,8 +9,7 @@ export default function Home() {
   const { eventData: rawEventData } = useEventContext();
   const [eventData, setEventData] = useState(rawEventData);
 
-  const eventDataArray = Object.values(eventData);
-
+  const eventDataArray = Object.values(eventData as Record<string, any>);
   return (
     <div className={styles.page}>
       <EventTable eventDataArray={eventDataArray} setEventData={setEventData} />

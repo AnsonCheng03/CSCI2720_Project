@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 
 export const eventKeyMap: { [key: string]: string } = {
   "@_id": "ID",
@@ -23,9 +23,13 @@ export const sortData = (
 export const EventTable = ({
   eventDataArray,
   setEventData,
+  renderActionColumn,
+  actionColumnTitle,
 }: {
   eventDataArray: { [key: string]: any }[];
   setEventData: (data: { [key: string]: any }[]) => void;
+  renderActionColumn?: (data: { [key: string]: any }) => JSX.Element;
+  actionColumnTitle?: string;
 }) => {
   const [sortKey, setSortKey] = useState({
     key: "",
@@ -50,7 +54,9 @@ export const EventTable = ({
               {eventKeyMap[key]}
             </th>
           ))}
-          <th>Add to Favorite</th>
+          {renderActionColumn && actionColumnTitle && (
+            <th>{actionColumnTitle}</th>
+          )}
         </tr>
       </thead>
       <tbody>
@@ -59,14 +65,7 @@ export const EventTable = ({
             {Object.keys(eventKeyMap).map((key: string) => (
               <td key={key}>{data[key as keyof typeof data]}</td>
             ))}
-            <td>
-              <input
-                type="checkbox"
-                id={data["@_id"]}
-                name={data["@_id"]}
-                value={data["@_id"]}
-              />
-            </td>
+            {renderActionColumn && <td>{renderActionColumn(data)}</td>}
           </tr>
         ))}
       </tbody>
