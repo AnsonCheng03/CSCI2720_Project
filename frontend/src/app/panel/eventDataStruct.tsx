@@ -1,11 +1,5 @@
 import { JSX, useState } from "react";
 
-export const eventKeyMap: { [key: string]: string } = {
-  "@_id": "ID",
-  venuee: "Location",
-  "@_eventCount": "Number of Events",
-};
-
 export const sortData = (
   eventDataArray: { [key: string]: any }[],
   setEventData: (data: { [key: string]: any }[]) => void,
@@ -21,11 +15,13 @@ export const sortData = (
 };
 
 export const EventTable = ({
+  mapTable,
   eventDataArray,
   setEventData,
   renderActionColumn,
   actionColumnTitle,
 }: {
+  mapTable: { [key: string]: string };
   eventDataArray: { [key: string]: any }[];
   setEventData: (data: { [key: string]: any }[]) => void;
   renderActionColumn?: (data: { [key: string]: any }) => JSX.Element;
@@ -40,7 +36,7 @@ export const EventTable = ({
     <table>
       <thead>
         <tr>
-          {Object.keys(eventKeyMap).map((key: string) => (
+          {Object.keys(mapTable).map((key: string) => (
             <th
               key={key}
               onClick={() => {
@@ -51,7 +47,7 @@ export const EventTable = ({
                 });
               }}
             >
-              {eventKeyMap[key]}
+              {mapTable[key]}
             </th>
           ))}
           {renderActionColumn && actionColumnTitle && (
@@ -60,9 +56,9 @@ export const EventTable = ({
         </tr>
       </thead>
       <tbody>
-        {eventDataArray.map((data, index) => (
+        {eventDataArray?.map((data, index) => (
           <tr key={index}>
-            {Object.keys(eventKeyMap).map((key: string) => (
+            {Object.keys(mapTable).map((key: string) => (
               <td key={key}>{data[key as keyof typeof data]}</td>
             ))}
             {renderActionColumn && <td>{renderActionColumn(data)}</td>}

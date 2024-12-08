@@ -6,9 +6,13 @@ import DownloadEventPage from "./downloadEvent";
 const EventContext = createContext<{
   eventData: object | null;
   setEventData: any;
+  venueData: object | null;
+  setVenueData: any;
 }>({
   eventData: {},
   setEventData: () => {},
+  venueData: {},
+  setVenueData: () => {},
 });
 
 export function useEventContext() {
@@ -20,15 +24,27 @@ export default function EventProvider({
   data,
 }: {
   children: React.ReactNode;
-  data: object | null;
+  data: {
+    event: object | null;
+    venue: object | null;
+  } | null;
 }) {
-  const [eventData, setEventData] = useState(data);
+  const [eventData, setEventData] = useState(data?.event || null);
+  const [venueData, setVenueData] = useState(data?.venue || null);
   return (
-    <EventContext.Provider value={{ eventData, setEventData }}>
-      {
-        // Object.keys(eventData).length === 0
-        eventData === null ? <DownloadEventPage /> : children
-      }
+    <EventContext.Provider
+      value={{
+        eventData,
+        setEventData,
+        venueData,
+        setVenueData,
+      }}
+    >
+      {eventData === null || venueData === null ? (
+        <DownloadEventPage />
+      ) : (
+        children
+      )}
     </EventContext.Provider>
   );
 }
