@@ -4,7 +4,6 @@ import { useEffect } from "react";
 import { useEventContext } from "./context";
 import styles from "./page.module.css";
 import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
-import { XMLParser } from "fast-xml-parser";
 import { downloadVenueData } from "./downloadVenueData";
 import { handleVenueData } from "@/app/DatabaseProvider/Mutation/Venue";
 
@@ -22,17 +21,34 @@ export default function DownloadEventPage() {
 
       try {
         setEventData(data || []);
-        const venue = await downloadVenueData(rawData);
+        const venue = await downloadVenueData();
         const handleServerSideVenueDataResponse = JSON.parse(
           await handleVenueData(JSON.parse(venue))
         );
+
+        const outputVenue = handleServerSideVenueDataResponse.error
+          ? JSON.parse(venue)
+          : [
+              ...(handleServerSideVenueDataResponse.updated || []),
+              ...(handleServerSideVenueDataResponse.inserted || []),
+              ...(handleServerSideVenueDataResponse.downloaded || []),
+            ];
         setVenueData(
-          handleServerSideVenueDataResponse.error
-            ? JSON.parse(venue)
-            : [
-                ...JSON.parse(venue),
-                ...(handleServerSideVenueDataResponse.downloaded || []),
-              ]
+          outputVenue.map(
+            // get event count for each venue
+            (v: any, i: number) => {
+              return {
+                ...v,
+                "@_eventCount": data?.filter((doc: any) => {
+                  console.log(doc["venueid"], v);
+                  return (
+                    doc["venueid"] == v["@_id"] ||
+                    (v["_id"] && doc["venueid"] == v["_id"])
+                  );
+                }).length,
+              };
+            }
+          )
         );
       } catch (e) {
         setEventData([]);

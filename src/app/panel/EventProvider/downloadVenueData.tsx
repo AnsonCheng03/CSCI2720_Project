@@ -1,9 +1,8 @@
 "use server";
 import { XMLParser } from "fast-xml-parser";
 
-export async function downloadVenueData(rawData: string) {
+export async function downloadVenueData() {
   try {
-    const data = JSON.parse(rawData);
     const parser = new XMLParser({
       ignoreAttributes: false,
       attributeNamePrefix: "@_",
@@ -40,19 +39,7 @@ export async function downloadVenueData(rawData: string) {
     if (venue) {
       const venues = venue?.venue?.venues?.venue;
       output.venue = Array.isArray(venues)
-        ? venues
-            .filter((v) => v["latitude"] && v["longitude"])
-            .map(
-              // get event count for each venue
-              (v) => {
-                return {
-                  ...v,
-                  "@_eventCount": data?.filter((doc) => {
-                    return doc["venueid"] == v["@_id"];
-                  }).length,
-                };
-              }
-            )
+        ? venues.filter((v) => v["latitude"] && v["longitude"])
         : [];
     }
 

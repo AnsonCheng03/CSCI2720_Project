@@ -41,10 +41,12 @@ export async function handleVenueData(data: any[]) {
   try {
     await connectToMongoDB();
     const results = {
-      insertedOrUpdated: [],
+      inserted: [],
+      updated: [],
       downloaded: [],
     } as {
-      insertedOrUpdated: string[];
+      inserted: any[];
+      updated: any[];
       downloaded: any[];
     };
 
@@ -53,11 +55,11 @@ export async function handleVenueData(data: any[]) {
 
       if (existingVenue) {
         await Venue.updateOne({ "@_id": item["@_id"] }, item);
-        results.insertedOrUpdated.push(item["@_id"]);
+        results.updated.push(existingVenue);
       } else {
         const newVenue = new Venue(item);
         await newVenue.save();
-        results.insertedOrUpdated.push(item["@_id"]);
+        results.inserted.push(newVenue);
       }
     }
 

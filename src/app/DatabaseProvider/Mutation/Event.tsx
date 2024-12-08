@@ -2,12 +2,22 @@
 
 import { connectToMongoDB } from "../db";
 import Event from "../Model/Events";
+import Venue from "../Model/Venue";
 
 export async function uploadData(data: any) {
   try {
     await connectToMongoDB();
     try {
       // get the event id and transform it to object id
+      const elementVenue = data.venueid;
+      const venue = await Venue.find({ "@_id": elementVenue });
+      if (venue.length === 0) {
+        return JSON.stringify({
+          error: true,
+          message: "Venue not found",
+        });
+      }
+      data.venueid = venue[0]._id;
 
       const newEvent = await Event.create(data);
       newEvent.save();
