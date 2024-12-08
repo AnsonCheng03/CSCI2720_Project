@@ -18,7 +18,6 @@ const Loader = () => (
 
 export default function Home() {
   const { venueData } = useEventContext();
-  console.log(venueData);
 
   const markerDetails =
     venueData?.map((venue: any) => ({
