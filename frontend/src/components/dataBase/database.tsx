@@ -16,7 +16,7 @@ export async function editData(data: any) {
     const db = client.db("project");
     const collection = db.collection("events");
     await collection
-      .updateOne({ _id: data["@_id"] }, { $set: { ...data } })
+      .updateOne({ "@_id": data["@_id"] }, { $set: { ...data } })
       .then((result) => {
         console.log(`Successfully updated document: ${result}`);
       });
@@ -40,6 +40,16 @@ export async function deleteData() {
   try {
     const db = client.db("project");
     const collection = db.dropCollection("events");
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function deleteEvent(eventId: string) {
+  try {
+    const db = client.db("project");
+    const collection = db.collection("events");
+    await collection.deleteOne({ "@_id": eventId });
   } catch (e) {
     console.error(e);
   }

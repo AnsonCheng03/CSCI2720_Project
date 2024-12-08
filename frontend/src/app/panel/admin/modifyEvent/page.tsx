@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useEventContext } from "../../context";
 import styles from "./page.module.css";
-import { editData } from "@/components/dataBase/database";
+import { deleteEvent, editData } from "@/components/dataBase/database";
+import { useRef } from "react";
 
 export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =
@@ -11,9 +12,11 @@ export default function Home() {
   const eventIds = eventData?.map((event: any) => event["@_id"]);
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
+  const form = useRef(null);
+
+  const handleSubmit = async (type: string) => {
+    if (!form.current) return;
+    const formData = new FormData(form.current);
 
     const event = {
       "@_id": formData.get("eventID"),
@@ -27,7 +30,37 @@ export default function Home() {
 
     let previousVenueId: string | null = null;
 
-    editData([event]);
+    if (type === "submit") {
+      updateData(event, previousVenueId);
+    } else if (type === "delete") {
+      deleteData(event, formData.get("eventID"));
+    }
+  };
+
+  const deleteData = async (event: any, eventId: any) => {
+    deleteEvent(eventId);
+    setEventData((prev: Record<string, any>[]) => {
+      return prev.filter((e) => e["@_id"] !== eventId);
+    });
+    setVenueData((prev: Record<string, any>[]) => {
+      // change the event count for the venue matching the event
+      const venueId = event.venueid;
+      const venue = prev.find((v) => v["@_id"] == venueId);
+      if (venue) {
+        return [
+          ...prev.filter((v) => v["@_id"] != venueId),
+          {
+            ...venue,
+            "@_eventCount": (venue["@_eventCount"] || 0) - 1,
+          },
+        ];
+      }
+      return prev;
+    });
+  };
+
+  const updateData = async (event: any, previousVenueId: string | null) => {
+    editData(event);
     setEventData((prev: Record<string, any>[]) => {
       const index = prev.findIndex((e) => e["@_id"] == event["@_id"]);
       if (index >= 0) {
@@ -64,7 +97,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      <form onSubmit={handleSubmit}>
+      <form ref={form} onSubmit={(e) => e.preventDefault()}>
         <label>
           Event ID:
           <select name="eventID">
@@ -116,7 +149,22 @@ export default function Home() {
           <input type="text" name="price" />
         </label>
         <br />
-        <button type="submit">Submit</button>
+        <button
+          type="submit"
+          name="submit"
+          value="submit"
+          onClick={() => handleSubmit("submit")}
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          name="submit"
+          value="delete"
+          onClick={() => handleSubmit("delete")}
+        >
+          Delete
+        </button>
       </form>
     </div>
   );
