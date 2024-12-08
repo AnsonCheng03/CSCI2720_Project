@@ -5,36 +5,28 @@ import Event from "../Model/Events";
 import Venue from "../Model/Venue";
 
 export async function uploadData(data: any) {
+  await connectToMongoDB();
   try {
-    await connectToMongoDB();
-    try {
-      // get the event id and transform it to object id
-      const elementVenue = data.venueid;
-      const venue = await Venue.find({ "@_id": elementVenue });
-      if (venue.length === 0) {
-        return JSON.stringify({
-          error: true,
-          message: "Venue not found",
-        });
-      }
-      data.venueid = venue[0]._id;
-
-      const newEvent = await Event.create(data);
-      newEvent.save();
-      // revalidatePath("/");
-      return JSON.stringify(newEvent);
-    } catch (error) {
-      console.log(error);
+    // get the event id and transform it to object id
+    const elementVenue = data.venueid;
+    const venue = await Venue.find({ "@_id": elementVenue });
+    if (venue.length === 0) {
       return JSON.stringify({
         error: true,
-        message: "error adding data",
+        message: "Venue not found",
       });
     }
-  } catch (e) {
-    console.error(e);
+    data.venueid = venue[0]._id;
+
+    const newEvent = await Event.create(data);
+    newEvent.save();
+    // revalidatePath("/");
+    return JSON.stringify(newEvent);
+  } catch (error) {
+    console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error connecting to database",
+      message: "error adding data",
     });
   }
 }
