@@ -3,11 +3,9 @@ import mongoose, { Document, Model } from "mongoose";
 
 export interface IVenue {
   "@_id": string;
-  venuec: string;
-  venuee: string;
-  latitude: number;
-  longitude: number;
-  comment?: [mongoose.Schema.Types.ObjectId];
+  userName: string;
+  content: string;
+  likedBy?: [mongoose.Schema.Types.ObjectId];
 }
 
 export interface IVenueDocument extends IVenue, Document {
@@ -21,22 +19,16 @@ const venueSchema = new mongoose.Schema<IVenueDocument>(
       type: String,
       required: true,
     },
-    venuec: {
+    userName: {
       type: String,
     },
-    venuee: {
+    content: {
       type: String,
     },
-    latitude: {
-      type: Number,
-    },
-    longitude: {
-      type: Number,
-    },
-    comment: [
+    likedBy: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Comment",
+        ref: "User",
       },
     ],
   },
@@ -45,7 +37,7 @@ const venueSchema = new mongoose.Schema<IVenueDocument>(
   }
 );
 
-const Venue: Model<IVenueDocument> =
-  mongoose.models.Venue || mongoose.model("Venue", venueSchema);
+const Comment: Model<IVenueDocument> =
+  mongoose.models.Comment || mongoose.model("Comment", venueSchema);
 
-export default Venue;
+export default Comment;
