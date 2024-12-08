@@ -44,9 +44,8 @@ export default function Page({ params }: { params: { id: string } }) {
           {markerDetails.map((marker, index) => {
             const [markerRef, markerObj] = useAdvancedMarkerRef();
             return (
-              <>
+              <div key={index}>
                 <AdvancedMarker
-                  key={index}
                   position={marker.position}
                   title={marker.title}
                   clickable
@@ -62,7 +61,7 @@ export default function Page({ params }: { params: { id: string } }) {
                     {marker.title}
                   </a>
                 </InfoWindow>
-              </>
+              </div>
             );
           })}
         </Map>

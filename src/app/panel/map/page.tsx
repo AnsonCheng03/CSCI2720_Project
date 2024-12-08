@@ -41,9 +41,8 @@ export default function Home() {
           const [markerRef, markerObj] = useAdvancedMarkerRef();
           const [showInfo, setShowInfo] = useState(false);
           return (
-            <>
+            <div key={index}>
               <AdvancedMarker
-                key={index}
                 position={marker.position}
                 title={marker.title}
                 clickable
@@ -66,7 +65,7 @@ export default function Home() {
                   </Link>
                 </InfoWindow>
               )}
-            </>
+            </div>
           );
         })}
       </Map>
