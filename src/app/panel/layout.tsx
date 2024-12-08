@@ -12,7 +12,6 @@ const userNavItems = [
   { name: "Map", href: "/panel/map" },
   { name: "Favourites", href: "/panel/favorite" },
   { name: "No Idea?", href: "/panel/noidea" },
-  { name: "Logout", href: "/api/auth/signout" },
 ];
 
 const adminNavItems = [{ name: "Manage Database", href: "/panel/admin" }];
@@ -23,7 +22,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const sessionPromise = (await getServerSession(authOptions)) as {
-    user?: { role?: string };
+    user?: {
+      name: string;
+      role?: string;
+    };
   };
   if (!sessionPromise) redirect("/");
   const userRole = sessionPromise.user?.role;
@@ -37,6 +39,13 @@ export default async function RootLayout({
             navItems={[
               ...userNavItems,
               ...((userRole === "admin" && adminNavItems) || []),
+            ]}
+            navFooterItems={[
+              {
+                name: `
+                ${sessionPromise.user?.name} - Logout`,
+                href: "/api/auth/signout",
+              },
             ]}
           />
           {children}
