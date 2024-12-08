@@ -1,19 +1,43 @@
 "use client";
+import { deleteData, uploadData } from "@/components/dataBase/database";
 import { EventTable } from "../eventDataStruct";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";
 import { useEffect, useState } from "react";
+import { useEventContext } from "../context";
 
 export default function Home() {
+  const { eventData, setEventData } = useEventContext();
   const [events, setEvents] = useState<any[]>([]);
 
   const handleDownload = async () => {
-    const data = await downloadData();
-    setEvents(data as any[]);
+    const data = (await downloadData()) as any[];
+    const filteredData = data.filter(
+      (event) =>
+        !Object.values(eventData as Record<string, any>).find(
+          (e) => e.fromDownload && e["@_id"] === event["@_id"]
+        )
+    );
+    setEvents(filteredData as any[]);
   };
 
   const handleAddToDatabase = (event: any) => {
-    console.log("Add to database", event);
+    uploadData([event]);
+    setEventData((prev: Record<string, any>) => {
+      return {
+        ...prev,
+        [event["@_id"]]: event,
+      };
+    });
+    setEvents((prev) => {
+      return prev.filter((e) => e["@_id"] !== event["@_id"]);
+    });
+  };
+
+  const deleteAll = () => {
+    deleteData();
+    setEventData({});
+    setEvents([]);
   };
 
   return (
@@ -22,6 +46,9 @@ export default function Home() {
       <button className={styles.button} onClick={handleDownload}>
         Download
       </button>
+      <button className={styles.button} onClick={deleteAll}>
+        Delete All
+      </button>
       <EventTable
         eventDataArray={events}
         setEventData={setEvents}
@@ -29,7 +56,7 @@ export default function Home() {
         renderActionColumn={(event) => (
           <button
             onClick={() => {
-              console.log("Add to database", {
+              handleAddToDatabase({
                 ...event,
                 fromDownload: true,
               });
