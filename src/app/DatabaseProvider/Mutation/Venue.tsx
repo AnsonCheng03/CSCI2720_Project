@@ -4,22 +4,18 @@ import { connectToMongoDB } from "../db";
 import Venue from "../Model/Venue";
 
 export async function insertORupdateVenue(data: any) {
+  await connectToMongoDB();
   try {
-    await connectToMongoDB();
-    try {
-      const newVenue = await Venue.updateMany(data, data, {
-        upsert: true,
-      });
-      return newVenue.toString();
-    } catch (error) {
-      console.log(error);
-      return {
-        error: true,
-        message: "error creating venue",
-      };
-    }
-  } catch (e) {
-    console.error(e);
+    const newVenue = await Venue.updateMany(data, data, {
+      upsert: true,
+    });
+    return newVenue.toString();
+  } catch (error) {
+    console.log(error);
+    return {
+      error: true,
+      message: "error creating venue",
+    };
   }
 }
 
