@@ -40,7 +40,12 @@ export default async function RootLayout({
     <EventProvider data={{}}>
       {
         <>
-          <NavBar navItems={userNavItems} />
+          <NavBar
+            navItems={[
+              ...userNavItems,
+              ...((userRole === "admin" && adminNavItems) || []),
+            ]}
+          />
           {children}
         </>
       }
