@@ -1,6 +1,7 @@
-import type { Metadata } from "next";
+import type { GetServerSideProps, Metadata } from "next";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import localFont from "next/font/local";
+import client from "@/lib/mongodb";
 import "./globals.css";
 
 const geistSans = localFont({
