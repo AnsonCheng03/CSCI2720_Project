@@ -31,11 +31,6 @@ export default async function RootLayout({
   const userRole = sessionPromise.user?.role;
   if (userRole !== "user" && userRole !== "admin") redirect("/panel");
 
-  const heads = await headers();
-  const pathname = heads.get("x-pathname");
-  if (pathname?.startsWith("/panel/admin") && userRole !== "admin")
-    redirect("/panel");
-
   return (
     <EventProvider data={{}}>
       {
