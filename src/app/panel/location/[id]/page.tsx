@@ -76,7 +76,11 @@ export default function Page({ params }: { params: { id: string } }) {
               {Object.entries(venue).map(([key, value]: [string, any]) => {
                 return (
                   <div key={key}>
-                    <b>{key}</b>: {value}
+                    {typeof value === "string" && (
+                      <>
+                        <b>{key}</b>: {value}
+                      </>
+                    )}
                   </div>
                 );
               })}
