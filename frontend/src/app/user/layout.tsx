@@ -1,6 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import { redirect } from "next/navigation";
+import EventProvider from "./context";
 
 export default async function RootLayout({
   children,
@@ -14,5 +15,5 @@ export default async function RootLayout({
   const userRole = sessionPromise.user?.role;
   if (userRole !== "user") redirect("/admin");
 
-  return children;
+  return <EventProvider data={{}}>{children}</EventProvider>;
 }
