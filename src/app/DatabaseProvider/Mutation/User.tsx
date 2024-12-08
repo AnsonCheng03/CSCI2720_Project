@@ -46,6 +46,20 @@ export async function checkNoOfAdmins() {
   }
 }
 
+export async function getUsers() {
+  await connectToMongoDB();
+  try {
+    const users = await User.find();
+    return JSON.stringify(users);
+  } catch (error) {
+    console.log(error);
+    return JSON.stringify({
+      error: true,
+      message: "error getting users",
+    });
+  }
+}
+
 export async function userLogin(data: any) {
   await connectToMongoDB();
   try {
