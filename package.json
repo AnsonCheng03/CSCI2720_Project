@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "@emotion/cache": "^11.13.5",
-    "@emotion/react": "^11.13.5",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.1.10",
     "@mui/material-nextjs": "^6.1.9",
     "@vis.gl/react-google-maps": "^1.4.2",
     "bcrypt-nodejs": "^0.0.3",
@@ -20,6 +22,7 @@
     "graphql": "^16.9.0",
     "graphql-yoga": "^5.10.4",
     "mongoose": "^8.8.4",
+    "mui": "^0.0.1",
     "next": "^14.2.20",
     "next-auth": "^4.24.11",
     "react": "^18.2.0",
