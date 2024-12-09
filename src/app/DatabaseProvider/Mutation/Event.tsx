@@ -28,7 +28,7 @@ export async function uploadData(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error adding data",
+      message: `Error creating event: ${error}`,
     });
   }
 }
@@ -65,7 +65,7 @@ export async function editData(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error updating todo",
+      message: `Error updating event: ${error}`,
     });
   }
 }
@@ -82,7 +82,7 @@ export async function downloadEventData() {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error fetching todos",
+      message: `Error fetching events: ${error}`,
     });
   }
 }
@@ -96,7 +96,7 @@ export async function deleteData() {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error deleting todos",
+      message: `Error deleting events: ${error}`,
     });
   }
 }
@@ -106,14 +106,17 @@ export async function deleteEvent(eventId: string) {
   try {
     const deletedEvent = await Event.findOneAndDelete({ "@_id": eventId });
     if (!deletedEvent) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
     return JSON.stringify(deletedEvent);
   } catch (error) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error deleting todo",
+      message: `Error deleting event: ${error}`,
     });
   }
 }
@@ -123,12 +126,18 @@ export async function joinEvent(eventId: string, userName: string) {
   try {
     const event = await Event.findOne({ "@_id": eventId });
     if (!event) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     const user = await User.findOne({ userName });
     if (!user) {
-      return JSON.stringify({ message: "User not found" });
+      return JSON.stringify({
+        error: true,
+        message: "User not found",
+      });
     }
 
     if (
@@ -141,7 +150,10 @@ export async function joinEvent(eventId: string, userName: string) {
         { new: true }
       );
       if (!updatedEvent) {
-        return JSON.stringify({ message: "Event not found" });
+        return JSON.stringify({
+          error: true,
+          message: "Event not found",
+        });
       }
 
       await updatedEvent.save();
@@ -158,7 +170,10 @@ export async function joinEvent(eventId: string, userName: string) {
       { new: true }
     );
     if (!updatedEvent) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     await updatedEvent.save();
@@ -168,7 +183,7 @@ export async function joinEvent(eventId: string, userName: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error joining event",
+      message: `Error joining event: ${error}`,
     });
   }
 }
@@ -178,7 +193,10 @@ export async function getEventParticipants(eventId: string) {
   try {
     const event = await Event.find({ "@_id": eventId }).populate("joinedUsers");
     if (!event) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     return JSON.stringify(event[0].joinedUsers);
@@ -186,7 +204,7 @@ export async function getEventParticipants(eventId: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error getting event participants",
+      message: `Error getting event participants: ${error}`,
     });
   }
 }
@@ -196,12 +214,18 @@ export async function removeParticipant(eventId: string, userId: string) {
   try {
     const event = await Event.findOne({ "@_id": eventId });
     if (!event) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     const user = await User.findById(userId);
     if (!user) {
-      return JSON.stringify({ message: "User not found" });
+      return JSON.stringify({
+        error: true,
+        message: "User not found",
+      });
     }
 
     const updatedEvent = await Event.findOneAndUpdate(
@@ -210,7 +234,10 @@ export async function removeParticipant(eventId: string, userId: string) {
       { new: true }
     );
     if (!updatedEvent) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     await updatedEvent.save();
@@ -220,7 +247,7 @@ export async function removeParticipant(eventId: string, userId: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error removing participant",
+      message: `Error removing participant: ${error}`,
     });
   }
 }
@@ -230,14 +257,20 @@ export async function likeEvent(eventId: string, userName: string) {
   try {
     const event = await Event.findOne({ "@_id": eventId });
     if (!event) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     const user = await User.findOne({
       userName,
     });
     if (!user) {
-      return JSON.stringify({ message: "User not found" });
+      return JSON.stringify({
+        error: true,
+        message: "User not found",
+      });
     }
 
     if (
@@ -250,7 +283,10 @@ export async function likeEvent(eventId: string, userName: string) {
         { new: true }
       );
       if (!updatedEvent) {
-        return JSON.stringify({ message: "Event not found" });
+        return JSON.stringify({
+          error: true,
+          message: "Event not found",
+        });
       }
 
       await updatedEvent.save();
@@ -267,7 +303,10 @@ export async function likeEvent(eventId: string, userName: string) {
       { new: true }
     );
     if (!updatedEvent) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     await updatedEvent.save();
@@ -280,7 +319,7 @@ export async function likeEvent(eventId: string, userName: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error liking event",
+      message: `Error liking event: ${error}`,
     });
   }
 }
@@ -290,14 +329,20 @@ export async function getEventLikes(eventId: string, userName: string) {
   try {
     const event = await Event.findOne({ "@_id": eventId });
     if (!event) {
-      return JSON.stringify({ message: "Event not found" });
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
     }
 
     const user = await User.findOne({
       userName,
     });
     if (!user) {
-      return JSON.stringify({ message: "User not found" });
+      return JSON.stringify({
+        error: true,
+        message: "User not found",
+      });
     }
 
     const output = {
@@ -312,7 +357,7 @@ export async function getEventLikes(eventId: string, userName: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error getting event likes",
+      message: `Error getting event likes: ${error}`,
     });
   }
 }

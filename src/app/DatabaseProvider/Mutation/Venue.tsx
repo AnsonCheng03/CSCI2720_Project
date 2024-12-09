@@ -15,7 +15,7 @@ export async function insertORupdateVenue(data: any) {
     console.log(error);
     return {
       error: true,
-      message: "error creating venue",
+      message: `Error creating venue: ${error}`,
     };
   }
 }
@@ -29,7 +29,7 @@ export async function downloadVenueData() {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error fetching venues",
+      message: `Error getting venues: ${error}`,
     });
   }
 }
@@ -70,11 +70,9 @@ export async function handleVenueData(data: any[]) {
 
     return JSON.stringify(results);
   } catch (error) {
-    console.error(error);
-
     return JSON.stringify({
       error: true,
-      message: "error handling venues",
+      message: `Error handling venue data: ${error}`,
     });
   }
 }
@@ -99,7 +97,7 @@ export async function addCommentToVenue(commentID: any, venueID: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error adding comment to venue",
+      message: `Error adding comment to venue: ${error}`,
     });
   }
 }
@@ -120,7 +118,7 @@ export async function getVenueComments(venueID: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error getting venue comments",
+      message: `Error getting venue comments: ${error}`,
     });
   }
 }

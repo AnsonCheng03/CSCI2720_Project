@@ -77,6 +77,7 @@ export default function Page({ params }: { params: { id: string } }) {
     const response = JSON.parse(await getVenueComments(params.id));
     if (response.error) {
       console.error(response.message);
+      window.alert("Error getting comments");
       setComments(null);
       return;
     }

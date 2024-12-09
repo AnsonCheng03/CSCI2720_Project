@@ -15,7 +15,7 @@ export async function createUsers(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error creating user",
+      message: `Error creating user: ${error}`,
     });
   }
 }
@@ -29,7 +29,7 @@ export async function deleteUsers(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error deleting user",
+      message: `Error deleting user: ${error}`,
     });
   }
 }
@@ -43,7 +43,7 @@ export async function checkNoOfAdmins() {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error checking number of admins",
+      message: `Error checking number of admins: ${error}`,
     });
   }
 }
@@ -57,7 +57,7 @@ export async function getUsers() {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error getting users",
+      message: `Error getting users: ${error}`,
     });
   }
 }
@@ -84,7 +84,7 @@ export async function userLogin(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error logging in",
+      message: `Error logging in: ${error}`,
     });
   }
 }
@@ -100,7 +100,7 @@ export async function modifyUsers(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error updating user",
+      message: `Error modifying user: ${error}`,
     });
   }
 }
@@ -144,7 +144,7 @@ export async function addFavouriteVenue(
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error adding favourite venue",
+      message: `Error adding favourite venue: ${error}`,
     });
   }
 }
@@ -189,7 +189,7 @@ export async function removeFavouriteVenue(
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error removing favourite venue",
+      message: `Error removing favourite venue: ${error}`,
     });
   }
 }
@@ -214,7 +214,7 @@ export async function getFavouriteVenues(userName: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error getting favourite venues",
+      message: `Error getting favourite venues: ${error}`,
     });
   }
 }

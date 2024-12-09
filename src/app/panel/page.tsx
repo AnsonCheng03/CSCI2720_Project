@@ -31,6 +31,7 @@ const AddToFavouriteButton = ({
             const result = JSON.parse(data);
             if (result.error) {
               console.error(result.message);
+              window.alert(result.message);
               return;
             }
             setIsFavourite(false);
@@ -40,6 +41,7 @@ const AddToFavouriteButton = ({
             const result = JSON.parse(data);
             if (result.error) {
               console.error(result.message);
+              window.alert(result.message);
               return;
             }
             setIsFavourite(true);
@@ -90,6 +92,7 @@ export default function Home() {
     const data = JSON.parse(await getFavouriteVenues(session?.user?.name));
     if (data.error) {
       console.error(data.message);
+      window.alert(data.message);
       return;
     }
     const favouriteData = data.map(
