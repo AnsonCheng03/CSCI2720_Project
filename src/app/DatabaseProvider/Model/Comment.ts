@@ -22,12 +22,6 @@ const commentSchema = new mongoose.Schema<ICommentDocument>(
       type: String,
       required: true,
     },
-    likedBy: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
   },
   {
     timestamps: true,
