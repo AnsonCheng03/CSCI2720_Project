@@ -2,8 +2,10 @@
 
 import { use, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
-import { Input } from "@mui/material";
+import { Button, Chip, Input } from "@mui/material";
 import { useSessionContext } from "./context";
+import { FaUserShield } from "react-icons/fa";
+import { FaRegCircleUser } from "react-icons/fa6";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { useSearchParams } from "next/navigation";
@@ -13,21 +15,30 @@ export function LoginBtn() {
   const session = use(sessionPromise);
 
   const searchParams = useSearchParams();
-  const error = searchParams.get("error");
-
+  const errorPrams = searchParams.get("error");
+  const [error, setError] = useState(errorPrams);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   if (session && session.user) {
     return (
-      <div className={styles.page}>
-        Signed in as {session.user.role} : {session.user.name} <br />
-        <button className={styles.button} onClick={() => signOut()}>
-          Sign out
-        </button>
-        <Link href="/panel" passHref>
-          Go to panel
-        </Link>
+      <div>
+        <div className={styles.tags}>
+          <Chip icon={<FaUserShield />} label={session.user.role} />
+          <Chip icon={<FaRegCircleUser />} label={session.user.name} />
+        </div>
+        <div className={styles.page}>
+          <Button
+            className={styles.button}
+            onClick={() => signOut()}
+            variant="outlined"
+          >
+            Sign out
+          </Button>
+          <Button className={styles.button} variant="outlined">
+            <Link href="/panel">Go to panel</Link>
+          </Button>
+        </div>
       </div>
     );
   }
@@ -37,21 +48,37 @@ export function LoginBtn() {
         <Input
           placeholder="Username"
           value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            setError("");
+          }}
         />
         <Input
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError("");
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              setPassword("");
+              setError("");
+              signIn("credentials", { username: username, password: password });
+            }
+          }}
         />
-        <button
+        <Button
           className={styles.button}
-          onClick={() =>
-            signIn("credentials", { username: username, password: password })
-          }
+          onClick={() => {
+            setPassword("");
+            setError("");
+            signIn("credentials", { username: username, password: password });
+          }}
+          variant="outlined"
         >
           Sign in
-        </button>
+        </Button>
       </div>
       {error && <div className={styles.error}>Error: {error}</div>}
     </div>
