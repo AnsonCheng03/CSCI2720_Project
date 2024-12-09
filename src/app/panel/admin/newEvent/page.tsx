@@ -13,7 +13,9 @@ export default function Home() {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    const event = {
+    const event: {
+      [key: string]: FormDataEntryValue | null | boolean | undefined;
+    } = {
       "@_id": formData.get("eventID"),
       titlee: formData.get("eventTitle"),
       venueid: formData.get("locationID"),
@@ -23,6 +25,13 @@ export default function Home() {
       quota: formData.get("quota"),
       pricee: formData.get("price"),
     };
+
+    // Do not override original event object with empty strings
+    Object.keys(event).forEach((key) => {
+      if (event[key] === "") {
+        event[key] = undefined;
+      }
+    });
 
     const newEvent = JSON.parse(await uploadData(event));
     if (newEvent.error) {
