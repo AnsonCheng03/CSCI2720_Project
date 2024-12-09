@@ -161,7 +161,6 @@ export default function Home() {
                 longitude: eventDataArray[0].longitude,
               }
             );
-            console.log(eventDistance, gpsMeter * 1000);
             return eventDistance <= gpsMeter * 1000;
           }
           if (filterSettings.venue) {
@@ -170,7 +169,6 @@ export default function Home() {
               .includes(filterSettings.venue.toLowerCase());
           }
           if (filterSettings.category) {
-            console.log(filterSettings.category);
             return event.venuee.toLowerCase().includes(filterSettings.category);
           }
           return true;

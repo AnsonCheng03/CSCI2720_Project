@@ -64,7 +64,7 @@ export const EventTable = ({
               return (
                 <td key={key}>
                   {typeof value === "object" ? (
-                    <Link href={value.url}>{value.name}</Link>
+                    <Link href={value.url || ""}>{value.name}</Link>
                   ) : (
                     value
                   )}

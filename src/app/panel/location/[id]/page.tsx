@@ -59,7 +59,6 @@ export default function Page({ params }: { params: { id: string } }) {
     const commentID = result._id;
 
     const response = JSON.parse(await addCommentToVenue(commentID, params.id));
-    console.log(response);
     if (response.error) {
       console.error(response.message);
       window.alert("Error submitting comment");
