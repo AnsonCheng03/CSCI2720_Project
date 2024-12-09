@@ -1,7 +1,8 @@
 "use client";
 
-import { use } from "react";
+import { use, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
+import { Input } from "@mui/material";
 import { useSessionContext } from "./context";
 import Link from "next/link";
 import styles from "./page.module.css";
@@ -9,6 +10,9 @@ import styles from "./page.module.css";
 export function LoginBtn() {
   const sessionPromise = useSessionContext();
   const session = use(sessionPromise);
+
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
 
   if (session && session.user) {
     return (
@@ -24,10 +28,25 @@ export function LoginBtn() {
     );
   }
   return (
-    <>
-      <button className={styles.button} onClick={() => signIn()}>
+    <div className={styles.page}>
+      <Input
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+      />
+      <Input
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button
+        className={styles.button}
+        onClick={() =>
+          signIn("credentials", { username: username, password: password })
+        }
+      >
         Sign in
       </button>
-    </>
+    </div>
   );
 }

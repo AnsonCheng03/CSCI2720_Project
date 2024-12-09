@@ -68,4 +68,9 @@ export const authOptions = {
       return session;
     },
   },
+  pages: {
+    signIn: "/",
+    signOut: "/",
+    error: "/", // Error code passed in query string as ?error=
+  },
 } as any;
