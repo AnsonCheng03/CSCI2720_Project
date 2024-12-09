@@ -5,6 +5,10 @@ import { getDistance } from "geolib";
 import { useEventContext } from "./EventProvider/context";
 import { EventTable } from "./EventProvider/eventDataStruct";
 import styles from "./page.module.css";
+import {
+  addFavouriteVenue,
+  removeFavouriteVenue,
+} from "../DatabaseProvider/Mutation/User";
 
 export default function Home() {
   const { session, venueData: rawEventData } = useEventContext();
@@ -125,10 +129,14 @@ export default function Home() {
               type="checkbox"
               value={isFavourite ? "true" : "false"}
               onClick={() => {
-                console.log("Add to Favourite", data["@_id"]);
-                console.log("User Name", session?.user?.name); // unique
-                console.log("setFavorite", !isFavourite);
-                setIsFavourite(!isFavourite);
+                if (isFavourite)
+                  removeFavouriteVenue(data["@_id"], session?.user?.name).then(
+                    () => setIsFavourite(false)
+                  );
+                else
+                  addFavouriteVenue(data["@_id"], session?.user?.name).then(
+                    () => setIsFavourite(true)
+                  );
               }}
             />
           );
