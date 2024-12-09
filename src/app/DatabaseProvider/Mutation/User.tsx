@@ -163,18 +163,25 @@ export async function removeFavouriteVenue(
       });
     }
 
+    const favouriteVenue = (await Venue.findOne({
+      "@_id": favouriteVenueID,
+    })) as Record<string, any>;
+    if (!favouriteVenue) {
+      return JSON.stringify({
+        error: true,
+        message: "Venue not found",
+      });
+    }
+
     const updatedFavouriteVenue: mongoose.Schema.Types.ObjectId[] =
       updatedUser[0].favouriteVenue || [];
-    const index = updatedFavouriteVenue.indexOf(
-      favouriteVenueID as unknown as mongoose.Schema.Types.ObjectId
+    const filteredFavouriteVenue = updatedFavouriteVenue.filter(
+      (venueID) => venueID.toString() !== favouriteVenue["_id"].toString()
     );
-    if (index > -1) {
-      updatedFavouriteVenue.splice(index, 1);
-    }
 
     const updated = await User.findOneAndUpdate(
       { userName },
-      { favouriteVenue: updatedFavouriteVenue },
+      { favouriteVenue: filteredFavouriteVenue },
       { new: true }
     );
     return JSON.stringify(updated);

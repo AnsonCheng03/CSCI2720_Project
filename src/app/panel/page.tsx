@@ -22,17 +22,32 @@ const AddToFavouriteButton = ({
 }) => {
   const [isFavourite, setIsFavourite] = useState(defaultChecked);
   return (
+   return (
     <input
       type="checkbox"
       checked={isFavourite}
       onChange={() => {
         if (isFavourite)
-          removeFavouriteVenue(dataID, userID).then(() =>
-            setIsFavourite(false)
-          );
-        else addFavouriteVenue(dataID, userID).then(() => setIsFavourite(true));
+          removeFavouriteVenue(dataID, userID).then((data) => {
+            const result = JSON.parse(data);
+            if (result.error) {
+              console.error(result.message);
+              return;
+            }
+            setIsFavourite(false);
+          });
+        else
+          addFavouriteVenue(dataID, userID).then((data) => {
+            const result = JSON.parse(data);
+            if (result.error) {
+              console.error(result.message);
+              return;
+            }
+            setIsFavourite(true);
+          });
       }}
     />
+  );
   );
 };
 
@@ -60,9 +75,9 @@ export default function Home() {
     return event;
   });
 
-  const eventDataArray = Object.values(
-    modifiedEventData as Record<string, any>
-  );
+  const eventDataArray = modifiedEventData
+    ? Object.values(modifiedEventData as Record<string, any>)
+    : [];
 
   const mostAppearWords = eventDataArray
     .map((event) => event.venuee.split(" "))
