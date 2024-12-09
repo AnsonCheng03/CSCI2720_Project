@@ -9,6 +9,9 @@ export interface IEvent {
   desce: string;
   presenterorge: string;
   pricee: string;
+  quota?: number;
+  joinedUsers?: mongoose.Schema.Types.ObjectId[];
+  likedUsers?: mongoose.Schema.Types.ObjectId[];
   fromDownload?: boolean;
 }
 
@@ -43,6 +46,29 @@ const eventSchema = new mongoose.Schema<IEventDocument>(
     pricee: {
       type: String,
     },
+    quota: {
+      type: Number,
+      default: undefined,
+    },
+    joinedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+        validate: {
+          validator: function (v) {
+            if (this.quota === undefined) return true;
+            return v.length < this.quota;
+          },
+          message: "Joined users must be less than quota",
+        },
+      },
+    ],
+    likedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     fromDownload: {
       type: Boolean,
     },

@@ -10,7 +10,7 @@ export async function insertORupdateVenue(data: any) {
     const newVenue = await Venue.updateMany(data, data, {
       upsert: true,
     });
-    return newVenue.toString();
+    return JSON.stringify(newVenue);
   } catch (error) {
     console.log(error);
     return {
@@ -51,8 +51,11 @@ export async function handleVenueData(data: any[]) {
       const existingVenue = await Venue.findOne({ "@_id": item["@_id"] });
 
       if (existingVenue) {
-        await Venue.updateOne({ "@_id": item["@_id"] }, item);
-        results.updated.push(existingVenue);
+        const updatedVenue = await Venue.updateOne(
+          { "@_id": item["@_id"] },
+          item
+        );
+        results.updated.push(updatedVenue);
       } else {
         const newVenue = new Venue(item);
         await newVenue.save();
