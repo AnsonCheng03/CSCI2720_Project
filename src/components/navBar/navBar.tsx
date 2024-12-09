@@ -1,4 +1,5 @@
 import Link from "next/link";
+import styles from "./page.module.css";
 
 export default function NavBar({
   navItems,
@@ -14,8 +15,8 @@ export default function NavBar({
   }[];
 }) {
   return (
-    <div>
-      <nav>
+    <nav className={styles.nav}>
+      <div className={styles.navContainer}>
         <ul>
           {navItems.map((item) => (
             <li key={item.href + item.name}>
@@ -32,7 +33,7 @@ export default function NavBar({
             ))}
           </div>
         )}
-      </nav>
-    </div>
+      </div>
+    </nav>
   );
 }
