@@ -19,7 +19,7 @@ export async function uploadData(data: any) {
     data.venueid = venue[0]._id;
 
     const newEvent = await Event.create(data);
-    newEvent.save();
+    // newEvent.save();
     // revalidatePath("/");
     return JSON.stringify(newEvent);
   } catch (error) {

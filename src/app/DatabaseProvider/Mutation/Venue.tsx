@@ -73,3 +73,28 @@ export async function handleVenueData(data: any[]) {
     });
   }
 }
+
+export async function addCommentToVenue(commentID: any, venueID: string) {
+  try {
+    await connectToMongoDB();
+    const venue = await Venue.findOneAndUpdate(
+      { "@_id": venueID },
+      { $push: { comment: commentID } },
+      { new: true }
+    );
+    if (!venue) {
+      return JSON.stringify({
+        error: true,
+        message: "Venue not found",
+      });
+    }
+
+    return JSON.stringify(venue);
+  } catch (error) {
+    console.log(error);
+    return JSON.stringify({
+      error: true,
+      message: "error adding comment to venue",
+    });
+  }
+}

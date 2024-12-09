@@ -10,6 +10,7 @@ import { useRouter } from "next/compat/router";
 import { useState } from "react";
 import { useEventContext } from "../../EventProvider/context";
 import { createComment } from "@/app/DatabaseProvider/Mutation/Comment";
+import { addCommentToVenue } from "@/app/DatabaseProvider/Mutation/Venue";
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;
@@ -42,11 +43,22 @@ export default function Page({ params }: { params: { id: string } }) {
     };
 
     const result = JSON.parse(await createComment(comment));
-    if (result.error) {
+    if (result.error || !result) {
       console.error(result.message);
       window.alert("Error submitting comment");
       return;
     }
+
+    const commentID = result._id;
+
+    const response = JSON.parse(await addCommentToVenue(commentID, params.id));
+    console.log(response);
+    if (response.error) {
+      console.error(response.message);
+      window.alert("Error submitting comment");
+      return;
+    }
+    console.log(response);
   };
 
   return (
