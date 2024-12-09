@@ -68,8 +68,8 @@ export default function Home() {
         <label>
           Location ID:
           <select name="locationID">
-            {venueIds?.map((venueId: any) => (
-              <option key={venueId} value={venueId}>
+            {venueIds?.map((venueId: any, index: number) => (
+              <option key={index} value={venueId}>
                 {venueId}
               </option>
             ))}
