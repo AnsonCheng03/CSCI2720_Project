@@ -1,24 +1,50 @@
 "use client";
 
-import { Key, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import { getDistance } from "geolib";
 import { useEventContext } from "./EventProvider/context";
 import { EventTable } from "./EventProvider/eventDataStruct";
 import styles from "./page.module.css";
 import {
   addFavouriteVenue,
+  getFavouriteVenues,
   removeFavouriteVenue,
 } from "../DatabaseProvider/Mutation/User";
+
+const AddToFavouriteButton = ({
+  dataID,
+  userID,
+  defaultChecked,
+}: {
+  dataID: string;
+  userID: string;
+  defaultChecked?: boolean;
+}) => {
+  const [isFavourite, setIsFavourite] = useState(defaultChecked);
+  return (
+    <input
+      type="checkbox"
+      checked={isFavourite}
+      onChange={() => {
+        if (isFavourite)
+          removeFavouriteVenue(dataID, userID).then(() =>
+            setIsFavourite(false)
+          );
+        else addFavouriteVenue(dataID, userID).then(() => setIsFavourite(true));
+      }}
+    />
+  );
+};
 
 export default function Home() {
   const { session, venueData: rawEventData } = useEventContext();
   const [eventData, setEventData] = useState(rawEventData);
-
   const [filterSettings, setFilterSettings] = useState({
     gpsMeter: 0,
     venue: "",
     category: "",
   });
+  const [favoriteData, setFavoriteData] = useState<Object[] | null>(null);
 
   const eventKeyMap: { [key: string]: string } = {
     "@_id": "ID",
@@ -46,6 +72,22 @@ export default function Home() {
       acc[word] = (acc[word] || 0) + 1;
       return acc;
     }, {}) as Record<string, number>;
+
+  const getFavouriteData = async () => {
+    const data = JSON.parse(await getFavouriteVenues(session?.user?.name));
+    if (data.error) {
+      console.error(data.message);
+      return;
+    }
+    const favouriteData = data.map(
+      (venue: Record<string, any>) => venue["@_id"]
+    );
+    setFavoriteData(favouriteData);
+  };
+
+  useEffect(() => {
+    getFavouriteData();
+  }, []);
 
   return (
     <div className={styles.page}>
@@ -121,26 +163,20 @@ export default function Home() {
           return true;
         })}
         setEventData={setEventData}
-        actionColumnTitle="Add to Favourite"
-        renderActionColumn={(data: Record<string, any>) => {
-          const [isFavourite, setIsFavourite] = useState(false);
-          return (
-            <input
-              type="checkbox"
-              value={isFavourite ? "true" : "false"}
-              onClick={() => {
-                if (isFavourite)
-                  removeFavouriteVenue(data["@_id"], session?.user?.name).then(
-                    () => setIsFavourite(false)
-                  );
-                else
-                  addFavouriteVenue(data["@_id"], session?.user?.name).then(
-                    () => setIsFavourite(true)
-                  );
-              }}
-            />
-          );
-        }}
+        actionColumnTitle={"Add to Favourite"}
+        renderActionColumn={
+          favoriteData
+            ? (data: Record<string, any>) => {
+                return (
+                  <AddToFavouriteButton
+                    dataID={data["@_id"]}
+                    userID={session?.user?.name}
+                    defaultChecked={favoriteData.includes(data["@_id"])}
+                  />
+                );
+              }
+            : () => <>Loading</>
+        }
       />
     </div>
   );

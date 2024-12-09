@@ -186,3 +186,28 @@ export async function removeFavouriteVenue(
     });
   }
 }
+
+export async function getFavouriteVenues(userName: string) {
+  await connectToMongoDB();
+  try {
+    const user = await User.findOne({
+      userName,
+    });
+    if (!user) {
+      return JSON.stringify({
+        error: true,
+        message: "User not found",
+      });
+    }
+    const favouriteVenues = await Venue.find({
+      _id: { $in: user.favouriteVenue },
+    });
+    return JSON.stringify(favouriteVenues);
+  } catch (error) {
+    console.log(error);
+    return JSON.stringify({
+      error: true,
+      message: "error getting favourite venues",
+    });
+  }
+}
