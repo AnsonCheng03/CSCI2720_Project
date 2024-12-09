@@ -10,6 +10,15 @@ import {
   getFavouriteVenues,
   removeFavouriteVenue,
 } from "../DatabaseProvider/Mutation/User";
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Slider,
+  TextField,
+} from "@mui/material";
 
 const AddToFavouriteButton = ({
   dataID,
@@ -107,48 +116,71 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      {/* filters 1. gps meter - latitude,longitude(slider)  2. venuee(input) 3.Catagory (contain specific words like 2)  */}
-      <h1>Events</h1>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={filterSettings.gpsMeter}
-        onChange={(e) =>
-          setFilterSettings({
-            ...filterSettings,
-            gpsMeter: parseInt(e.target.value),
-          })
-        }
-      />
-      <input
-        type="text"
-        placeholder="Search by venue"
-        value={filterSettings.venue}
-        onChange={(e) =>
-          setFilterSettings({ ...filterSettings, venue: e.target.value })
-        }
-      />
-      <select
-        value={filterSettings.category}
-        onChange={(e) =>
-          setFilterSettings({ ...filterSettings, category: e.target.value })
-        }
-      >
-        <option value="">All</option>
-        {Object.entries(mostAppearWords)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 4)
-          .map(
-            (word) =>
-              word[0] && (
-                <option key={word[0]} value={word[0]}>
-                  {word[0]}
-                </option>
-              )
-          )}
-      </select>
+      <div className={styles.filter}>
+        <div className={styles.selections}>
+          <Box sx={{ width: "30%", minWidth: "100px" }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Category"
+                value={filterSettings.category}
+                onChange={(e) =>
+                  setFilterSettings({
+                    ...filterSettings,
+                    category: e.target.value,
+                  })
+                }
+                defaultValue=""
+              >
+                <MenuItem value="">All</MenuItem>
+                {Object.entries(mostAppearWords)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 4)
+                  .map(
+                    (word) =>
+                      word[0] && (
+                        <MenuItem key={word[0]} value={word[0]}>
+                          {word[0]}
+                        </MenuItem>
+                      )
+                  )}
+              </Select>
+            </FormControl>
+          </Box>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            placeholder="Search by venue"
+            value={filterSettings.venue}
+            onChange={(e) =>
+              setFilterSettings({ ...filterSettings, venue: e.target.value })
+            }
+          />
+        </div>
 
+        <Box sx={{ width: "10%", minWidth: "250px" }}>
+          <Slider
+            aria-label="Always visible"
+            defaultValue={80}
+            step={5}
+            marks={[
+              { value: 0, label: "All" },
+              { value: 10, label: "1km" },
+              { value: 50, label: "5km" },
+              { value: 100, label: "10km" },
+            ]}
+            value={filterSettings.gpsMeter}
+            onChange={(_, value) =>
+              setFilterSettings({
+                ...filterSettings,
+                gpsMeter: Array.isArray(value) ? value[0] : value,
+              })
+            }
+          />
+        </Box>
+      </div>
       <EventTable
         mapTable={eventKeyMap}
         eventDataArray={eventDataArray.filter((event) => {
