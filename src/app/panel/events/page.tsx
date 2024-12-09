@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useEventContext } from "../EventProvider/context";
 import { EventTable } from "../EventProvider/eventDataStruct";
 import styles from "./page.module.css";
-import { likeEvent } from "@/app/DatabaseProvider/Mutation/Event";
+import { joinEvent, likeEvent } from "@/app/DatabaseProvider/Mutation/Event";
 
 const LikeButton = ({
   dataID,
@@ -43,28 +43,29 @@ const LikeButton = ({
 const BookingButton = ({
   dataID,
   userID,
-  defaultChecked,
+  booked,
 }: {
   dataID: string;
   userID: string;
-  defaultChecked?: boolean;
+  booked: boolean;
 }) => {
-  const [isFavourite, setIsFavourite] = useState(defaultChecked);
+  const [isBooked, setIsBooked] = useState(booked);
   return (
-    <input
-      type="checkbox"
-      checked={isFavourite}
-      onChange={() => {
-        likeEvent(dataID, userID).then((data) => {
+    <button
+      onClick={() => {
+        joinEvent(dataID, userID).then((data) => {
           const result = JSON.parse(data);
           if (result.error) {
             console.error(result.message);
             return;
           }
-          setIsFavourite(false);
+          console.log(result);
+          setIsBooked(result["@_joinAction"]);
         });
       }}
-    />
+    >
+      {isBooked ? "Unbook" : "Book"}
+    </button>
   );
 };
 
@@ -111,7 +112,11 @@ export default function Home() {
               <BookingButton
                 dataID={data["@_id"]}
                 userID={session?.user?.name}
-                defaultChecked={true}
+                booked={
+                  data.joinedUsers?.filter((user?: { userName?: string }) => {
+                    return user?.userName === session?.user?.name;
+                  }).length > 0
+                }
               />
             </div>
           );
