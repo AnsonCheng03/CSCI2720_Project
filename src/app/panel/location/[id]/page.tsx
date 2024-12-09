@@ -14,6 +14,8 @@ import {
   addCommentToVenue,
   getVenueComments,
 } from "@/app/DatabaseProvider/Mutation/Venue";
+import styles from "./page.module.css";
+import { Divider, TextField } from "@mui/material";
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;
@@ -89,10 +91,10 @@ export default function Page({ params }: { params: { id: string } }) {
   }, []);
 
   return (
-    <>
+    <div className={styles.page}>
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
         <Map
-          style={{ width: "100vw", height: "50vh" }}
+          className={styles.map}
           defaultCenter={markerDetails[0]?.position}
           defaultZoom={10}
           gestureHandling={"greedy"}
@@ -125,54 +127,62 @@ export default function Page({ params }: { params: { id: string } }) {
         </Map>
       </APIProvider>
       {/* // Location Details */}
-      <div>
-        {selectedVenue?.map((venue: any, index: number) => {
-          return (
-            <div key={index}>
-              <h2>{venue.venuee}</h2>
-              {Object.entries(venue).map(([key, value]: [string, any]) => {
-                return (
-                  <div key={key}>
-                    {typeof value === "string" && (
-                      <>
-                        <b>{key}</b>: {value}
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-      {/* // Show Comments */}
-      <div>
-        <h2>Comments</h2>
-        {comments ? (
-          comments.map((comment, index) => {
+      <div className={styles.locationDetails}>
+        <div>
+          {selectedVenue?.map((venue: any, index: number) => {
             return (
               <div key={index}>
-                <h3>{comment.userName}</h3>
-                <p>{comment.content}</p>
+                <h3>{venue.venuee}</h3>
+                {Object.entries(venue).map(([key, value]: [string, any]) => {
+                  return (
+                    <div key={key}>
+                      {typeof value === "string" && (
+                        <>
+                          <b>{key}</b>: {value}
+                        </>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             );
-          })
-        ) : (
-          <p>Loading...</p>
-        )}
+          })}
+        </div>
+        <Divider flexItem />
+        <div>
+          <h3>Comments</h3>
+          {comments ? (
+            comments.map((comment, index) => {
+              return (
+                <div key={index}>
+                  <h3>{comment.userName}</h3>
+                  <p>{comment.content}</p>
+                </div>
+              );
+            })
+          ) : (
+            <p>Loading...</p>
+          )}
+        </div>
+        <Divider flexItem />
+
+        <div>
+          <h3>Add Comment</h3>
+          <form
+            onSubmit={(e) => {
+              submitComment(e);
+            }}
+          >
+            <TextField
+              placeholder="Comment"
+              name="comment"
+              multiline
+              fullWidth
+            />
+            <button type="submit">Submit</button>
+          </form>
+        </div>
       </div>
-      {/* // Add Comment */}
-      <div>
-        <h2>Add Comment</h2>
-        <form
-          onSubmit={(e) => {
-            submitComment(e);
-          }}
-        >
-          <textarea placeholder="Comment" name="comment" />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </>
+    </div>
   );
 }

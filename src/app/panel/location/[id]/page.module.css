@@ -1,0 +1,18 @@
+.page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - 52px);
+}
+
+.map {
+  height: 100%;
+  width: 100%;
+}
+
+.map button {
+  display: none !important;
+}
+
+.locationDetails {
+  padding: 10px 20px;
+}
