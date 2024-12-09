@@ -82,6 +82,8 @@ export default function Home() {
     predateE: "Date/time",
     desce: "Description",
     presenterorge: "Presenter",
+    participants: "Participants",
+    quotaLeft: "Quota Left",
     pricee: "Price",
   };
 
@@ -91,6 +93,7 @@ export default function Home() {
       <EventTable
         mapTable={eventKeyMap}
         eventDataArray={events?.map((event: Record<string, any>) => {
+          console.log(event);
           const newEvent = {
             ...event,
             venueid: {
@@ -98,6 +101,12 @@ export default function Home() {
               name: event.venueid.venuee,
               ...event.venueid,
             },
+            participants:
+              event.joinedUsers?.map((user: any) => user.userName).join(", ") ||
+              "None",
+            quotaLeft: event.quota
+              ? event.quota - (event.joinedUsers?.length || 0)
+              : "Unlimited",
           };
           return newEvent;
         })}
