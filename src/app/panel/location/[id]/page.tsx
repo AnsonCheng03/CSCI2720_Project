@@ -7,13 +7,22 @@ import {
   Map,
 } from "@vis.gl/react-google-maps";
 import { useRouter } from "next/compat/router";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useEventContext } from "../../EventProvider/context";
+import { createComment } from "@/app/DatabaseProvider/Mutation/Comment";
+import {
+  addCommentToVenue,
+  getVenueComments,
+} from "@/app/DatabaseProvider/Mutation/Venue";
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;
 
-  const { venueData } = useEventContext();
+  const { venueData, session } = useEventContext();
+
+  const [comments, setComments] = useState<
+    { content: string; userName: string }[] | null
+  >(null);
 
   const selectedVenue = venueData?.filter(
     (venue: any) => venue["@_id"] == params.id
@@ -29,6 +38,55 @@ export default function Page({ params }: { params: { id: string } }) {
       url: `https://www.google.com/maps/search/?api=1&query=${venue.latitude},${venue.longitude}`,
       position: { lat: venue.latitude, lng: venue.longitude },
     })) || [];
+
+  const submitComment = async (e: any) => {
+    e.preventDefault();
+
+    const form = new FormData(e.target);
+
+    const comment = {
+      content: form.get("comment"),
+      userName: session?.user?.name,
+    };
+
+    const result = JSON.parse(await createComment(comment));
+    if (result.error || !result) {
+      console.error(result.message);
+      window.alert("Error submitting comment");
+      return;
+    }
+
+    const commentID = result._id;
+
+    const response = JSON.parse(await addCommentToVenue(commentID, params.id));
+    console.log(response);
+    if (response.error) {
+      console.error(response.message);
+      window.alert("Error submitting comment");
+      return;
+    }
+
+    setComments((prev: any) => {
+      if (!prev) {
+        return [comment];
+      }
+      return [...prev, comment];
+    });
+  };
+
+  const getComments = async () => {
+    const response = JSON.parse(await getVenueComments(params.id));
+    if (response.error) {
+      console.error(response.message);
+      setComments(null);
+      return;
+    }
+    setComments(response);
+  };
+
+  useEffect(() => {
+    getComments();
+  }, []);
 
   return (
     <>
@@ -90,13 +148,28 @@ export default function Page({ params }: { params: { id: string } }) {
       {/* // Show Comments */}
       <div>
         <h2>Comments</h2>
-        <p>Comments will be shown here</p>
+        {comments ? (
+          comments.map((comment, index) => {
+            return (
+              <div key={index}>
+                <h3>{comment.userName}</h3>
+                <p>{comment.content}</p>
+              </div>
+            );
+          })
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
       {/* // Add Comment */}
       <div>
         <h2>Add Comment</h2>
-        <form>
-          <textarea placeholder="Comment" />
+        <form
+          onSubmit={(e) => {
+            submitComment(e);
+          }}
+        >
+          <textarea placeholder="Comment" name="comment" />
           <button type="submit">Submit</button>
         </form>
       </div>

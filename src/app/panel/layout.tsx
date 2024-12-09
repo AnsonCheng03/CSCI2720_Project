@@ -27,12 +27,13 @@ export default async function RootLayout({
       role?: string;
     };
   };
+
   if (!sessionPromise) redirect("/");
   const userRole = sessionPromise.user?.role;
   if (userRole !== "user" && userRole !== "admin") redirect("/panel");
 
   return (
-    <EventProvider data={null}>
+    <EventProvider data={null} session={sessionPromise}>
       {
         <>
           <NavBar

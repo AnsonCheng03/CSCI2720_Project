@@ -1,43 +1,34 @@
 // Importing mongoose library along with Document and Model types from it
 import mongoose, { Document, Model } from "mongoose";
 
-export interface IVenue {
-  "@_id": string;
+export interface IComment {
   userName: string;
   content: string;
   likedBy?: [mongoose.Schema.Types.ObjectId];
 }
 
-export interface IVenueDocument extends IVenue, Document {
+export interface ICommentDocument extends IComment, Document {
   createdAt: Date;
   updatedAt: Date;
 }
 
-const venueSchema = new mongoose.Schema<IVenueDocument>(
+const commentSchema = new mongoose.Schema<ICommentDocument>(
   {
-    "@_id": {
+    userName: {
       type: String,
       required: true,
     },
-    userName: {
-      type: String,
-    },
     content: {
       type: String,
+      required: true,
     },
-    likedBy: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
   },
   {
     timestamps: true,
   }
 );
 
-const Comment: Model<IVenueDocument> =
-  mongoose.models.Comment || mongoose.model("Comment", venueSchema);
+const Comment: Model<ICommentDocument> =
+  mongoose.models.Comment || mongoose.model("Comment", commentSchema);
 
 export default Comment;

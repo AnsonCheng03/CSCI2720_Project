@@ -1,7 +1,9 @@
 import {
   checkNoOfAdmins,
+  createUsers,
   userLogin,
 } from "@/app/DatabaseProvider/Mutation/User";
+import bcrypt from "bcrypt-nodejs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
@@ -27,15 +29,27 @@ export const authOptions = {
             credentials.password === "admin" &&
             adminCount === 0
           ) {
-            return {
-              id: "-1",
-              name: "Admin",
+            await createUsers({
+              userName: credentials.username,
+              password: bcrypt.hashSync(
+                credentials.password,
+                bcrypt.genSaltSync(8)
+              ),
               role: "admin",
+            });
+            const user = JSON.parse(await userLogin(credentials));
+            if (user.error) {
+              return null;
+            }
+            return {
+              id: user._id,
+              name: user.userName,
+              role: user.role,
             } as any;
           }
           return null;
         }
-        console.log("user", user);
+
         return {
           id: user._id,
           name: user.userName,
