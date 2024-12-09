@@ -17,3 +17,8 @@
   margin: 4px 2px;
   cursor: pointer;
 }
+
+.error {
+  color: var(--error);
+  font-size: 0.8rem;
+}

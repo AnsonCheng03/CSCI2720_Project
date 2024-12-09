@@ -8,6 +8,7 @@
   --secondary: #aac0b7;
   --accent: #95b1ac;
   --foreground: #171717;
+  --error: #ff0000;
 
   --text-50: #f1f4f0;
   --text-100: #e4e9e2;
@@ -78,6 +79,7 @@
     --secondary: #3f554c;
     --accent: #4e6a65;
     --foreground: #ededed;
+    --error: #ff0000;
 
     --text-50: #0c0f0b;
     --text-100: #181d16;
