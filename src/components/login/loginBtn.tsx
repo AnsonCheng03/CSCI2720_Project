@@ -62,7 +62,6 @@ export function LoginBtn() {
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setPassword("");
               setError("");
               signIn("credentials", { username: username, password: password });
             }
