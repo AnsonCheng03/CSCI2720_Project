@@ -177,7 +177,7 @@ export default function Home() {
           return true;
         })}
         setEventData={setEventData}
-        actionColumnTitle={"Add to Favourite"}
+        actionColumnTitle={"Favourite"}
         renderActionColumn={
           favoriteData
             ? (data: Record<string, any>) => {

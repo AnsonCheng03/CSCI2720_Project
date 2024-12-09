@@ -1,3 +1,14 @@
+import {
+  Paper,
+  styled,
+  Table,
+  TableBody,
+  TableCell,
+  tableCellClasses,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import Link from "next/link";
 import { JSX, useState } from "react";
 
@@ -14,6 +25,26 @@ export const sortData = (
   });
   setEventData({ ...eventDataArray });
 };
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: theme.palette.common.black,
+    color: theme.palette.common.white,
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  "&:nth-of-type(odd)": {
+    backgroundColor: theme.palette.action.hover,
+  },
+  // hide last border
+  "&:last-child td, &:last-child th": {
+    border: 0,
+  },
+}));
 
 export const EventTable = ({
   mapTable,
@@ -34,47 +65,56 @@ export const EventTable = ({
   });
 
   return (
-    <table>
-      <thead>
-        <tr>
-          {Object.keys(mapTable).map((key: string) => (
-            <th
-              key={key}
-              onClick={() => {
-                sortData(eventDataArray, setEventData, key, sortKey.direction);
-                setSortKey({
-                  key,
-                  direction: sortKey.direction * -1,
-                });
-              }}
-            >
-              {mapTable[key]}
-            </th>
+    <TableContainer component={Paper}>
+      <Table sx={{}} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            {Object.keys(mapTable).map((key: string) => (
+              <StyledTableCell
+                key={key}
+                onClick={() => {
+                  sortData(
+                    eventDataArray,
+                    setEventData,
+                    key,
+                    sortKey.direction
+                  );
+                  setSortKey({
+                    key,
+                    direction: sortKey.direction * -1,
+                  });
+                }}
+              >
+                {mapTable[key]}
+              </StyledTableCell>
+            ))}
+            {renderActionColumn && actionColumnTitle && (
+              <StyledTableCell>{actionColumnTitle}</StyledTableCell>
+            )}
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {eventDataArray?.map((data, index) => (
+            <StyledTableRow key={index}>
+              {Object.keys(mapTable).map((key: string) => {
+                const value = data[key as keyof typeof data];
+                return (
+                  <StyledTableCell key={key}>
+                    {typeof value === "object" ? (
+                      <Link href={value.url || ""}>{value.name}</Link>
+                    ) : (
+                      value
+                    )}
+                  </StyledTableCell>
+                );
+              })}
+              {renderActionColumn && (
+                <TableCell>{renderActionColumn(data)}</TableCell>
+              )}
+            </StyledTableRow>
           ))}
-          {renderActionColumn && actionColumnTitle && (
-            <th>{actionColumnTitle}</th>
-          )}
-        </tr>
-      </thead>
-      <tbody>
-        {eventDataArray?.map((data, index) => (
-          <tr key={index}>
-            {Object.keys(mapTable).map((key: string) => {
-              const value = data[key as keyof typeof data];
-              return (
-                <td key={key}>
-                  {typeof value === "object" ? (
-                    <Link href={value.url || ""}>{value.name}</Link>
-                  ) : (
-                    value
-                  )}
-                </td>
-              );
-            })}
-            {renderActionColumn && <td>{renderActionColumn(data)}</td>}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+        </TableBody>
+      </Table>
+    </TableContainer>
   );
 };
