@@ -22,7 +22,6 @@ const AddToFavouriteButton = ({
 }) => {
   const [isFavourite, setIsFavourite] = useState(defaultChecked);
   return (
-   return (
     <input
       type="checkbox"
       checked={isFavourite}
@@ -47,7 +46,6 @@ const AddToFavouriteButton = ({
           });
       }}
     />
-  );
   );
 };
 
