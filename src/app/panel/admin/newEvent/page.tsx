@@ -20,6 +20,7 @@ export default function Home() {
       predateE: formData.get("dateTime"),
       desce: formData.get("description"),
       presenterorge: formData.get("presenter"),
+      quota: formData.get("quota"),
       pricee: formData.get("price"),
     };
 
@@ -97,6 +98,11 @@ export default function Home() {
         <label>
           Price:
           <input type="text" name="price" />
+        </label>
+        <br />
+        <label>
+          Quota:
+          <input type="text" name="quota" />
         </label>
         <br />
         <button type="submit">Submit</button>

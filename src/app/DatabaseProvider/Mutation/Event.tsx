@@ -21,7 +21,7 @@ export async function uploadData(data: any) {
     data.venueid = venue[0]._id;
 
     const newEvent = await Event.create(data);
-    newEvent.save();
+    await newEvent.save();
     // revalidatePath("/");
     return JSON.stringify(newEvent);
   } catch (error) {
@@ -58,7 +58,7 @@ export async function editData(data: any) {
       });
     }
 
-    updatedEvent.save();
+    await updatedEvent.save();
     // revalidatePath("/");
     return JSON.stringify(updatedEvent);
   } catch (error) {
@@ -144,7 +144,7 @@ export async function joinEvent(eventId: string, userName: string) {
         return JSON.stringify({ message: "Event not found" });
       }
 
-      updatedEvent.save();
+      await updatedEvent.save();
 
       return JSON.stringify({
         "@_joinAction": false,
@@ -161,7 +161,7 @@ export async function joinEvent(eventId: string, userName: string) {
       return JSON.stringify({ message: "Event not found" });
     }
 
-    updatedEvent.save();
+    await updatedEvent.save();
 
     return JSON.stringify({ ...updatedEvent, "@_joinAction": true });
   } catch (error) {
@@ -213,7 +213,7 @@ export async function removeParticipant(eventId: string, userId: string) {
       return JSON.stringify({ message: "Event not found" });
     }
 
-    updatedEvent.save();
+    await updatedEvent.save();
 
     return JSON.stringify(updatedEvent);
   } catch (error) {
@@ -253,7 +253,7 @@ export async function likeEvent(eventId: string, userName: string) {
         return JSON.stringify({ message: "Event not found" });
       }
 
-      updatedEvent.save();
+      await updatedEvent.save();
 
       return JSON.stringify({
         "@_likeAction": false,
@@ -270,7 +270,7 @@ export async function likeEvent(eventId: string, userName: string) {
       return JSON.stringify({ message: "Event not found" });
     }
 
-    updatedEvent.save();
+    await updatedEvent.save();
 
     return JSON.stringify({
       ...updatedEvent,

@@ -26,6 +26,7 @@ const LikeButton = ({
           const result = JSON.parse(data);
           if (result.error) {
             console.error(result.message);
+            window.alert(result.message);
             return;
           }
           const liked = result["@_likeAction"];
@@ -57,6 +58,7 @@ const BookingButton = ({
           const result = JSON.parse(data);
           if (result.error) {
             console.error(result.message);
+            window.alert(result.message);
             return;
           }
           console.log(result);
