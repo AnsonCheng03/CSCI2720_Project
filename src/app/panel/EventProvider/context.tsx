@@ -8,11 +8,13 @@ const EventContext = createContext<{
   setEventData: any;
   venueData: object[] | null;
   setVenueData: any;
+  session: any;
 }>({
   eventData: null,
   setEventData: () => {},
   venueData: null,
   setVenueData: () => {},
+  session: null,
 });
 
 export function useEventContext() {
@@ -26,12 +28,14 @@ export function useEventContext() {
 export default function EventProvider({
   children,
   data,
+  session,
 }: {
   children: React.ReactNode;
   data: {
     event: object[] | null;
     venue: object[] | null;
   } | null;
+  session: any;
 }) {
   const [eventData, setEventData] = useState(data?.event || null);
   const [venueData, setVenueData] = useState(data?.venue || null);
@@ -42,6 +46,7 @@ export default function EventProvider({
         setEventData,
         venueData,
         setVenueData,
+        session,
       }}
     >
       {eventData === null || venueData === null ? (

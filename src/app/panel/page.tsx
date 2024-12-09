@@ -7,7 +7,7 @@ import { EventTable } from "./EventProvider/eventDataStruct";
 import styles from "./page.module.css";
 
 export default function Home() {
-  const { venueData: rawEventData } = useEventContext();
+  const { session, venueData: rawEventData } = useEventContext();
   const [eventData, setEventData] = useState(rawEventData);
 
   const [filterSettings, setFilterSettings] = useState({
@@ -117,6 +117,22 @@ export default function Home() {
           return true;
         })}
         setEventData={setEventData}
+        actionColumnTitle="Add to Favourite"
+        renderActionColumn={(data: Record<string, any>) => {
+          const [isFavourite, setIsFavourite] = useState(false);
+          return (
+            <input
+              type="checkbox"
+              value={isFavourite ? "true" : "false"}
+              onClick={() => {
+                console.log("Add to Favourite", data["@_id"]);
+                console.log("User Name", session?.user?.name); // unique
+                console.log("setFavorite", !isFavourite);
+                setIsFavourite(!isFavourite);
+              }}
+            />
+          );
+        }}
       />
     </div>
   );
