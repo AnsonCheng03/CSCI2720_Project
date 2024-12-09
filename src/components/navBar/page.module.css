@@ -8,17 +8,23 @@
 .nav .navContainer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1rem 2rem;
   background-color: var(--background-100);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  max-height: 70px;
 }
 
 .nav .navContainer ul {
   display: flex;
   align-items: center;
   gap: 2rem;
+  max-width: 80%;
 }
 
 .nav ul li {
   list-style: none;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }

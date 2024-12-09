@@ -28,47 +28,49 @@ export default function Home() {
     })) || [];
 
   return (
-    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
-      <Map
-        style={{ width: "100vw", height: "50vh" }}
-        defaultCenter={markerDetails[0]?.position}
-        defaultZoom={10}
-        gestureHandling={"greedy"}
-        disableDefaultUI={true}
-        mapId={"venueMap"}
-      >
-        {markerDetails.map((marker, index) => {
-          const [markerRef, markerObj] = useAdvancedMarkerRef();
-          const [showInfo, setShowInfo] = useState(false);
-          return (
-            <div key={index}>
-              <AdvancedMarker
-                position={marker.position}
-                title={marker.title}
-                clickable
-                ref={markerRef}
-                onClick={() => setShowInfo(true)}
-              />
-              {showInfo && (
-                <InfoWindow
-                  anchor={markerObj}
-                  onCloseClick={() => setShowInfo(false)}
-                >
-                  <Link
-                    style={{
-                      color: "black",
-                      backgroundColor: "white",
-                    }}
-                    href={marker.url}
+    <div className={styles.page}>
+      <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
+        <Map
+          style={{ width: "100vw", height: "100vh" }}
+          defaultCenter={markerDetails[0]?.position}
+          defaultZoom={10}
+          gestureHandling={"greedy"}
+          disableDefaultUI={true}
+          mapId={"venueMap"}
+        >
+          {markerDetails.map((marker, index) => {
+            const [markerRef, markerObj] = useAdvancedMarkerRef();
+            const [showInfo, setShowInfo] = useState(false);
+            return (
+              <div key={index}>
+                <AdvancedMarker
+                  position={marker.position}
+                  title={marker.title}
+                  clickable
+                  ref={markerRef}
+                  onClick={() => setShowInfo(true)}
+                />
+                {showInfo && (
+                  <InfoWindow
+                    anchor={markerObj}
+                    onCloseClick={() => setShowInfo(false)}
                   >
-                    {marker.title}
-                  </Link>
-                </InfoWindow>
-              )}
-            </div>
-          );
-        })}
-      </Map>
-    </APIProvider>
+                    <Link
+                      style={{
+                        color: "black",
+                        backgroundColor: "white",
+                      }}
+                      href={marker.url}
+                    >
+                      {marker.title}
+                    </Link>
+                  </InfoWindow>
+                )}
+              </div>
+            );
+          })}
+        </Map>
+      </APIProvider>
+    </div>
   );
 }
