@@ -1,4 +1,8 @@
 import mongoose, { Connection } from "mongoose";
+import { eventSchema } from "./Model/Events";
+import { userSchema } from "./Model/User";
+import { venueSchema } from "./Model/Venue";
+import { commentSchema } from "./Model/Comment";
 
 let cachedConnection: Connection | null = null;
 
@@ -13,6 +17,13 @@ export async function connectToMongoDB() {
     const cnx = await mongoose.connect(process.env.MONGODB_URI!);
     // Cache the connection for future use
     cachedConnection = cnx.connection;
+    // Load the models
+    await Promise.all([
+      mongoose.models.Event || cnx.model("Event", eventSchema),
+      mongoose.models.User || cnx.model("User", userSchema),
+      mongoose.models.Venue || cnx.model("Venue", venueSchema),
+      mongoose.models.Comment || cnx.model("Comment", commentSchema),
+    ]);
     // Log message indicating a new MongoDB connection is established
     console.log("New mongodb connection established");
     // Return the newly established connection

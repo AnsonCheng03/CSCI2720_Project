@@ -15,7 +15,7 @@ export interface IVenueDocument extends IVenue, Document {
   updatedAt: Date;
 }
 
-const venueSchema = new mongoose.Schema<IVenueDocument>(
+export const venueSchema = new mongoose.Schema<IVenueDocument>(
   {
     "@_id": {
       type: String,

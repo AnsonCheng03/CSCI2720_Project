@@ -20,7 +20,7 @@ export interface IEventDocument extends IEvent, Document {
   updatedAt: Date;
 }
 
-const eventSchema = new mongoose.Schema<IEventDocument>(
+export const eventSchema = new mongoose.Schema<IEventDocument>(
   {
     "@_id": {
       type: String,
@@ -31,7 +31,7 @@ const eventSchema = new mongoose.Schema<IEventDocument>(
     },
     venueid: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "venue",
+      ref: "Venue",
       required: true,
     },
     predateE: {

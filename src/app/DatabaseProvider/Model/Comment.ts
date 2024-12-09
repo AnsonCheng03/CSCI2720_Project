@@ -12,7 +12,7 @@ export interface ICommentDocument extends IComment, Document {
   updatedAt: Date;
 }
 
-const commentSchema = new mongoose.Schema<ICommentDocument>(
+export const commentSchema = new mongoose.Schema<ICommentDocument>(
   {
     userName: {
       type: String,

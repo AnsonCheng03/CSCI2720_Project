@@ -178,7 +178,7 @@ export async function getEventParticipants(eventId: string) {
       return JSON.stringify({ message: "Event not found" });
     }
 
-    return JSON.stringify(event.joinedUsers);
+    return JSON.stringify(event[0].joinedUsers);
   } catch (error) {
     console.log(error);
     return JSON.stringify({
@@ -222,11 +222,7 @@ export async function removeParticipant(eventId: string, userId: string) {
   }
 }
 
-export async function likeEvent(
-  eventId: string,
-  userName: string,
-  liked: boolean
-) {
+export async function likeEvent(eventId: string, userName: string) {
   await connectToMongoDB();
   try {
     const event = await Event.findOne({ "@_id": eventId });
