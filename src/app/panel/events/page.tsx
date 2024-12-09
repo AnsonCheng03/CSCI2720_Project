@@ -18,6 +18,7 @@ const LikeButton = ({
   totalLikes?: number;
 }) => {
   const [isLiked, setIsLiked] = useState(defaultChecked);
+  const [likes, setLikes] = useState(totalLikes || 0);
   return (
     <button
       onClick={() => {
@@ -27,12 +28,14 @@ const LikeButton = ({
             console.error(result.message);
             return;
           }
-          setIsLiked(false);
+          const liked = result["@_likeAction"];
+          setIsLiked(liked);
+          setLikes(liked ? likes + 1 : likes - 1);
         });
       }}
     >
       {isLiked ? "Unlike" : "Like"}
-      {totalLikes ? ` (${totalLikes})` : ""}
+      {likes > 0 && ` (${likes})`}
     </button>
   );
 };
@@ -98,7 +101,11 @@ export default function Home() {
               <LikeButton
                 dataID={data["@_id"]}
                 userID={session?.user?.name}
-                defaultChecked={data.likedUsers?.includes(session?.user?.name)}
+                defaultChecked={
+                  data.likedUsers?.filter((user?: { userName?: string }) => {
+                    return user?.userName === session?.user?.name;
+                  }).length > 0
+                }
                 totalLikes={data.likedUsers?.length}
               />
               <BookingButton

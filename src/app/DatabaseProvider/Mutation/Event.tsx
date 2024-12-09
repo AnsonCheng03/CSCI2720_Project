@@ -73,7 +73,10 @@ export async function editData(data: any) {
 export async function downloadEventData() {
   await connectToMongoDB();
   try {
-    const events = await Event.find().populate("venueid");
+    const events = await Event.find()
+      .populate("venueid")
+      .populate("joinedUsers")
+      .populate("likedUsers");
     return JSON.stringify(events);
   } catch (error) {
     console.log(error);
