@@ -18,7 +18,9 @@ export default function Home() {
     if (!form.current) return;
     const formData = new FormData(form.current);
 
-    const event = {
+    const event: {
+      [key: string]: FormDataEntryValue | null | boolean | undefined;
+    } = {
       "@_id": formData.get("eventID"),
       titlee: formData.get("eventTitle"),
       venueid: formData.get("locationID"),
@@ -31,6 +33,13 @@ export default function Home() {
     };
 
     let previousVenueId: string | null = null;
+
+    // Do not override original event object with empty strings
+    Object.keys(event).forEach((key) => {
+      if (event[key] === "") {
+        event[key] = undefined;
+      }
+    });
 
     if (type === "submit") {
       updateData(event, previousVenueId);
