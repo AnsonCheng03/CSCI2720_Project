@@ -90,7 +90,7 @@ export default function Home() {
       <h1>List of Events</h1>
       <EventTable
         mapTable={eventKeyMap}
-        eventDataArray={events?.map((event: Record<string, any>) => {
+        eventDataArray={[...events]?.map((event: Record<string, any>) => {
           console.log(event);
           event.venueid.url = `/panel/location/${event.venueid["@_id"]}`;
           event.venueid.name = event.venueid.venuee;
