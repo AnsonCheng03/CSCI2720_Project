@@ -18,6 +18,11 @@ const EventContext = createContext<{
 });
 
 export function useEventContext() {
+  if (!EventContext) {
+    throw new Error(
+      "useEventContext must be used within a EventContext (EventProvider)"
+    );
+  }
   const context = useContext(EventContext);
   if (!context) {
     throw new Error("useSessionContext must be used within a SessionContext");
