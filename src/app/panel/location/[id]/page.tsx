@@ -7,15 +7,22 @@ import {
   Map,
 } from "@vis.gl/react-google-maps";
 import { useRouter } from "next/compat/router";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 import { useEventContext } from "../../EventProvider/context";
 import { createComment } from "@/app/DatabaseProvider/Mutation/Comment";
-import { addCommentToVenue } from "@/app/DatabaseProvider/Mutation/Venue";
+import {
+  addCommentToVenue,
+  getVenueComments,
+} from "@/app/DatabaseProvider/Mutation/Venue";
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;
 
   const { venueData, session } = useEventContext();
+
+  const [comments, setComments] = useState<
+    { content: string; userName: string }[] | null
+  >(null);
 
   const selectedVenue = venueData?.filter(
     (venue: any) => venue["@_id"] == params.id
@@ -58,8 +65,28 @@ export default function Page({ params }: { params: { id: string } }) {
       window.alert("Error submitting comment");
       return;
     }
-    console.log(response);
+
+    setComments((prev: any) => {
+      if (!prev) {
+        return [comment];
+      }
+      return [...prev, comment];
+    });
   };
+
+  const getComments = async () => {
+    const response = JSON.parse(await getVenueComments(params.id));
+    if (response.error) {
+      console.error(response.message);
+      setComments(null);
+      return;
+    }
+    setComments(response);
+  };
+
+  useEffect(() => {
+    getComments();
+  }, []);
 
   return (
     <>
@@ -121,7 +148,18 @@ export default function Page({ params }: { params: { id: string } }) {
       {/* // Show Comments */}
       <div>
         <h2>Comments</h2>
-        <p>Comments will be shown here</p>
+        {comments ? (
+          comments.map((comment, index) => {
+            return (
+              <div key={index}>
+                <h3>{comment.userName}</h3>
+                <p>{comment.content}</p>
+              </div>
+            );
+          })
+        ) : (
+          <p>Loading...</p>
+        )}
       </div>
       {/* // Add Comment */}
       <div>

@@ -2,6 +2,7 @@
 
 import { connectToMongoDB } from "../db";
 import Venue from "../Model/Venue";
+import Comment from "../Model/Comment";
 
 export async function insertORupdateVenue(data: any) {
   await connectToMongoDB();
@@ -95,6 +96,27 @@ export async function addCommentToVenue(commentID: any, venueID: string) {
     return JSON.stringify({
       error: true,
       message: "error adding comment to venue",
+    });
+  }
+}
+
+export async function getVenueComments(venueID: string) {
+  try {
+    await connectToMongoDB();
+    const venue = await Venue.findOne({ "@_id": venueID }).populate("comment");
+    if (!venue) {
+      return JSON.stringify({
+        error: true,
+        message: "Venue not found",
+      });
+    }
+
+    return JSON.stringify(venue.comment);
+  } catch (error) {
+    console.log(error);
+    return JSON.stringify({
+      error: true,
+      message: "error getting venue comments",
     });
   }
 }
