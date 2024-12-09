@@ -78,10 +78,10 @@ export default function Home() {
     : [];
 
   const mostAppearWords = eventDataArray
-    .map((event) => event.venuee.split(" "))
+    .map((event) => event.venuee?.split(" "))
     .flat()
     .reduce((acc: Record<string, number>, word: string) => {
-      word = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
+      word = word?.replace(/[^a-zA-Z]/g, "").toLowerCase();
       acc[word] = (acc[word] || 0) + 1;
       return acc;
     }, {}) as Record<string, number>;

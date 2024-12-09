@@ -51,9 +51,10 @@ export async function handleVenueData(data: any[]) {
       const existingVenue = await Venue.findOne({ "@_id": item["@_id"] });
 
       if (existingVenue) {
-        const updatedVenue = await Venue.updateOne(
+        const updatedVenue = await Venue.findOneAndUpdate(
           { "@_id": item["@_id"] },
-          item
+          item,
+          { new: true }
         );
         results.updated.push(updatedVenue);
       } else {
