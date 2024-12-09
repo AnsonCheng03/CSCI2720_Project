@@ -13,15 +13,25 @@ export default function Home() {
     e.preventDefault();
     const formData = new FormData(e.target);
 
-    const event = {
+    const event: {
+      [key: string]: FormDataEntryValue | null | boolean | undefined;
+    } = {
       "@_id": formData.get("eventID"),
       titlee: formData.get("eventTitle"),
       venueid: formData.get("locationID"),
       predateE: formData.get("dateTime"),
       desce: formData.get("description"),
       presenterorge: formData.get("presenter"),
+      quota: formData.get("quota"),
       pricee: formData.get("price"),
     };
+
+    // Do not override original event object with empty strings
+    Object.keys(event).forEach((key) => {
+      if (event[key] === "") {
+        event[key] = undefined;
+      }
+    });
 
     const newEvent = JSON.parse(await uploadData(event));
     if (newEvent.error) {
@@ -67,8 +77,8 @@ export default function Home() {
         <label>
           Location ID:
           <select name="locationID">
-            {venueIds?.map((venueId: any) => (
-              <option key={venueId} value={venueId}>
+            {venueIds?.map((venueId: any, index: number) => (
+              <option key={index} value={venueId}>
                 {venueId}
               </option>
             ))}
@@ -97,6 +107,11 @@ export default function Home() {
         <label>
           Price:
           <input type="text" name="price" />
+        </label>
+        <br />
+        <label>
+          Quota:
+          <input type="text" name="quota" />
         </label>
         <br />
         <button type="submit">Submit</button>

@@ -10,12 +10,12 @@ export async function insertORupdateVenue(data: any) {
     const newVenue = await Venue.updateMany(data, data, {
       upsert: true,
     });
-    return newVenue.toString();
+    return JSON.stringify(newVenue);
   } catch (error) {
     console.log(error);
     return {
       error: true,
-      message: "error creating venue",
+      message: `Error creating venue: ${error}`,
     };
   }
 }
@@ -29,7 +29,7 @@ export async function downloadVenueData() {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error fetching venues",
+      message: `Error getting venues: ${error}`,
     });
   }
 }
@@ -51,8 +51,12 @@ export async function handleVenueData(data: any[]) {
       const existingVenue = await Venue.findOne({ "@_id": item["@_id"] });
 
       if (existingVenue) {
-        await Venue.updateOne({ "@_id": item["@_id"] }, item);
-        results.updated.push(existingVenue);
+        const updatedVenue = await Venue.findOneAndUpdate(
+          { "@_id": item["@_id"] },
+          item,
+          { new: true }
+        );
+        results.updated.push(updatedVenue);
       } else {
         const newVenue = new Venue(item);
         await newVenue.save();
@@ -66,11 +70,9 @@ export async function handleVenueData(data: any[]) {
 
     return JSON.stringify(results);
   } catch (error) {
-    console.error(error);
-
     return JSON.stringify({
       error: true,
-      message: "error handling venues",
+      message: `Error handling venue data: ${error}`,
     });
   }
 }
@@ -95,7 +97,7 @@ export async function addCommentToVenue(commentID: any, venueID: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error adding comment to venue",
+      message: `Error adding comment to venue: ${error}`,
     });
   }
 }
@@ -116,7 +118,7 @@ export async function getVenueComments(venueID: string) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error getting venue comments",
+      message: `Error getting venue comments: ${error}`,
     });
   }
 }

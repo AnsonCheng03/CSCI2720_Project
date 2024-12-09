@@ -33,7 +33,7 @@ export default function Home() {
     if (!form.current) return;
     const formData = new FormData(form.current);
 
-    const event = {
+    const event: { [key: string]: string | undefined } = {
       _id: formData.get("originalUsername") as string,
       userName: formData.get("username") as string,
       password: formData.get("password") as string,
@@ -51,6 +51,13 @@ export default function Home() {
       window.alert("Please fill out all fields");
       return;
     }
+
+    // Do not override original event object with empty strings
+    Object.keys(event).forEach((key) => {
+      if (event[key] === "") {
+        event[key] = undefined;
+      }
+    });
 
     if (type === "modify") {
       updateData(event);

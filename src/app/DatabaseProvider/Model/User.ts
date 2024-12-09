@@ -13,7 +13,7 @@ export interface IUserDocument extends IUser, Document {
   updatedAt: Date;
 }
 
-const userSchema = new mongoose.Schema<IUserDocument>(
+export const userSchema = new mongoose.Schema<IUserDocument>(
   {
     userName: {
       type: String,

@@ -13,7 +13,7 @@ export async function createComment(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error creating comment",
+      message: `Error creating comment: ${error}`,
     });
   }
 }
@@ -27,7 +27,7 @@ export async function deleteComment(data: any) {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error deleting comment",
+      message: `Error creating comment: ${error}`,
     });
   }
 }
@@ -41,7 +41,7 @@ export async function getComments() {
     console.log(error);
     return JSON.stringify({
       error: true,
-      message: "error getting comments",
+      message: `Error creating comment: ${error}`,
     });
   }
 }

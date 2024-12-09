@@ -31,6 +31,7 @@ const AddToFavouriteButton = ({
             const result = JSON.parse(data);
             if (result.error) {
               console.error(result.message);
+              window.alert(result.message);
               return;
             }
             setIsFavourite(false);
@@ -40,6 +41,7 @@ const AddToFavouriteButton = ({
             const result = JSON.parse(data);
             if (result.error) {
               console.error(result.message);
+              window.alert(result.message);
               return;
             }
             setIsFavourite(true);
@@ -78,10 +80,10 @@ export default function Home() {
     : [];
 
   const mostAppearWords = eventDataArray
-    .map((event) => event.venuee.split(" "))
+    .map((event) => event.venuee?.split(" "))
     .flat()
     .reduce((acc: Record<string, number>, word: string) => {
-      word = word.replace(/[^a-zA-Z]/g, "").toLowerCase();
+      word = word?.replace(/[^a-zA-Z]/g, "").toLowerCase();
       acc[word] = (acc[word] || 0) + 1;
       return acc;
     }, {}) as Record<string, number>;
@@ -90,6 +92,7 @@ export default function Home() {
     const data = JSON.parse(await getFavouriteVenues(session?.user?.name));
     if (data.error) {
       console.error(data.message);
+      window.alert(data.message);
       return;
     }
     const favouriteData = data.map(
@@ -161,7 +164,6 @@ export default function Home() {
                 longitude: eventDataArray[0].longitude,
               }
             );
-            console.log(eventDistance, gpsMeter * 1000);
             return eventDistance <= gpsMeter * 1000;
           }
           if (filterSettings.venue) {
@@ -170,7 +172,6 @@ export default function Home() {
               .includes(filterSettings.venue.toLowerCase());
           }
           if (filterSettings.category) {
-            console.log(filterSettings.category);
             return event.venuee.toLowerCase().includes(filterSettings.category);
           }
           return true;

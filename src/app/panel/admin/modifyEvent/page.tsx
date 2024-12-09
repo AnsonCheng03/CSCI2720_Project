@@ -18,18 +18,28 @@ export default function Home() {
     if (!form.current) return;
     const formData = new FormData(form.current);
 
-    const event = {
+    const event: {
+      [key: string]: FormDataEntryValue | null | boolean | undefined;
+    } = {
       "@_id": formData.get("eventID"),
       titlee: formData.get("eventTitle"),
       venueid: formData.get("locationID"),
       predateE: formData.get("dateTime"),
       desce: formData.get("description"),
+      quota: formData.get("quota"),
       presenterorge: formData.get("presenter"),
       pricee: formData.get("price"),
       fromDownload: false,
     };
 
     let previousVenueId: string | null = null;
+
+    // Do not override original event object with empty strings
+    Object.keys(event).forEach((key) => {
+      if (event[key] === "") {
+        event[key] = undefined;
+      }
+    });
 
     if (type === "submit") {
       updateData(event, previousVenueId);
@@ -68,6 +78,7 @@ export default function Home() {
 
   const updateData = async (event: any, previousVenueId: string | null) => {
     const newData = JSON.parse(await editData(event));
+    console.log(newData);
     if (newData.error) {
       console.error(newData.message);
       window.alert(newData.message);
@@ -160,6 +171,11 @@ export default function Home() {
         <label>
           Price:
           <input type="text" name="price" />
+        </label>
+        <br />
+        <label>
+          Quota:
+          <input type="text" name="quota" />
         </label>
         <br />
         <button
