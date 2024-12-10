@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
-import { EventTable } from "../EventProvider/eventTable";
+import { Button } from "@mui/material";
 import { useEventContext } from "../EventProvider/context";
+import { EventList } from "../EventProvider/eventList";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";
 import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
-import { Button } from "@mui/material";
-import { EventList } from "../EventProvider/eventList";
 
 export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =

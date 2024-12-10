@@ -1,9 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useEventContext } from "../EventProvider/context";
-import { EventTable } from "../EventProvider/eventTable";
-import styles from "./page.module.css";
 import {
   Checkbox,
   FormControl,
@@ -12,7 +9,9 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { useEventContext } from "../EventProvider/context";
 import { EventList } from "../EventProvider/eventList";
+import styles from "./page.module.css";
 
 export default function Home() {
   const { eventData } = useEventContext();

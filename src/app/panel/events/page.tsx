@@ -1,12 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { Button } from "@mui/material";
 import { useEventContext } from "../EventProvider/context";
-import { EventTable } from "../EventProvider/eventTable";
+import { EventList } from "../EventProvider/eventList";
 import styles from "./page.module.css";
 import { joinEvent, likeEvent } from "@/app/DatabaseProvider/Mutation/Event";
-import { EventList } from "../EventProvider/eventList";
-import { Button } from "@mui/material";
 
 const LikeButton = ({
   dataID,
