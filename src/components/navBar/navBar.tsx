@@ -1,7 +1,8 @@
 import Link from "next/link";
 import { JSX } from "react";
-import { Box } from "@mui/material";
+import { Box, Checkbox, FormControl } from "@mui/material";
 import styles from "./page.module.css";
+import { TiThMenu } from "react-icons/ti";
 
 export default function NavBar({
   navItems,
@@ -20,6 +21,16 @@ export default function NavBar({
 }) {
   return (
     <nav className={styles.nav}>
+      <Box className={styles.mobileBar}>
+        <label htmlFor="mobileCheckbox">
+          <TiThMenu />
+        </label>
+      </Box>
+      <input
+        type="checkbox"
+        className={styles.mobileCheckbox}
+        id="mobileCheckbox"
+      />
       <Box className={styles.navContainer}>
         <ul>
           {navItems.map((item) => (

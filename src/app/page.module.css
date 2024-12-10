@@ -22,3 +22,9 @@
   border-radius: 5px;
   box-shadow: 0 2px 8px rgb(var(--accent));
 }
+
+@media (max-width: 800px) {
+  .container {
+    min-width: 100%;
+  }
+}

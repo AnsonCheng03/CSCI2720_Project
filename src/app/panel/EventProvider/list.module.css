@@ -17,4 +17,24 @@
   justify-content: flex-start;
   grid-gap: 1rem;
   margin: 1rem;
+  word-break: break-all;
+}
+
+@media (max-width: 800px) {
+  .page {
+    overflow: auto;
+  }
+
+  .eventContainer {
+    grid-template-columns: 1fr;
+    max-width: 80vw;
+  }
+
+  .eventContainer > div {
+    width: 100%;
+  }
+
+  .columnName {
+    font-weight: bold;
+  }
 }
