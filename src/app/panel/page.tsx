@@ -1,15 +1,27 @@
 "use client";
 
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getDistance } from "geolib";
-import { useEventContext } from "./EventProvider/context";
-import { EventTable } from "./EventProvider/eventDataStruct";
-import styles from "./page.module.css";
+import {
+  Box,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Slider,
+  TextField,
+} from "@mui/material";
+import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 import {
   addFavouriteVenue,
   getFavouriteVenues,
   removeFavouriteVenue,
 } from "../DatabaseProvider/Mutation/User";
+import { useEventContext } from "./EventProvider/context";
+import { EventTable } from "./EventProvider/eventTable";
+import styles from "./page.module.css";
 
 const AddToFavouriteButton = ({
   dataID,
@@ -21,31 +33,32 @@ const AddToFavouriteButton = ({
   defaultChecked?: boolean;
 }) => {
   const [isFavourite, setIsFavourite] = useState(defaultChecked);
-  return (
-    <input
-      type="checkbox"
-      checked={isFavourite}
-      onChange={() => {
-        if (isFavourite)
-          removeFavouriteVenue(dataID, userID).then((data) => {
-            const result = JSON.parse(data);
-            if (result.error) {
-              console.error(result.message);
-              window.alert(result.message);
-              return;
-            }
-            setIsFavourite(false);
-          });
-        else
-          addFavouriteVenue(dataID, userID).then((data) => {
-            const result = JSON.parse(data);
-            if (result.error) {
-              console.error(result.message);
-              window.alert(result.message);
-              return;
-            }
-            setIsFavourite(true);
-          });
+  return isFavourite ? (
+    <FaHeart
+      onClick={() => {
+        removeFavouriteVenue(dataID, userID).then((data) => {
+          const result = JSON.parse(data);
+          if (result.error) {
+            console.error(result.message);
+            window.alert(result.message);
+            return;
+          }
+          setIsFavourite(false);
+        });
+      }}
+    />
+  ) : (
+    <FaRegHeart
+      onClick={() => {
+        addFavouriteVenue(dataID, userID).then((data) => {
+          const result = JSON.parse(data);
+          if (result.error) {
+            console.error(result.message);
+            window.alert(result.message);
+            return;
+          }
+          setIsFavourite(true);
+        });
       }}
     />
   );
@@ -61,10 +74,26 @@ export default function Home() {
   });
   const [favoriteData, setFavoriteData] = useState<Object[] | null>(null);
 
-  const eventKeyMap: { [key: string]: string } = {
-    "@_id": "ID",
-    venueURL: "Location",
-    "@_eventCount": "Number of Events",
+  const eventKeyMap: {
+    [key: string]: {
+      label: string;
+      type: string;
+      sortKey?: string;
+    };
+  } = {
+    "@_id": {
+      label: "ID",
+      type: "string",
+    },
+    venueURL: {
+      label: "Location",
+      type: "link",
+      sortKey: "venuee",
+    },
+    "@_eventCount": {
+      label: "Number of Events",
+      type: "number",
+    },
   };
 
   const modifiedEventData = eventData?.map((event: Record<string, any>) => {
@@ -107,48 +136,72 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
-      {/* filters 1. gps meter - latitude,longitude(slider)  2. venuee(input) 3.Catagory (contain specific words like 2)  */}
-      <h1>Events</h1>
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={filterSettings.gpsMeter}
-        onChange={(e) =>
-          setFilterSettings({
-            ...filterSettings,
-            gpsMeter: parseInt(e.target.value),
-          })
-        }
-      />
-      <input
-        type="text"
-        placeholder="Search by venue"
-        value={filterSettings.venue}
-        onChange={(e) =>
-          setFilterSettings({ ...filterSettings, venue: e.target.value })
-        }
-      />
-      <select
-        value={filterSettings.category}
-        onChange={(e) =>
-          setFilterSettings({ ...filterSettings, category: e.target.value })
-        }
-      >
-        <option value="">All</option>
-        {Object.entries(mostAppearWords)
-          .sort((a, b) => b[1] - a[1])
-          .slice(0, 4)
-          .map(
-            (word) =>
-              word[0] && (
-                <option key={word[0]} value={word[0]}>
-                  {word[0]}
-                </option>
-              )
-          )}
-      </select>
+      <h1>Locations</h1>
+      <div className={styles.filter}>
+        <div className={styles.selections}>
+          <Box sx={{ width: "30%", minWidth: "100px" }}>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Category"
+                value={filterSettings.category}
+                onChange={(e) =>
+                  setFilterSettings({
+                    ...filterSettings,
+                    category: e.target.value,
+                  })
+                }
+                defaultValue=""
+              >
+                <MenuItem value="">All</MenuItem>
+                {Object.entries(mostAppearWords)
+                  .sort((a, b) => b[1] - a[1])
+                  .slice(0, 4)
+                  .map(
+                    (word) =>
+                      word[0] && (
+                        <MenuItem key={word[0]} value={word[0]}>
+                          {word[0]}
+                        </MenuItem>
+                      )
+                  )}
+              </Select>
+            </FormControl>
+          </Box>
+          <TextField
+            id="outlined-basic"
+            variant="outlined"
+            placeholder="Search by venue"
+            value={filterSettings.venue}
+            onChange={(e) =>
+              setFilterSettings({ ...filterSettings, venue: e.target.value })
+            }
+          />
+        </div>
 
+        <Box sx={{ width: "10%", minWidth: "250px" }}>
+          <Slider
+            aria-label="Always visible"
+            defaultValue={80}
+            step={5}
+            marks={[
+              { value: 0, label: "All" },
+              { value: 10, label: "1km" },
+              { value: 50, label: "5km" },
+              { value: 100, label: "10km" },
+            ]}
+            value={filterSettings.gpsMeter}
+            onChange={(_, value) =>
+              setFilterSettings({
+                ...filterSettings,
+                gpsMeter: Array.isArray(value) ? value[0] : value,
+              })
+            }
+          />
+        </Box>
+      </div>
       <EventTable
         mapTable={eventKeyMap}
         eventDataArray={eventDataArray.filter((event) => {
@@ -177,7 +230,7 @@ export default function Home() {
           return true;
         })}
         setEventData={setEventData}
-        actionColumnTitle={"Add to Favourite"}
+        actionColumnTitle={"Favourite"}
         renderActionColumn={
           favoriteData
             ? (data: Record<string, any>) => {
@@ -189,7 +242,7 @@ export default function Home() {
                   />
                 );
               }
-            : () => <>Loading</>
+            : () => <CircularProgress size={14} />
         }
       />
     </div>

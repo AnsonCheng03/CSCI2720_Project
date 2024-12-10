@@ -1,10 +1,10 @@
 "use server";
 
+import mongoose from "mongoose";
 import { connectToMongoDB } from "../db";
 import Event from "../Model/Events";
 import Venue from "../Model/Venue";
 import User from "../Model/User";
-import mongoose from "mongoose";
 
 export async function uploadData(data: any) {
   await connectToMongoDB();

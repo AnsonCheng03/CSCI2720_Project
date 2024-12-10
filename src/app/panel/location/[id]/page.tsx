@@ -6,14 +6,51 @@ import {
   InfoWindow,
   Map,
 } from "@vis.gl/react-google-maps";
-import { useRouter } from "next/compat/router";
-import { use, useEffect, useState } from "react";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { FaLongArrowAltDown } from "react-icons/fa";
+import { useEffect, useState } from "react";
 import { useEventContext } from "../../EventProvider/context";
+import styles from "./page.module.css";
 import { createComment } from "@/app/DatabaseProvider/Mutation/Comment";
 import {
   addCommentToVenue,
   getVenueComments,
 } from "@/app/DatabaseProvider/Mutation/Venue";
+
+const Marker = ({ position, title, url }: any) => {
+  const [markerRef, markerObj] = useAdvancedMarkerRef();
+  return (
+    <div>
+      <AdvancedMarker
+        position={position}
+        title={title}
+        clickable
+        ref={markerRef}
+      />
+      <InfoWindow anchor={markerObj}>
+        <a
+          style={{
+            color: "black",
+            backgroundColor: "white",
+          }}
+          href={url}
+        >
+          {title}
+        </a>
+      </InfoWindow>
+    </div>
+  );
+};
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;
@@ -27,6 +64,11 @@ export default function Page({ params }: { params: { id: string } }) {
   const selectedVenue = venueData?.filter(
     (venue: any) => venue["@_id"] == params.id
   );
+
+  useEffect(() => {
+    if (!params.id || !selectedVenue || selectedVenue.length == 0) return;
+    getComments();
+  }, []);
 
   if (selectedVenue?.length == 0) {
     return <p>Location Not found</p>;
@@ -84,15 +126,11 @@ export default function Page({ params }: { params: { id: string } }) {
     setComments(response);
   };
 
-  useEffect(() => {
-    getComments();
-  }, []);
-
   return (
-    <>
+    <div className={styles.page}>
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
         <Map
-          style={{ width: "100vw", height: "50vh" }}
+          className={styles.map}
           defaultCenter={markerDetails[0]?.position}
           defaultZoom={10}
           gestureHandling={"greedy"}
@@ -100,79 +138,109 @@ export default function Page({ params }: { params: { id: string } }) {
           mapId={"venueMap"}
         >
           {markerDetails.map((marker, index) => {
-            const [markerRef, markerObj] = useAdvancedMarkerRef();
-            return (
-              <div key={index}>
-                <AdvancedMarker
-                  position={marker.position}
-                  title={marker.title}
-                  clickable
-                  ref={markerRef}
-                />
-                <InfoWindow anchor={markerObj}>
-                  <a
-                    style={{
-                      color: "black",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    {marker.title}
-                  </a>
-                </InfoWindow>
-              </div>
-            );
+            return <Marker key={index} {...marker} />;
           })}
         </Map>
       </APIProvider>
       {/* // Location Details */}
-      <div>
-        {selectedVenue?.map((venue: any, index: number) => {
-          return (
-            <div key={index}>
-              <h2>{venue.venuee}</h2>
-              {Object.entries(venue).map(([key, value]: [string, any]) => {
-                return (
-                  <div key={key}>
-                    {typeof value === "string" && (
-                      <>
-                        <b>{key}</b>: {value}
-                      </>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          );
-        })}
-      </div>
-      {/* // Show Comments */}
-      <div>
-        <h2>Comments</h2>
-        {comments ? (
-          comments.map((comment, index) => {
+      <div className={styles.locationDetails}>
+        <div className={styles.locationHeader}>
+          {selectedVenue?.map((venue: any, index: number) => {
             return (
               <div key={index}>
-                <h3>{comment.userName}</h3>
-                <p>{comment.content}</p>
+                <h3>{venue.venuee}</h3>
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<FaLongArrowAltDown />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography>Location Details</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      {Object.entries(venue).map(
+                        ([key, value]: [string, any]) => {
+                          return (
+                            <div key={key}>
+                              {typeof value === "string" && (
+                                <>
+                                  <b>{key}</b>: {value}
+                                </>
+                              )}
+                            </div>
+                          );
+                        }
+                      )}
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
               </div>
             );
-          })
-        ) : (
-          <p>Loading...</p>
-        )}
+          })}
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<FaLongArrowAltDown />}
+              aria-controls="panel2-content"
+              id="panel2-header"
+            >
+              <Typography>Comments</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                {comments ? (
+                  comments.length == 0 ? (
+                    <p>No comments yet, be the first to comment</p>
+                  ) : (
+                    comments.map((comment, index) => {
+                      return (
+                        <div key={index} className={styles.comment}>
+                          <p className={styles.commentUser}>
+                            {comment.userName}
+                          </p>
+                          <p>{comment.content}</p>
+                        </div>
+                      );
+                    })
+                  )
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: 2,
+                    }}
+                  >
+                    <CircularProgress />
+                  </Box>
+                )}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        </div>
+
+        <div>
+          <h3>Add Comment</h3>
+          <form
+            className={styles.commentForm}
+            onSubmit={(e) => {
+              submitComment(e);
+            }}
+          >
+            <TextField
+              placeholder="Comment"
+              name="comment"
+              multiline
+              fullWidth
+              minRows={5}
+            />
+            <Button type="submit" variant="contained" className={styles.submit}>
+              Submit
+            </Button>
+          </form>
+        </div>
       </div>
-      {/* // Add Comment */}
-      <div>
-        <h2>Add Comment</h2>
-        <form
-          onSubmit={(e) => {
-            submitComment(e);
-          }}
-        >
-          <textarea placeholder="Comment" name="comment" />
-          <button type="submit">Submit</button>
-        </form>
-      </div>
-    </>
+    </div>
   );
 }

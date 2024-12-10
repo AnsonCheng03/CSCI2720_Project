@@ -1,10 +1,11 @@
 "use client";
-import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
-import { EventTable } from "../EventProvider/eventDataStruct";
+import { useState } from "react";
+import { Alert, Button } from "@mui/material";
+import { useEventContext } from "../EventProvider/context";
+import { EventList } from "../EventProvider/eventList";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";
-import { useEffect, useState } from "react";
-import { useEventContext } from "../EventProvider/context";
+import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
 
 export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =
@@ -88,30 +89,39 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <h1>Download Event</h1>
-      <button className={styles.button} onClick={handleDownload}>
-        Download
-      </button>
-      <button className={styles.button} onClick={deleteAll}>
-        Delete All
-      </button>
-      <EventTable
-        mapTable={eventKeyMap}
-        eventDataArray={events}
-        setEventData={setEvents}
-        actionColumnTitle={"Add to database"}
-        renderActionColumn={(event) => (
-          <button
-            onClick={() => {
-              handleAddToDatabase({
-                ...event,
-                fromDownload: true,
-              });
-            }}
-          >
-            Add
-          </button>
-        )}
-      />
+      <div className={styles.buttons}>
+        <Button onClick={handleDownload} variant="contained">
+          {events.length == 0 ? "Download" : "Refresh"}
+        </Button>
+        <Button onClick={deleteAll} variant="contained" color="error">
+          Delete All
+        </Button>
+      </div>
+      {events.length == 0 ? (
+        <Alert variant="filled" severity="info">
+          Click the download button to get events
+        </Alert>
+      ) : (
+        <EventList
+          mapTable={eventKeyMap}
+          eventDataArray={events}
+          setEventData={setEvents}
+          actionColumnTitle={"Add to database"}
+          renderActionColumn={(event) => (
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleAddToDatabase({
+                  ...event,
+                  fromDownload: true,
+                });
+              }}
+            >
+              Add
+            </Button>
+          )}
+        />
+      )}
     </div>
   );
 }

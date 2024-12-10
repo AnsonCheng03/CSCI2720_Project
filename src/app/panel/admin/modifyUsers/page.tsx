@@ -1,15 +1,18 @@
 "use client";
 
-import Link from "next/link";
 import bcrypt from "bcrypt-nodejs";
-import { useEventContext } from "../../EventProvider/context";
-import styles from "./page.module.css";
-import {
-  createUsers,
-  getUsers,
-  modifyUsers,
-} from "@/app/DatabaseProvider/Mutation/User";
 import { useEffect, useRef, useState } from "react";
+import {
+  Button,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
+import styles from "./page.module.css";
+import { getUsers, modifyUsers } from "@/app/DatabaseProvider/Mutation/User";
 
 export default function Home() {
   const [userList, setUserList] = useState<any[] | null>(null);
@@ -41,24 +44,6 @@ export default function Home() {
       role: formData.get("role") as string,
     };
 
-    if (
-      !event._id ||
-      !event.userName ||
-      !event.password ||
-      !event.password2 ||
-      !event.role
-    ) {
-      window.alert("Please fill out all fields");
-      return;
-    }
-
-    // Do not override original event object with empty strings
-    Object.keys(event).forEach((key) => {
-      if (event[key] === "") {
-        event[key] = undefined;
-      }
-    });
-
     if (type === "modify") {
       updateData(event);
     } else if (type === "delete") {
@@ -77,6 +62,24 @@ export default function Home() {
   };
 
   const updateData = async (event: any) => {
+    if (
+      !event._id ||
+      !event.userName ||
+      !event.password ||
+      !event.password2 ||
+      !event.role
+    ) {
+      window.alert("Please fill out all fields");
+      return;
+    }
+
+    // Do not override original event object with empty strings
+    Object.keys(event).forEach((key) => {
+      if (event[key] === "") {
+        event[key] = undefined;
+      }
+    });
+
     if (event.password !== event.password2) {
       console.error("Passwords do not match");
       window.alert("Passwords do not match");
@@ -96,50 +99,83 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.header}>
+        <h2>Modify User</h2>
+      </div>
       {userList === null ? (
-        <div>Loading...</div>
+        <form>
+          <CircularProgress />
+        </form>
       ) : (
         <form onSubmit={(e) => e.preventDefault()} ref={form}>
-          <label>
-            Original Username
-            <select name="originalUsername">
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">
+              Original Username
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Original Username"
+              name="originalUsername"
+              fullWidth
+            >
               {userList.map((user: any) => (
-                <option key={user._id} value={user._id}>
+                <MenuItem key={user._id} value={user._id}>
                   {user.userName}
-                </option>
+                </MenuItem>
               ))}
-            </select>
-          </label>
-          <br />
-          <label>
-            Username
-            <input type="text" name="username" />
-          </label>
-          <br />
-          <label>
-            Password
-            <input type="password" name="password" />
-          </label>
-          <br />
-          <label>
-            Enter Password Again
-            <input type="password" name="password2" />
-          </label>
-          <br />
-          <label>
-            Role
-            <select name="role">
-              <option value="user">Normal User</option>
-              <option value="admin">Admin</option>
-            </select>
-          </label>
-          <br />
-          <button type="submit" onClick={() => handleSubmit("modify")}>
+            </Select>
+          </FormControl>
+          <TextField
+            required
+            id="standard-required"
+            label="Username"
+            name="username"
+            fullWidth
+          />
+          <TextField
+            required
+            id="standard-required"
+            label="Password"
+            name="password"
+            type="password"
+            fullWidth
+          />
+          <TextField
+            required
+            id="standard-required"
+            label="Enter Password Again"
+            name="password2"
+            type="password"
+            fullWidth
+          />
+          <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Role</InputLabel>
+            <Select
+              labelId="demo-simple-select-label"
+              id="demo-simple-select"
+              label="Role"
+              name="role"
+              defaultValue="user"
+            >
+              <MenuItem value="user">Normal User</MenuItem>
+              <MenuItem value="admin">Admin</MenuItem>
+            </Select>
+          </FormControl>
+          <Button
+            type="submit"
+            variant="contained"
+            onClick={() => handleSubmit("modify")}
+          >
             Modify User
-          </button>
-          <button type="button" onClick={() => handleSubmit("delete")}>
+          </Button>
+          <Button
+            type="button"
+            variant="contained"
+            onClick={() => handleSubmit("delete")}
+          >
             Delete User
-          </button>
+          </Button>
         </form>
       )}
     </div>

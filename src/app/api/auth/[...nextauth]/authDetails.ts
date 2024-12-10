@@ -1,10 +1,10 @@
+import bcrypt from "bcrypt-nodejs";
+import CredentialsProvider from "next-auth/providers/credentials";
 import {
   checkNoOfAdmins,
   createUsers,
   userLogin,
 } from "@/app/DatabaseProvider/Mutation/User";
-import bcrypt from "bcrypt-nodejs";
-import CredentialsProvider from "next-auth/providers/credentials";
 
 export const authOptions = {
   session: { strategy: "jwt" },
@@ -15,7 +15,7 @@ export const authOptions = {
         username: { label: "Username", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
         const user = JSON.parse(await userLogin(credentials));
@@ -67,5 +67,10 @@ export const authOptions = {
       session.user.role = token.role;
       return session;
     },
+  },
+  pages: {
+    signIn: "/",
+    signOut: "/",
+    error: "/", // Error code passed in query string as ?error=
   },
 } as any;

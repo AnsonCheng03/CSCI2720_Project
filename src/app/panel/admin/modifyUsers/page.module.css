@@ -1,0 +1,38 @@
+.page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  gap: 20px;
+  margin: 20px auto auto auto;
+}
+
+.page form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  width: 100%;
+  max-width: 500px;
+  height: 100%;
+  gap: 20px;
+  margin: 20px auto auto auto;
+}
+
+.page form p {
+  font-size: 0.8rem;
+  font-weight: 100;
+  text-align: right;
+  color: var(--color-primary);
+}

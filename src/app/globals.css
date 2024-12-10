@@ -1,27 +1,57 @@
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* https://www.realtimecolors.com/?colors=f1f4f0-050604-708a66-3f554c-4e6a65&fonts=Inter-Inter */
+@import url("https://fonts.googleapis.com/css?family=Plus%20Jakarta%20Sans:700|Plus%20Jakarta%20Sans:400");
 
 html,
 body {
   max-width: 100vw;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
+  overscroll-behavior: none;
+}
+
+html {
+  font-size: 100%;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Plus Jakarta Sans", Arial, Helvetica, sans-serif;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "Plus Jakarta Sans";
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 3.366rem; /* 53.92px */
+}
+
+h2 {
+  font-size: 2.525rem; /* 40.32px */
+}
+
+h3 {
+  font-size: 1.894rem; /* 30.24px */
+}
+
+h4 {
+  font-size: 1.421rem; /* 22.72px */
+}
+
+h5 {
+  font-size: 1.066rem; /* 17.12px */
+}
+
+small {
+  font-size: 0.6rem; /* 9.6px */
 }
 
 * {

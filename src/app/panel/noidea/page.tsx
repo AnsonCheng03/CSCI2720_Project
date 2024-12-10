@@ -1,13 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { useEventContext } from "../EventProvider/context";
-import { EventTable } from "../EventProvider/eventDataStruct";
+import { EventList } from "../EventProvider/eventList";
 import styles from "./page.module.css";
-import { joinEvent, likeEvent } from "@/app/DatabaseProvider/Mutation/Event";
 
 export default function Home() {
-  const { session, eventData, setEventData } = useEventContext();
+  const { eventData } = useEventContext();
   const [events, setEvents] = useState<any>(eventData);
   const [filterSettings, setFilterSettings] = useState({
     VenuePreference: "",
@@ -33,42 +40,47 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <h1>Suggestions</h1>
-      <label>
-        My Preference:
-        <select
-          onChange={(e) =>
-            setFilterSettings({
-              ...filterSettings,
-              VenuePreference: e.target.value,
-            })
+      <div className={styles.filter}>
+        <FormControl sx={{ width: "30%", minWidth: "300px" }}>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            value={filterSettings.VenuePreference}
+            onChange={(e) =>
+              setFilterSettings({
+                ...filterSettings,
+                VenuePreference: e.target.value,
+              })
+            }
+            label="My Preference"
+          >
+            <MenuItem value="">All</MenuItem>
+            {allVenues?.map((venue: string) => (
+              <MenuItem key={venue} value={venue}>
+                {venue}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControlLabel
+          label="From Government"
+          control={
+            <Checkbox
+              onChange={(e) =>
+                setFilterSettings({
+                  ...filterSettings,
+                  fromDownloaded: e.target.checked,
+                })
+              }
+              checked={filterSettings.fromDownloaded}
+            />
           }
-          value={filterSettings.VenuePreference}
-        >
-          <option value="">All</option>
-          {allVenues?.map((venue: string) => (
-            <option value={venue}>{venue}</option>
-          ))}
-        </select>
-      </label>
-      <label>
-        From Government:
-        <input
-          type="checkbox"
-          onChange={(e) =>
-            setFilterSettings({
-              ...filterSettings,
-              fromDownloaded: e.target.checked,
-            })
-          }
-          checked={filterSettings.fromDownloaded}
         />
-      </label>
-      <EventTable
+      </div>
+      <EventList
         mapTable={eventKeyMap}
         eventDataArray={events
           ?.sort(() => Math.random() - 0.5)
           .filter((event: Record<string, any>) => {
-            // console.log(event, event?.venueid?.venuee, event?.fromDownload);
             if (
               filterSettings.VenuePreference &&
               event.venueid?.venuee !== filterSettings.VenuePreference
@@ -80,7 +92,6 @@ export default function Home() {
           })
           .slice(0, 2)
           .map((event: Record<string, any>) => {
-            console.log(event);
             const newEvent = {
               ...event,
               venueid: {

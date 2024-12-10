@@ -19,6 +19,11 @@ export function LoginProviderElement({
 }
 
 export function useSessionContext() {
+  if (!SessionContext) {
+    throw new Error(
+      "useSessionContext must be used within a SessionContext (LoginProvider)"
+    );
+  }
   const context = useContext(SessionContext);
   if (!context) {
     throw new Error("useSessionContext must be used within a SessionContext");

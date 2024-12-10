@@ -1,6 +1,5 @@
 "use server";
 
-import mongoose from "mongoose";
 import { connectToMongoDB } from "../db";
 import Comment from "../Model/Comment";
 

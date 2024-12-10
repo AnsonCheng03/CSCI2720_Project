@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 import { useEventContext } from "./context";
 import styles from "./page.module.css";
-import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
 import { downloadVenueData } from "./downloadVenueData";
+import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
 import { handleVenueData } from "@/app/DatabaseProvider/Mutation/Venue";
 
 export default function DownloadEventPage() {
@@ -36,7 +37,7 @@ export default function DownloadEventPage() {
         setVenueData(
           outputVenue.map(
             // get event count for each venue
-            (v: any, i: number) => {
+            (v: any) => {
               return {
                 ...v,
                 "@_eventCount": data?.filter((doc: any) => {
@@ -56,5 +57,9 @@ export default function DownloadEventPage() {
     });
   }, []);
 
-  return <div className={styles.page}>Downloading...</div>;
+  return (
+    <div className={styles.page}>
+      <CircularProgress />
+    </div>
+  );
 }

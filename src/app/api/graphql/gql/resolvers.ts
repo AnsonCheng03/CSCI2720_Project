@@ -1,7 +1,6 @@
 import { InferResolvers } from "garph";
 import { YogaInitialContext } from "graphql-yoga";
 import { queryType } from "./schema";
-import { VenueGQL, UserGQL, EventGQL, CommentGQL } from "./schema";
 import { getUsers } from "@/app/DatabaseProvider/Mutation/User";
 import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
 import { downloadVenueData } from "@/app/DatabaseProvider/Mutation/Venue";
@@ -18,7 +17,6 @@ export const resolvers: Resolvers = {
   Query: {
     getVenues: async (_, __, ctx) => {
       const venues = await downloadVenueData();
-      console.log(venues);
       return JSON.parse(venues);
     },
     getUsers: async (_, __, ctx) => {
