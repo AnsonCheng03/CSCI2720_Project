@@ -84,10 +84,7 @@ export const EventTable = ({
 
   interface EnhancedTableProps {
     numSelected: number;
-    onRequestSort: (
-      event: React.MouseEvent<unknown>,
-      property: keyof typeof headCells
-    ) => void;
+    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
@@ -104,8 +101,7 @@ export const EventTable = ({
       onRequestSort,
     } = props;
     const createSortHandler =
-      (property: keyof typeof headCells) =>
-      (event: React.MouseEvent<unknown>) => {
+      (property: string) => (event: React.MouseEvent<unknown>) => {
         onRequestSort(event, property);
       };
 
@@ -197,9 +193,7 @@ export const EventTable = ({
   }
 
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState(
-    headCells[0].id as keyof typeof headCells
-  );
+  const [orderBy, setOrderBy] = React.useState<any>(headCells[0].id);
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
@@ -207,7 +201,7 @@ export const EventTable = ({
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: keyof typeof headCells | string
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
