@@ -139,7 +139,7 @@ export default function Home() {
       <h1>Locations</h1>
       <div className={styles.filter}>
         <div className={styles.selections}>
-          <Box sx={{ width: "30%", minWidth: "100px" }}>
+          <Box sx={{ minWidth: "100px" }}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Category</InputLabel>
               <Select

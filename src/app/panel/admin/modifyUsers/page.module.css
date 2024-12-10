@@ -36,3 +36,10 @@
   text-align: right;
   color: var(--color-primary);
 }
+
+@media (max-width: 800px) {
+  .page {
+    grid-template-columns: 1fr;
+    padding: 20px;
+  }
+}
