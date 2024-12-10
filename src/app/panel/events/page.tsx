@@ -64,7 +64,6 @@ const BookingButton = ({
             window.alert(result.message);
             return;
           }
-          console.log(result);
           setIsBooked(result["@_joinAction"]);
         });
       }}
@@ -96,7 +95,6 @@ export default function Home() {
       <EventList
         mapTable={eventKeyMap}
         eventDataArray={events?.map((event: Record<string, any>) => {
-          console.log(event);
           const newEvent = {
             ...event,
             venueid: {

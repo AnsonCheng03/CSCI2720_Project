@@ -73,9 +73,8 @@ export const EventList = ({
     <div className={styles.page}>
       {visibleRows?.map((data: { [key: string]: any }, index: number) => {
         return (
-          <div className={styles.eventRow} key={index}>
+          <div className={styles.eventRow} key={index + data["@_id"]}>
             {Object.keys(mapTable).map((key: string) => {
-              console.log(key, data);
               const value = data[key as keyof typeof data];
               return (
                 <div className={styles.eventContainer} key={key + index}>

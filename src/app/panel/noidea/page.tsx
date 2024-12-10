@@ -80,7 +80,6 @@ export default function Home() {
         eventDataArray={events
           ?.sort(() => Math.random() - 0.5)
           .filter((event: Record<string, any>) => {
-            // console.log(event, event?.venueid?.venuee, event?.fromDownload);
             if (
               filterSettings.VenuePreference &&
               event.venueid?.venuee !== filterSettings.VenuePreference
@@ -92,7 +91,6 @@ export default function Home() {
           })
           .slice(0, 2)
           .map((event: Record<string, any>) => {
-            console.log(event);
             const newEvent = {
               ...event,
               venueid: {

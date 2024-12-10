@@ -17,7 +17,6 @@ export const resolvers: Resolvers = {
   Query: {
     getVenues: async (_, __, ctx) => {
       const venues = await downloadVenueData();
-      console.log(venues);
       return JSON.parse(venues);
     },
     getUsers: async (_, __, ctx) => {

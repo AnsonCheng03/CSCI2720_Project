@@ -114,7 +114,7 @@ export const EventTable = ({
           {headCells.map((headCell) => (
             <TableCell
               key={headCell.id}
-              align={headCell.numeric ? "right" : "left"}
+              // align={headCell.numeric ? "right" : "left"}
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
             >
@@ -196,11 +196,11 @@ export const EventTable = ({
           <TableBody>
             {visibleRows?.map((data: { [key: string]: any }, index: number) => {
               return (
-                <TableRow key={index}>
+                <TableRow key={index + data["@_id"]}>
                   {Object.keys(mapTable).map((key: string) => {
                     const value = data[key as keyof typeof data];
                     return (
-                      <TableCell key={key} align="left">
+                      <TableCell key={key}>
                         {typeof value === "object" ? (
                           <Link href={value.url || ""}>{value.name}</Link>
                         ) : (
