@@ -6,7 +6,18 @@ import {
   InfoWindow,
   Map,
 } from "@vis.gl/react-google-maps";
-import { Divider, TextField } from "@mui/material";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  CircularProgress,
+  Divider,
+  TextField,
+  Typography,
+} from "@mui/material";
+import { FaLongArrowAltDown } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { useEventContext } from "../../EventProvider/context";
 import styles from "./page.module.css";
@@ -133,47 +144,86 @@ export default function Page({ params }: { params: { id: string } }) {
       </APIProvider>
       {/* // Location Details */}
       <div className={styles.locationDetails}>
-        <div>
+        <div className={styles.locationHeader}>
           {selectedVenue?.map((venue: any, index: number) => {
             return (
               <div key={index}>
                 <h3>{venue.venuee}</h3>
-                {Object.entries(venue).map(([key, value]: [string, any]) => {
-                  return (
-                    <div key={key}>
-                      {typeof value === "string" && (
-                        <>
-                          <b>{key}</b>: {value}
-                        </>
+                <Accordion>
+                  <AccordionSummary
+                    expandIcon={<FaLongArrowAltDown />}
+                    aria-controls="panel1-content"
+                    id="panel1-header"
+                  >
+                    <Typography>Location Details</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      {Object.entries(venue).map(
+                        ([key, value]: [string, any]) => {
+                          return (
+                            <div key={key}>
+                              {typeof value === "string" && (
+                                <>
+                                  <b>{key}</b>: {value}
+                                </>
+                              )}
+                            </div>
+                          );
+                        }
                       )}
-                    </div>
-                  );
-                })}
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
               </div>
             );
           })}
+
+          <Accordion>
+            <AccordionSummary
+              expandIcon={<FaLongArrowAltDown />}
+              aria-controls="panel2-content"
+              id="panel2-header"
+            >
+              <Typography>Comments</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography>
+                {comments ? (
+                  comments.length == 0 ? (
+                    <p>No comments yet, be the first to comment</p>
+                  ) : (
+                    comments.map((comment, index) => {
+                      return (
+                        <div key={index} className={styles.comment}>
+                          <p className={styles.commentUser}>
+                            {comment.userName}
+                          </p>
+                          <p>{comment.content}</p>
+                        </div>
+                      );
+                    })
+                  )
+                ) : (
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "center",
+                      margin: 2,
+                    }}
+                  >
+                    <CircularProgress />
+                  </Box>
+                )}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
         </div>
-        <Divider flexItem />
-        <div>
-          <h3>Comments</h3>
-          {comments ? (
-            comments.map((comment, index) => {
-              return (
-                <div key={index}>
-                  <h3>{comment.userName}</h3>
-                  <p>{comment.content}</p>
-                </div>
-              );
-            })
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
-        <Divider flexItem />
 
         <div>
           <h3>Add Comment</h3>
           <form
+            className={styles.commentForm}
             onSubmit={(e) => {
               submitComment(e);
             }}
@@ -183,8 +233,11 @@ export default function Page({ params }: { params: { id: string } }) {
               name="comment"
               multiline
               fullWidth
+              minRows={5}
             />
-            <button type="submit">Submit</button>
+            <Button type="submit" variant="contained" className={styles.submit}>
+              Submit
+            </Button>
           </form>
         </div>
       </div>
