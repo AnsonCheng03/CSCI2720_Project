@@ -4,10 +4,9 @@ import { useState } from "react";
 import { useEventContext } from "../EventProvider/context";
 import { EventTable } from "../EventProvider/eventDataStruct";
 import styles from "./page.module.css";
-import { joinEvent, likeEvent } from "@/app/DatabaseProvider/Mutation/Event";
 
 export default function Home() {
-  const { session, eventData, setEventData } = useEventContext();
+  const { eventData } = useEventContext();
   const [events, setEvents] = useState<any>(eventData);
   const [filterSettings, setFilterSettings] = useState({
     VenuePreference: "",
@@ -46,7 +45,9 @@ export default function Home() {
         >
           <option value="">All</option>
           {allVenues?.map((venue: string) => (
-            <option value={venue}>{venue}</option>
+            <option key={venue} value={venue}>
+              {venue}
+            </option>
           ))}
         </select>
       </label>

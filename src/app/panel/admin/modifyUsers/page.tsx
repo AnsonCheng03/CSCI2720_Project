@@ -1,15 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import bcrypt from "bcrypt-nodejs";
-import { useEventContext } from "../../EventProvider/context";
-import styles from "./page.module.css";
-import {
-  createUsers,
-  getUsers,
-  modifyUsers,
-} from "@/app/DatabaseProvider/Mutation/User";
 import { useEffect, useRef, useState } from "react";
+import styles from "./page.module.css";
+import { getUsers, modifyUsers } from "@/app/DatabaseProvider/Mutation/User";
 
 export default function Home() {
   const [userList, setUserList] = useState<any[] | null>(null);

@@ -4,7 +4,6 @@ import {
   CssBaseline,
   responsiveFontSizes,
   ThemeProvider,
-  useColorScheme,
   useMediaQuery,
 } from "@mui/material";
 import {

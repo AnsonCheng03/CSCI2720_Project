@@ -37,7 +37,7 @@ export default function DownloadEventPage() {
         setVenueData(
           outputVenue.map(
             // get event count for each venue
-            (v: any, i: number) => {
+            (v: any) => {
               return {
                 ...v,
                 "@_eventCount": data?.filter((doc: any) => {

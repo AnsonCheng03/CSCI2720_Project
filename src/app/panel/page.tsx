@@ -1,15 +1,7 @@
 "use client";
 
-import { Key, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getDistance } from "geolib";
-import { useEventContext } from "./EventProvider/context";
-import { EventTable } from "./EventProvider/eventDataStruct";
-import styles from "./page.module.css";
-import {
-  addFavouriteVenue,
-  getFavouriteVenues,
-  removeFavouriteVenue,
-} from "../DatabaseProvider/Mutation/User";
 import {
   Box,
   FormControl,
@@ -19,6 +11,14 @@ import {
   Slider,
   TextField,
 } from "@mui/material";
+import {
+  addFavouriteVenue,
+  getFavouriteVenues,
+  removeFavouriteVenue,
+} from "../DatabaseProvider/Mutation/User";
+import { useEventContext } from "./EventProvider/context";
+import { EventTable } from "./EventProvider/eventDataStruct";
+import styles from "./page.module.css";
 
 const AddToFavouriteButton = ({
   dataID,

@@ -6,16 +6,40 @@ import {
   InfoWindow,
   Map,
 } from "@vis.gl/react-google-maps";
-import { useRouter } from "next/compat/router";
-import { use, useEffect, useState } from "react";
+import { Divider, TextField } from "@mui/material";
+import { useEffect, useState } from "react";
 import { useEventContext } from "../../EventProvider/context";
+import styles from "./page.module.css";
 import { createComment } from "@/app/DatabaseProvider/Mutation/Comment";
 import {
   addCommentToVenue,
   getVenueComments,
 } from "@/app/DatabaseProvider/Mutation/Venue";
-import styles from "./page.module.css";
-import { Divider, TextField } from "@mui/material";
+
+const Marker = ({ position, title, url }: any) => {
+  const [markerRef, markerObj] = useAdvancedMarkerRef();
+  return (
+    <div>
+      <AdvancedMarker
+        position={position}
+        title={title}
+        clickable
+        ref={markerRef}
+      />
+      <InfoWindow anchor={markerObj}>
+        <a
+          style={{
+            color: "black",
+            backgroundColor: "white",
+          }}
+          href={url}
+        >
+          {title}
+        </a>
+      </InfoWindow>
+    </div>
+  );
+};
 
 export default function Page({ params }: { params: { id: string } }) {
   // return <p>Post: {params.id}</p>;
@@ -29,6 +53,11 @@ export default function Page({ params }: { params: { id: string } }) {
   const selectedVenue = venueData?.filter(
     (venue: any) => venue["@_id"] == params.id
   );
+
+  useEffect(() => {
+    if (!params.id || !selectedVenue || selectedVenue.length == 0) return;
+    getComments();
+  }, []);
 
   if (selectedVenue?.length == 0) {
     return <p>Location Not found</p>;
@@ -86,10 +115,6 @@ export default function Page({ params }: { params: { id: string } }) {
     setComments(response);
   };
 
-  useEffect(() => {
-    getComments();
-  }, []);
-
   return (
     <div className={styles.page}>
       <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""}>
@@ -102,27 +127,7 @@ export default function Page({ params }: { params: { id: string } }) {
           mapId={"venueMap"}
         >
           {markerDetails.map((marker, index) => {
-            const [markerRef, markerObj] = useAdvancedMarkerRef();
-            return (
-              <div key={index}>
-                <AdvancedMarker
-                  position={marker.position}
-                  title={marker.title}
-                  clickable
-                  ref={markerRef}
-                />
-                <InfoWindow anchor={markerObj}>
-                  <a
-                    style={{
-                      color: "black",
-                      backgroundColor: "white",
-                    }}
-                  >
-                    {marker.title}
-                  </a>
-                </InfoWindow>
-              </div>
-            );
+            return <Marker key={index} {...marker} />;
           })}
         </Map>
       </APIProvider>

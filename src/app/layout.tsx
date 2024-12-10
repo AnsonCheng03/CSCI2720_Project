@@ -6,9 +6,9 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 import { connectToMongoDB } from "./DatabaseProvider/db";
 import AppThemeProvider from "./context/AppThemeContext";
-import InitColorSchemeScript from "@mui/material/InitColorSchemeScript";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

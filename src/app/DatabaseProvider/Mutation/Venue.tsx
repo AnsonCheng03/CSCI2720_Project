@@ -2,7 +2,6 @@
 
 import { connectToMongoDB } from "../db";
 import Venue from "../Model/Venue";
-import Comment from "../Model/Comment";
 
 export async function insertORupdateVenue(data: any) {
   await connectToMongoDB();

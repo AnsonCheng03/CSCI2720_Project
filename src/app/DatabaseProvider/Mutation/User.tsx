@@ -1,10 +1,10 @@
 "use server";
 
 import mongoose from "mongoose";
+import bcrypt from "bcrypt-nodejs";
 import { connectToMongoDB } from "../db";
 import User from "../Model/User";
 import Venue from "../Model/Venue";
-import bcrypt from "bcrypt-nodejs";
 
 export async function createUsers(data: any) {
   await connectToMongoDB();

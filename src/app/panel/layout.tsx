@@ -1,9 +1,5 @@
-import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import { redirect } from "next/navigation";
-import EventProvider from "./EventProvider/context";
-import NavBar from "@/components/navBar/navBar";
 
 import { FaHome } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
@@ -15,6 +11,9 @@ import { RiAdminFill } from "react-icons/ri";
 
 import { FaRegUserCircle } from "react-icons/fa";
 import { IoLogOut } from "react-icons/io5";
+import EventProvider from "./EventProvider/context";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
+import NavBar from "@/components/navBar/navBar";
 
 const userNavItems = [
   { name: "Home", href: "/", icon: <FaHome /> },
