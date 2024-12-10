@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
-import { Button, Chip, Input } from "@mui/material";
+import { Button, Chip, Input, useColorScheme } from "@mui/material";
 import { useSessionContext } from "./context";
 import { FaUserShield } from "react-icons/fa";
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -13,6 +13,7 @@ import { useSearchParams } from "next/navigation";
 export function LoginBtn() {
   const sessionPromise = useSessionContext();
   const session = use(sessionPromise);
+  const { mode, systemMode, setMode } = useColorScheme();
 
   const searchParams = useSearchParams();
   const errorPrams = searchParams.get("error");
@@ -37,6 +38,19 @@ export function LoginBtn() {
           </Button>
           <Button className={styles.button} variant="outlined">
             <Link href="/panel">Go to panel</Link>
+          </Button>
+          <Button
+            className={styles.button}
+            onClick={() => {
+              document.documentElement.style.setProperty(
+                "color-scheme",
+                mode === "light" ? "dark" : "light"
+              );
+              setMode(mode === "light" ? "dark" : "light");
+            }}
+            variant="outlined"
+          >
+            Change to {mode === "light" ? "dark" : "light"} mode
           </Button>
         </div>
       </div>
