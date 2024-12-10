@@ -37,64 +37,33 @@ const AppThemeProvider = (props: any) => {
         },
         palette: {
           mode: mode,
-        },
-        colorSchemes: {
-          // https://mui.com/material-ui/customization/default-theme/?expand-path=$.palette
-          light: {
-            palette: {
-              primary: {
-                main: `#7f9975`,
-              },
-              secondary: {
-                main: `#aac0b7`,
-              },
-              error: {
-                main: `#ff0000`,
-              },
-              // warning: {
-              //   main: `#ff0000`,
-              // },
-              info: {
-                main: `#95b1ac`,
-              },
-              // success: {
-              //   main: `#7f9975`,
-              // },
-              background: {
-                default: `#fafbf9`,
-              },
-              text: {
-                primary: `#0c0f0b`,
-              },
-            },
+          primary: {
+            main: `#7f9975`,
+            light: `#7f9975`,
+            dark: `#708a66`,
           },
-          dark: {
-            palette: {
-              primary: {
-                main: `#708a66`,
-              },
-              secondary: {
-                main: `#3f554c`,
-              },
-              error: {
-                main: `#ff0000`,
-              },
-              // warning: {
-              //   main: `#ff0000`,
-              // },
-              info: {
-                main: `#95b1ac`,
-              },
-              // success: {
-              //   main: `#7f9975`,
-              // },
-              background: {
-                default: `#050604`,
-              },
-              text: {
-                primary: `#f1f4f0`,
-              },
-            },
+          secondary: {
+            main: `#aac0b7`,
+            light: `#aac0b7`,
+            dark: `#3f554c`,
+          },
+          error: {
+            main: `#ff0000`,
+          },
+          // warning: {
+          //   main: `#ff0000`,
+          // },
+          info: {
+            main: `#95b1ac`,
+          },
+          // success: {
+          //   main: `#7f9975`,
+          // },
+          background: {
+            default: mode === "light" ? `#fafbf9` : `#050604`,
+          },
+          text: {
+            primary: mode === "light" ? `#0c0f0b` : `#f1f4f0`,
           },
         },
       })
