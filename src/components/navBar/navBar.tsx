@@ -24,7 +24,7 @@ export default function NavBar({
           {navItems.map((item) => (
             <li key={item.href + item.name}>
               {item.href ? (
-                <Link href={item.href}>
+                <Link href={item.href} className={styles.link}>
                   <span className={styles.icon}>{item.icon}</span>
                   {item.name}
                 </Link>
@@ -42,7 +42,7 @@ export default function NavBar({
             {navFooterItems.map((item) => (
               <li key={item.href + item.name}>
                 {item.href ? (
-                  <Link href={item.href}>
+                  <Link href={item.href} className={styles.link}>
                     <span className={styles.icon}>{item.icon}</span>
                     {item.name}
                   </Link>

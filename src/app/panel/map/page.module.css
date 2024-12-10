@@ -1,6 +1,5 @@
 .page {
-  width: 100%;
-  height: calc(100vh - 52px);
+  height: calc(100vh);
   display: flex;
   justify-content: center;
   align-items: center;

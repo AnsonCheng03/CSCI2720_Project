@@ -4,6 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/navBar/navBar";
 import { Box, Tab, Tabs } from "@mui/material";
+import styles from "./page.module.css";
 import Link from "next/link";
 
 const navItems = [
@@ -34,17 +35,19 @@ export default async function RootLayout({
   }
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-        <Tabs aria-label="basic tabs example">
-          {navItems.map((item, index) => (
-            <Link key={index} href={item.href}>
-              <Tab key={index} label={item.name} {...a11yProps(index)} />
-            </Link>
-          ))}
-        </Tabs>
+    <div className={styles.page}>
+      <Box sx={{ width: "100%" }}>
+        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+          <Tabs aria-label="basic tabs example">
+            {navItems.map((item, index) => (
+              <Link key={index} href={item.href}>
+                <Tab key={index} label={item.name} {...a11yProps(index)} />
+              </Link>
+            ))}
+          </Tabs>
+        </Box>
+        {children}
       </Box>
-      {children}
-    </Box>
+    </div>
   );
 }
