@@ -1,7 +1,7 @@
 import Link from "next/link";
-import styles from "./page.module.css";
 import { JSX } from "react";
 import { Box } from "@mui/material";
+import styles from "./page.module.css";
 
 export default function NavBar({
   navItems,
