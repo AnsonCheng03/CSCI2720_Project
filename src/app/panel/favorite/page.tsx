@@ -74,10 +74,6 @@ export default function Home() {
       type: "link",
       sortKey: "venuee",
     },
-    "@_eventCount": {
-      label: "Number of Events",
-      type: "number",
-    },
   };
 
   const getFavouriteData = async () => {
@@ -109,6 +105,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <h1>Favourite</h1>
       {favoriteData ? (
         <EventTable
           mapTable={eventKeyMap}
