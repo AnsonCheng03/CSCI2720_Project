@@ -136,6 +136,7 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <h1>Locations</h1>
       <div className={styles.filter}>
         <div className={styles.selections}>
           <Box sx={{ width: "30%", minWidth: "100px" }}>
