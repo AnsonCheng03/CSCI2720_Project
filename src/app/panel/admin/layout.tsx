@@ -4,7 +4,7 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import { redirect } from "next/navigation";
 import NavBar from "@/components/navBar/navBar";
 import { Box, Tab, Tabs } from "@mui/material";
-import styles from "./page.module.css";
+import styles from "./layout.module.css";
 import Link from "next/link";
 
 const navItems = [
