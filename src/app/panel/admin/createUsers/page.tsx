@@ -1,8 +1,6 @@
 "use client";
 
-import Link from "next/link";
 import bcrypt from "bcrypt-nodejs";
-import { useEventContext } from "../../EventProvider/context";
 import styles from "./page.module.css";
 import { createUsers } from "@/app/DatabaseProvider/Mutation/User";
 

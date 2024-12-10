@@ -1,10 +1,10 @@
 "use client";
-import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
+import { useState } from "react";
 import { EventTable } from "../EventProvider/eventDataStruct";
+import { useEventContext } from "../EventProvider/context";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";
-import { useEffect, useState } from "react";
-import { useEventContext } from "../EventProvider/context";
+import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
 
 export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =

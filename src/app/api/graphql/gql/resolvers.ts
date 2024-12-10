@@ -1,7 +1,6 @@
 import { InferResolvers } from "garph";
 import { YogaInitialContext } from "graphql-yoga";
 import { queryType } from "./schema";
-import { VenueGQL, UserGQL, EventGQL, CommentGQL } from "./schema";
 import { getUsers } from "@/app/DatabaseProvider/Mutation/User";
 import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
 import { downloadVenueData } from "@/app/DatabaseProvider/Mutation/Venue";

@@ -1,11 +1,9 @@
-import { headers } from "next/headers";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import NavBar from "@/components/navBar/navBar";
 import { Box, Tab, Tabs } from "@mui/material";
 import styles from "./layout.module.css";
-import Link from "next/link";
+import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 
 const navItems = [
   { name: "Download Event", href: "/panel/admin" },

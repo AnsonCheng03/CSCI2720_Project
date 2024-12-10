@@ -164,7 +164,7 @@ export const EventTable = ({
   const [orderBy, setOrderBy] = React.useState<any>(headCells[0].id);
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(true);
+  const dense = true;
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (
@@ -230,8 +230,6 @@ export const EventTable = ({
             <TableBody>
               {visibleRows?.map(
                 (data: { [key: string]: any }, index: number) => {
-                  const isItemSelected = selected.includes(data.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
                   return (
                     <TableRow key={index}>
                       {Object.keys(mapTable).map((key: string) => {

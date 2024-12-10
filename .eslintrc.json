@@ -42,7 +42,7 @@
         ], // Override Airbnb configuration to restrict specific syntax
         "import/prefer-default-export": "off", // Allow named exports without preferring default exports
         "import/order": "warn", // Disable import order rule to avoid conflict with simple-import-sort
-        "no-unused-vars": "warn" // Disable unused variables rule (covered by unused-imports plugin)
+        "no-unused-vars": "off" // Disable unused variables rule (covered by unused-imports plugin)
       }
     }
   ]

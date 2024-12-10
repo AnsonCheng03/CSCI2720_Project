@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect } from "react";
+import { CircularProgress } from "@mui/material";
 import { useEventContext } from "./context";
 import styles from "./page.module.css";
-import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
 import { downloadVenueData } from "./downloadVenueData";
+import { downloadEventData } from "@/app/DatabaseProvider/Mutation/Event";
 import { handleVenueData } from "@/app/DatabaseProvider/Mutation/Venue";
-import { CircularProgress } from "@mui/material";
 
 export default function DownloadEventPage() {
   const { setEventData, setVenueData } = useEventContext();

@@ -72,7 +72,7 @@ const BookingButton = ({
 };
 
 export default function Home() {
-  const { session, eventData, setEventData } = useEventContext();
+  const { session, eventData } = useEventContext();
   const [events, setEvents] = useState<any>(eventData);
 
   const eventKeyMap: { [key: string]: string } = {

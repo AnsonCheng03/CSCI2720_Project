@@ -51,7 +51,7 @@ const AddToFavouriteButton = ({
 };
 
 export default function Home() {
-  const { session, venueData: rawEventData } = useEventContext();
+  const { session } = useEventContext();
   const [favoriteData, setFavoriteData] = useState<Object[] | null>(null);
 
   const eventKeyMap: { [key: string]: string } = {
@@ -92,9 +92,7 @@ export default function Home() {
       {favoriteData ? (
         <EventTable
           mapTable={eventKeyMap}
-          eventDataArray={favoriteData.filter((event) => {
-            return true;
-          })}
+          eventDataArray={favoriteData}
           setEventData={setFavoriteData}
           actionColumnTitle={"Add to Favourite"}
           renderActionColumn={(data: Record<string, any>) => {

@@ -6,14 +6,7 @@ import {
   ThemeProvider,
   useMediaQuery,
 } from "@mui/material";
-import {
-  createContext,
-  use,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import type {} from "@mui/material/themeCssVarsAugmentation";
 import styles from "./page.module.css";
 

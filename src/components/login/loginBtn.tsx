@@ -3,12 +3,12 @@
 import { use, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
 import { Button, Chip, Input } from "@mui/material";
-import { useSessionContext } from "./context";
 import { FaUserShield } from "react-icons/fa";
 import { FaRegCircleUser } from "react-icons/fa6";
 import Link from "next/link";
-import styles from "./page.module.css";
 import { useSearchParams } from "next/navigation";
+import { useSessionContext } from "./context";
+import styles from "./page.module.css";
 import { useAppThemeContext } from "@/app/context/AppThemeContext";
 
 export function LoginBtn() {
