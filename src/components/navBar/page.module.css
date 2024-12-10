@@ -1,30 +1,48 @@
 .nav {
-  position: sticky;
+  position: fixed;
+  left: 0;
   top: 0;
   z-index: 1000;
-  overflow: unset;
 }
 
 .nav .navContainer {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
+  align-items: start;
   padding: 1rem 2rem;
   background-color: var(--background-100);
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-  max-height: 70px;
+  height: 100vh;
+  border-radius: 0 20px 20px 0;
+  overflow: hidden;
+  transition: max-width 0.3s;
+  max-width: calc(1rem * 2 + 1.5rem + 2rem);
+}
+
+.nav:hover .navContainer {
+  max-width: 300px;
 }
 
 .nav .navContainer ul {
   display: flex;
-  align-items: center;
-  gap: 2rem;
+  flex-direction: column;
+  align-items: start;
+  gap: 1.5rem;
   max-width: 80%;
 }
 
 .nav ul li {
+  display: flex;
+  justify-content: center;
   list-style: none;
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+}
+
+.icon {
+  font-size: 1.5rem;
+  width: 1.5rem;
+  margin-right: 2rem;
 }

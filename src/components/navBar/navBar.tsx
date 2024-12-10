@@ -1,5 +1,6 @@
 import Link from "next/link";
 import styles from "./page.module.css";
+import { JSX } from "react";
 
 export default function NavBar({
   navItems,
@@ -7,11 +8,13 @@ export default function NavBar({
 }: {
   navItems: {
     name: string;
-    href: string;
+    href?: string;
+    icon?: JSX.Element;
   }[];
   navFooterItems?: {
     name: string;
-    href: string;
+    href?: string;
+    icon?: JSX.Element;
   }[];
 }) {
   return (
@@ -20,18 +23,38 @@ export default function NavBar({
         <ul>
           {navItems.map((item) => (
             <li key={item.href + item.name}>
-              <Link href={item.href}>{item.name}</Link>
+              {item.href ? (
+                <Link href={item.href}>
+                  <span className={styles.icon}>{item.icon}</span>
+                  {item.name}
+                </Link>
+              ) : (
+                <>
+                  <span className={styles.icon}>{item.icon}</span>
+                  <span>{item.name}</span>
+                </>
+              )}
             </li>
           ))}
         </ul>
         {navFooterItems && (
-          <div>
+          <ul>
             {navFooterItems.map((item) => (
-              <Link key={item.href + item.name} href={item.href}>
-                {item.name}
-              </Link>
+              <li key={item.href + item.name}>
+                {item.href ? (
+                  <Link href={item.href}>
+                    <span className={styles.icon}>{item.icon}</span>
+                    {item.name}
+                  </Link>
+                ) : (
+                  <>
+                    <span className={styles.icon}>{item.icon}</span>
+                    <span>{item.name}</span>
+                  </>
+                )}
+              </li>
             ))}
-          </div>
+          </ul>
         )}
       </div>
     </nav>
