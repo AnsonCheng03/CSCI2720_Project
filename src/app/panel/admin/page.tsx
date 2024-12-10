@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@mui/material";
+import { Alert, Button } from "@mui/material";
 import { useEventContext } from "../EventProvider/context";
 import { EventList } from "../EventProvider/eventList";
 import { downloadData } from "./downloadData";
@@ -91,31 +91,37 @@ export default function Home() {
       <h1>Download Event</h1>
       <div className={styles.buttons}>
         <Button onClick={handleDownload} variant="contained">
-          Download
+          {events.length == 0 ? "Download" : "Refresh"}
         </Button>
         <Button onClick={deleteAll} variant="contained" color="error">
           Delete All
         </Button>
       </div>
-      <EventList
-        mapTable={eventKeyMap}
-        eventDataArray={events}
-        setEventData={setEvents}
-        actionColumnTitle={"Add to database"}
-        renderActionColumn={(event) => (
-          <Button
-            variant="contained"
-            onClick={() => {
-              handleAddToDatabase({
-                ...event,
-                fromDownload: true,
-              });
-            }}
-          >
-            Add
-          </Button>
-        )}
-      />
+      {events.length == 0 ? (
+        <Alert variant="filled" severity="info">
+          Click the download button to get events
+        </Alert>
+      ) : (
+        <EventList
+          mapTable={eventKeyMap}
+          eventDataArray={events}
+          setEventData={setEvents}
+          actionColumnTitle={"Add to database"}
+          renderActionColumn={(event) => (
+            <Button
+              variant="contained"
+              onClick={() => {
+                handleAddToDatabase({
+                  ...event,
+                  fromDownload: true,
+                });
+              }}
+            >
+              Add
+            </Button>
+          )}
+        />
+      )}
     </div>
   );
 }
