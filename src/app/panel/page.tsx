@@ -20,7 +20,7 @@ import {
   removeFavouriteVenue,
 } from "../DatabaseProvider/Mutation/User";
 import { useEventContext } from "./EventProvider/context";
-import { EventTable } from "./EventProvider/eventDataStruct";
+import { EventTable } from "./EventProvider/eventTable";
 import styles from "./page.module.css";
 
 const AddToFavouriteButton = ({

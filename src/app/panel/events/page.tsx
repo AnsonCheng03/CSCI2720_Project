@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import { useEventContext } from "../EventProvider/context";
-import { EventTable } from "../EventProvider/eventDataStruct";
+import { EventTable } from "../EventProvider/eventTable";
 import styles from "./page.module.css";
 import { joinEvent, likeEvent } from "@/app/DatabaseProvider/Mutation/Event";
+import { EventList } from "../EventProvider/eventList";
+import { Button } from "@mui/material";
 
 const LikeButton = ({
   dataID,
@@ -20,7 +22,8 @@ const LikeButton = ({
   const [isLiked, setIsLiked] = useState(defaultChecked);
   const [likes, setLikes] = useState(totalLikes || 0);
   return (
-    <button
+    <Button
+      variant="contained"
       onClick={() => {
         likeEvent(dataID, userID).then((data) => {
           const result = JSON.parse(data);
@@ -37,7 +40,7 @@ const LikeButton = ({
     >
       {isLiked ? "Unlike" : "Like"}
       {likes > 0 && ` (${likes})`}
-    </button>
+    </Button>
   );
 };
 
@@ -52,7 +55,8 @@ const BookingButton = ({
 }) => {
   const [isBooked, setIsBooked] = useState(booked);
   return (
-    <button
+    <Button
+      variant="contained"
       onClick={() => {
         joinEvent(dataID, userID).then((data) => {
           const result = JSON.parse(data);
@@ -67,7 +71,7 @@ const BookingButton = ({
       }}
     >
       {isBooked ? "Unbook" : "Book"}
-    </button>
+    </Button>
   );
 };
 
@@ -90,7 +94,7 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <h1>List of Events</h1>
-      <EventTable
+      <EventList
         mapTable={eventKeyMap}
         eventDataArray={events?.map((event: Record<string, any>) => {
           console.log(event);

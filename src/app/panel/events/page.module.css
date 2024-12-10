@@ -2,3 +2,10 @@
   margin-left: 5.5rem;
   padding: 10px 20px;
 }
+
+.actionColumn {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}

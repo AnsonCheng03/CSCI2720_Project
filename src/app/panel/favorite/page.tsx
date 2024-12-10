@@ -5,7 +5,7 @@ import { FaHeart } from "react-icons/fa";
 import { CircularProgress } from "@mui/material";
 import { FaRegHeart } from "react-icons/fa";
 import { useEventContext } from "../EventProvider/context";
-import { EventTable } from "../EventProvider/eventDataStruct";
+import { EventTable } from "../EventProvider/eventTable";
 import styles from "./page.module.css";
 import {
   addFavouriteVenue,

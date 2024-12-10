@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useEventContext } from "../EventProvider/context";
-import { EventTable } from "../EventProvider/eventDataStruct";
+import { EventTable } from "../EventProvider/eventTable";
 import styles from "./page.module.css";
 import {
   Checkbox,
@@ -12,6 +12,7 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { EventList } from "../EventProvider/eventList";
 
 export default function Home() {
   const { eventData } = useEventContext();
@@ -75,7 +76,7 @@ export default function Home() {
           />
         }
       />
-      <EventTable
+      <EventList
         mapTable={eventKeyMap}
         eventDataArray={events
           ?.sort(() => Math.random() - 0.5)

@@ -1,11 +1,12 @@
 "use client";
 import { useState } from "react";
-import { EventTable } from "../EventProvider/eventDataStruct";
+import { EventTable } from "../EventProvider/eventTable";
 import { useEventContext } from "../EventProvider/context";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";
 import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
 import { Button } from "@mui/material";
+import { EventList } from "../EventProvider/eventList";
 
 export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =
@@ -95,13 +96,14 @@ export default function Home() {
       <Button onClick={deleteAll} variant="contained" color="error">
         Delete All
       </Button>
-      <EventTable
+      <EventList
         mapTable={eventKeyMap}
         eventDataArray={events}
         setEventData={setEvents}
         actionColumnTitle={"Add to database"}
         renderActionColumn={(event) => (
-          <button
+          <Button
+            variant="contained"
             onClick={() => {
               handleAddToDatabase({
                 ...event,
@@ -110,7 +112,7 @@ export default function Home() {
             }}
           >
             Add
-          </button>
+          </Button>
         )}
       />
     </div>
