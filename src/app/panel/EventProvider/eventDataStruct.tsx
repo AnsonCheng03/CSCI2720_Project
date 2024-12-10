@@ -121,44 +121,6 @@ export const EventTable = ({
       </TableHead>
     );
   }
-  interface EnhancedTableToolbarProps {
-    numSelected: number;
-  }
-  function EnhancedTableToolbar(props: EnhancedTableToolbarProps) {
-    const { numSelected } = props;
-    return (
-      <Toolbar
-        sx={[
-          {
-            pl: { sm: 2 },
-            pr: { xs: 1, sm: 1 },
-          },
-          numSelected > 0 && {
-            bgcolor: (theme) =>
-              alpha(
-                theme.palette.primary.main,
-                theme.palette.action.activatedOpacity
-              ),
-          },
-        ]}
-      >
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Table
-        </Typography>
-
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      </Toolbar>
-    );
-  }
 
   const [order, setOrder] = React.useState<Order>("asc");
   const [orderBy, setOrderBy] = React.useState<any>(headCells[0].id);
@@ -185,94 +147,66 @@ export const EventTable = ({
     setSelected([]);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
   const emptyRows =
     page > 0
       ? Math.max(0, (1 + page) * rowsPerPage - eventDataArray.length)
       : 0;
 
   const visibleRows = React.useMemo(
-    () =>
-      [...eventDataArray]
-        .sort(getComparator(order, orderBy))
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage),
+    () => [...eventDataArray].sort(getComparator(order, orderBy)),
     [order, orderBy, page, rowsPerPage, eventDataArray]
   );
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2, paddingLeft: 5, paddingRight: 5 }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size={dense ? "small" : "medium"}
-          >
-            <EnhancedTableHead
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={eventDataArray.length}
-            />
-            <TableBody>
-              {visibleRows?.map(
-                (data: { [key: string]: any }, index: number) => {
-                  return (
-                    <TableRow key={index}>
-                      {Object.keys(mapTable).map((key: string) => {
-                        const value = data[key as keyof typeof data];
-                        return (
-                          <TableCell key={key}>
-                            {typeof value === "object" ? (
-                              <Link href={value.url || ""}>{value.name}</Link>
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                      {renderActionColumn && (
-                        <TableCell>{renderActionColumn(data)}</TableCell>
-                      )}
-                    </TableRow>
-                  );
-                }
-              )}
-              {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: (dense ? 33 : 53) * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
+      <TableContainer>
+        <Table
+          sx={{ minWidth: 750 }}
+          aria-labelledby="tableTitle"
+          size={dense ? "small" : "medium"}
+        >
+          <EnhancedTableHead
+            numSelected={selected.length}
+            order={order}
+            orderBy={orderBy}
+            onSelectAllClick={handleSelectAllClick}
+            onRequestSort={handleRequestSort}
+            rowCount={eventDataArray.length}
+          />
+          <TableBody>
+            {visibleRows?.map((data: { [key: string]: any }, index: number) => {
+              return (
+                <TableRow key={index}>
+                  {Object.keys(mapTable).map((key: string) => {
+                    const value = data[key as keyof typeof data];
+                    return (
+                      <TableCell key={key}>
+                        {typeof value === "object" ? (
+                          <Link href={value.url || ""}>{value.name}</Link>
+                        ) : (
+                          value
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                  {renderActionColumn && (
+                    <TableCell>{renderActionColumn(data)}</TableCell>
+                  )}
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 20, 50, 100]}
-          component="div"
-          count={eventDataArray.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+              );
+            })}
+            {emptyRows > 0 && (
+              <TableRow
+                style={{
+                  height: (dense ? 33 : 53) * emptyRows,
+                }}
+              >
+                <TableCell colSpan={6} />
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </Box>
   );
 };
