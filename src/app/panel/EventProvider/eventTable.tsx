@@ -29,7 +29,7 @@ export const EventTable = ({
   renderActionColumn?: (data: { [key: string]: any }) => JSX.Element;
   actionColumnTitle?: string;
 }) => {
-  function descendingComparator<T>(
+  function descendingComparator<T extends { [key: string]: any }>(
     a: T,
     b: T,
     orderBy: keyof T,
