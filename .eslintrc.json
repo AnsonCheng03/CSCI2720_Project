@@ -1,6 +1,49 @@
 {
-  "rules": {
-    "@typescript-eslint/no-explicit-any": "off"
+  // Base configuration for JavaScript files
+  "extends": ["next/core-web-vitals"],
+  "rules": {},
+  "settings": {
+    "tailwindcss": {
+      "callees": ["classnames", "clsx", "ctl", "cva", "tv", "cn"] // Tailwind utility class detection for specific libraries
+    }
   },
-  "extends": ["next/core-web-vitals", "next/typescript"]
+  "overrides": [
+    {
+      // Configuration specifically for TypeScript files
+      "files": ["**/*.ts", "**/*.tsx", "**/*.mts"], // Applies these rules only to TypeScript files
+      "plugins": [],
+      "extends": [
+        "next/core-web-vitals" // Next.js core web vitals plugin
+      ],
+      "parser": "@typescript-eslint/parser", // Uses TypeScript parser for ESLint
+      "parserOptions": {
+        "project": "./tsconfig.json" // Ensures TypeScript is linted according to the project's tsconfig.json
+      },
+      "rules": {
+        "import/no-extraneous-dependencies": "warn", // Warn about extraneous dependencies in TypeScript files
+        "no-param-reassign": "off", // Allow parameter reassignment
+        "consistent-return": "warn", // Disable consistent return requirement
+        "no-empty-pattern": "off", // Allow empty destructuring patterns
+        "no-use-before-define": "off", // Disable "use before define" for all variables and functions
+        "no-shadow": "off", // Disable shadowed variable rule
+        "react/jsx-no-constructed-context-values": "off", // Allow constructed context values in React
+        "import/extensions": "off", // Disable import extensions requirement (TypeScript handles this)
+        "react/function-component-definition": "off", // Allow different ways to define function components
+        "react/destructuring-assignment": "off", // Disable mandatory destructuring in React components
+        "react/require-default-props": "off", // Allow non-defined props to be undefined
+        "react/jsx-props-no-spreading": "off", // Allow prop spreading in JSX (e.g., in _app.tsx or react-hook-form)
+        "react/no-unstable-nested-components": "off", // Allow unstable nested components (needed by i18n library)
+        "@typescript-eslint/comma-dangle": "off", // Disable ESLint comma-dangle rule to avoid conflict with Prettier
+        "no-restricted-syntax": [
+          "error",
+          "ForInStatement", // Disallow `for-in` loops
+          "LabeledStatement", // Disallow labeled statements
+          "WithStatement" // Disallow `with` statements
+        ], // Override Airbnb configuration to restrict specific syntax
+        "import/prefer-default-export": "off", // Allow named exports without preferring default exports
+        "import/order": "warn", // Disable import order rule to avoid conflict with simple-import-sort
+        "no-unused-vars": "warn" // Disable unused variables rule (covered by unused-imports plugin)
+      }
+    }
+  ]
 }
