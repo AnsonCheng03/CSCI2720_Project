@@ -3,6 +3,15 @@
 import bcrypt from "bcrypt-nodejs";
 import styles from "./page.module.css";
 import { createUsers } from "@/app/DatabaseProvider/Mutation/User";
+import {
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 
 export default function Home() {
   const handleSubmit = async (e: any) => {
@@ -34,30 +43,42 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <form onSubmit={handleSubmit}>
-        <label>
-          Username
-          <input type="text" name="username" />
-        </label>
-        <br />
-        <label>
-          Password
-          <input type="password" name="password" />
-        </label>
-        <br />
-        <label>
-          Enter Password Again
-          <input type="password" name="password2" />
-        </label>
-        <br />
-        <label>
-          Role
-          <select name="role">
-            <option value="user">Normal User</option>
-            <option value="admin">Admin</option>
-          </select>
-        </label>
-        <br />
-        <button type="submit">Create User</button>
+        <TextField
+          required
+          id="standard-required"
+          label="Username"
+          name="username"
+        />
+        <TextField
+          required
+          id="standard-required"
+          label="Password"
+          name="password"
+          type="password"
+        />
+        <TextField
+          required
+          id="standard-required"
+          label="Enter Password Again"
+          name="password2"
+          type="password"
+        />
+        <FormControl sx={{ width: "30%", minWidth: "300px" }}>
+          <InputLabel id="demo-simple-select-label">Role</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Role"
+            name="role"
+            defaultValue="user"
+          >
+            <MenuItem value="user">Normal User</MenuItem>
+            <MenuItem value="admin">Admin</MenuItem>
+          </Select>
+        </FormControl>
+        <Button type="submit" variant="contained">
+          Create User
+        </Button>
       </form>
     </div>
   );

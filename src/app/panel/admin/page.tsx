@@ -5,6 +5,7 @@ import { useEventContext } from "../EventProvider/context";
 import { downloadData } from "./downloadData";
 import styles from "./page.module.css";
 import { deleteData, uploadData } from "@/app/DatabaseProvider/Mutation/Event";
+import { Button } from "@mui/material";
 
 export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =
@@ -88,12 +89,12 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <h1>Download Event</h1>
-      <button className={styles.button} onClick={handleDownload}>
+      <Button onClick={handleDownload} variant="contained">
         Download
-      </button>
-      <button className={styles.button} onClick={deleteAll}>
+      </Button>
+      <Button onClick={deleteAll} variant="contained" color="error">
         Delete All
-      </button>
+      </Button>
       <EventTable
         mapTable={eventKeyMap}
         eventDataArray={events}

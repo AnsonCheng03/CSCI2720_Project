@@ -4,6 +4,14 @@ import { useState } from "react";
 import { useEventContext } from "../EventProvider/context";
 import { EventTable } from "../EventProvider/eventDataStruct";
 import styles from "./page.module.css";
+import {
+  Checkbox,
+  FormControl,
+  FormControlLabel,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 
 export default function Home() {
   const { eventData } = useEventContext();
@@ -32,38 +40,41 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <h1>Suggestions</h1>
-      <label>
-        My Preference:
-        <select
+
+      <FormControl sx={{ width: "30%", minWidth: "300px" }}>
+        <InputLabel id="demo-simple-select-label">Age</InputLabel>
+        <Select
+          value={filterSettings.VenuePreference}
           onChange={(e) =>
             setFilterSettings({
               ...filterSettings,
               VenuePreference: e.target.value,
             })
           }
-          value={filterSettings.VenuePreference}
+          label="My Preference"
         >
-          <option value="">All</option>
+          <MenuItem value="">All</MenuItem>
           {allVenues?.map((venue: string) => (
-            <option key={venue} value={venue}>
+            <MenuItem key={venue} value={venue}>
               {venue}
-            </option>
+            </MenuItem>
           ))}
-        </select>
-      </label>
-      <label>
-        From Government:
-        <input
-          type="checkbox"
-          onChange={(e) =>
-            setFilterSettings({
-              ...filterSettings,
-              fromDownloaded: e.target.checked,
-            })
-          }
-          checked={filterSettings.fromDownloaded}
-        />
-      </label>
+        </Select>
+      </FormControl>
+      <FormControlLabel
+        label="From Government"
+        control={
+          <Checkbox
+            onChange={(e) =>
+              setFilterSettings({
+                ...filterSettings,
+                fromDownloaded: e.target.checked,
+              })
+            }
+            checked={filterSettings.fromDownloaded}
+          />
+        }
+      />
       <EventTable
         mapTable={eventKeyMap}
         eventDataArray={events
