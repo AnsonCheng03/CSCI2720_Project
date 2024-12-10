@@ -126,7 +126,7 @@ export const EventTable = ({
   const [orderBy, setOrderBy] = React.useState<any>(headCells[0].id);
   const [selected, setSelected] = React.useState<readonly number[]>([]);
   const [page, setPage] = React.useState(0);
-  const dense = true;
+  const dense = false;
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const handleRequestSort = (

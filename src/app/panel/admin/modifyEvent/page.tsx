@@ -2,6 +2,14 @@
 
 import { useRef } from "react";
 import Link from "next/link";
+import {
+  Button,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+} from "@mui/material";
 import { useEventContext } from "../../EventProvider/context";
 import styles from "./page.module.css";
 import { deleteEvent, editData } from "@/app/DatabaseProvider/Mutation/Event";
@@ -121,79 +129,100 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.header}>
+        <h2>Modify Event</h2>
+      </div>
       <form ref={form} onSubmit={(e) => e.preventDefault()}>
-        <label>
-          Event ID:
-          <select name="eventID">
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Event ID</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Event ID"
+            name="eventID"
+          >
             {eventIds?.map((eventId: any) => (
-              <option key={eventId} value={eventId}>
+              <MenuItem key={eventId} value={eventId}>
                 {eventId}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-        </label>
-        <br />
-        <label>
-          Event title:
-          <input type="text" name="eventTitle" />
-        </label>
-        <br />
-        <label>
-          Location ID:
-          <select name="locationID">
+          </Select>
+        </FormControl>
+        <TextField
+          required
+          id="standard-required"
+          label="Event Title"
+          name="eventTitle"
+          fullWidth
+        />
+        <FormControl fullWidth>
+          <InputLabel id="demo-simple-select-label">Location ID</InputLabel>
+          <Select
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            label="Location ID"
+            name="locationID"
+          >
             {venueIds?.map((venueId: any) => (
-              <option key={venueId} value={venueId}>
+              <MenuItem key={venueId} value={venueId}>
                 {venueId}
-              </option>
+              </MenuItem>
             ))}
-          </select>
-        </label>
-        <br />
-        <p>
-          Input: ID of location. The ID should be corresponding to the IDs in
-          <Link href="/panel"> location list</Link>.
-        </p>
-        <label>
-          Date/time:
-          <input type="text" name="dateTime" />
-        </label>
-        <br />
-        <label>
-          Description:
-          <input type="text" name="description" />
-        </label>
-        <br />
-        <label>
-          Presenter:
-          <input type="text" name="presenter" />
-        </label>
-        <br />
-        <label>
-          Price:
-          <input type="text" name="price" />
-        </label>
-        <br />
-        <label>
-          Quota:
-          <input type="text" name="quota" />
-        </label>
-        <br />
-        <button
+          </Select>
+          <p>
+            Input: ID of location. The ID should be corresponding to the IDs in
+            <Link href="/panel"> location list</Link>.
+          </p>
+        </FormControl>
+        <TextField
+          required
+          id="standard-required"
+          label="Date/Time"
+          name="dateTime"
+          fullWidth
+        />
+        <TextField
+          required
+          id="standard-required"
+          label="Description"
+          name="description"
+          fullWidth
+        />
+        <TextField
+          required
+          id="standard-required"
+          label="Presenter"
+          name="presenter"
+          fullWidth
+        />
+        <TextField
+          required
+          id="standard-required"
+          label="Price"
+          name="price"
+          fullWidth
+        />
+        <TextField
+          required
+          id="standard-required"
+          label="Quota"
+          name="quota"
+          fullWidth
+        />
+        <Button
           type="submit"
-          name="submit"
-          value="submit"
+          variant="contained"
           onClick={() => handleSubmit("submit")}
         >
           Submit
-        </button>
-        <button
+        </Button>
+        <Button
           type="button"
-          name="submit"
-          value="delete"
+          variant="contained"
           onClick={() => handleSubmit("delete")}
         >
           Delete
-        </button>
+        </Button>
       </form>
     </div>
   );

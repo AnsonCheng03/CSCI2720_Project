@@ -1,17 +1,16 @@
 "use client";
 
 import bcrypt from "bcrypt-nodejs";
-import styles from "./page.module.css";
-import { createUsers } from "@/app/DatabaseProvider/Mutation/User";
 import {
   Button,
   FormControl,
-  Input,
   InputLabel,
   MenuItem,
   Select,
   TextField,
 } from "@mui/material";
+import styles from "./page.module.css";
+import { createUsers } from "@/app/DatabaseProvider/Mutation/User";
 
 export default function Home() {
   const handleSubmit = async (e: any) => {
@@ -42,12 +41,16 @@ export default function Home() {
 
   return (
     <div className={styles.page}>
+      <div className={styles.header}>
+        <h2>Create User</h2>
+      </div>
       <form onSubmit={handleSubmit}>
         <TextField
           required
           id="standard-required"
           label="Username"
           name="username"
+          fullWidth
         />
         <TextField
           required
@@ -55,6 +58,7 @@ export default function Home() {
           label="Password"
           name="password"
           type="password"
+          fullWidth
         />
         <TextField
           required
@@ -62,8 +66,9 @@ export default function Home() {
           label="Enter Password Again"
           name="password2"
           type="password"
+          fullWidth
         />
-        <FormControl sx={{ width: "30%", minWidth: "300px" }}>
+        <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Role</InputLabel>
           <Select
             labelId="demo-simple-select-label"
