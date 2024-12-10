@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { FaHeart } from "react-icons/fa";
+import { CircularProgress } from "@mui/material";
+import { FaRegHeart } from "react-icons/fa";
 import { useEventContext } from "../EventProvider/context";
 import { EventTable } from "../EventProvider/eventDataStruct";
 import styles from "./page.module.css";
@@ -20,31 +23,32 @@ const AddToFavouriteButton = ({
   defaultChecked?: boolean;
 }) => {
   const [isFavourite, setIsFavourite] = useState(defaultChecked);
-  return (
-    <input
-      type="checkbox"
-      checked={isFavourite}
-      onChange={() => {
-        if (isFavourite)
-          removeFavouriteVenue(dataID, userID).then((data) => {
-            const result = JSON.parse(data);
-            if (result.error) {
-              console.error(result.message);
-              window.alert(result.message);
-              return;
-            }
-            setIsFavourite(false);
-          });
-        else
-          addFavouriteVenue(dataID, userID).then((data) => {
-            const result = JSON.parse(data);
-            if (result.error) {
-              console.error(result.message);
-              window.alert(result.message);
-              return;
-            }
-            setIsFavourite(true);
-          });
+  return isFavourite ? (
+    <FaHeart
+      onClick={() => {
+        removeFavouriteVenue(dataID, userID).then((data) => {
+          const result = JSON.parse(data);
+          if (result.error) {
+            console.error(result.message);
+            window.alert(result.message);
+            return;
+          }
+          setIsFavourite(false);
+        });
+      }}
+    />
+  ) : (
+    <FaRegHeart
+      onClick={() => {
+        addFavouriteVenue(dataID, userID).then((data) => {
+          const result = JSON.parse(data);
+          if (result.error) {
+            console.error(result.message);
+            window.alert(result.message);
+            return;
+          }
+          setIsFavourite(true);
+        });
       }}
     />
   );
@@ -94,7 +98,7 @@ export default function Home() {
           mapTable={eventKeyMap}
           eventDataArray={favoriteData}
           setEventData={setFavoriteData}
-          actionColumnTitle={"Add to Favourite"}
+          actionColumnTitle={"Favourite"}
           renderActionColumn={(data: Record<string, any>) => {
             return (
               <AddToFavouriteButton
@@ -106,7 +110,7 @@ export default function Home() {
           }}
         />
       ) : (
-        <div>Loading...</div>
+        <CircularProgress size={14} />
       )}
     </div>
   );

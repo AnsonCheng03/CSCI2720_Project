@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getDistance } from "geolib";
 import {
   Box,
+  CircularProgress,
   FormControl,
   InputLabel,
   MenuItem,
@@ -11,6 +12,8 @@ import {
   Slider,
   TextField,
 } from "@mui/material";
+import { FaHeart } from "react-icons/fa";
+import { FaRegHeart } from "react-icons/fa";
 import {
   addFavouriteVenue,
   getFavouriteVenues,
@@ -30,31 +33,32 @@ const AddToFavouriteButton = ({
   defaultChecked?: boolean;
 }) => {
   const [isFavourite, setIsFavourite] = useState(defaultChecked);
-  return (
-    <input
-      type="checkbox"
-      checked={isFavourite}
-      onChange={() => {
-        if (isFavourite)
-          removeFavouriteVenue(dataID, userID).then((data) => {
-            const result = JSON.parse(data);
-            if (result.error) {
-              console.error(result.message);
-              window.alert(result.message);
-              return;
-            }
-            setIsFavourite(false);
-          });
-        else
-          addFavouriteVenue(dataID, userID).then((data) => {
-            const result = JSON.parse(data);
-            if (result.error) {
-              console.error(result.message);
-              window.alert(result.message);
-              return;
-            }
-            setIsFavourite(true);
-          });
+  return isFavourite ? (
+    <FaHeart
+      onClick={() => {
+        removeFavouriteVenue(dataID, userID).then((data) => {
+          const result = JSON.parse(data);
+          if (result.error) {
+            console.error(result.message);
+            window.alert(result.message);
+            return;
+          }
+          setIsFavourite(false);
+        });
+      }}
+    />
+  ) : (
+    <FaRegHeart
+      onClick={() => {
+        addFavouriteVenue(dataID, userID).then((data) => {
+          const result = JSON.parse(data);
+          if (result.error) {
+            console.error(result.message);
+            window.alert(result.message);
+            return;
+          }
+          setIsFavourite(true);
+        });
       }}
     />
   );
@@ -221,7 +225,7 @@ export default function Home() {
                   />
                 );
               }
-            : () => <>Loading</>
+            : () => <CircularProgress size={14} />
         }
       />
     </div>
