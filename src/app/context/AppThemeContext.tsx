@@ -37,37 +37,66 @@ const AppThemeProvider = (props: any) => {
         },
         palette: {
           mode: mode,
-          // primary: {
-          //   main: `rgb(10, 18, 42)`,
-          //   contrastText: "rgb(255, 255, 255)",
-          // },
-          // secondary: {
-          //   main: `rgb(27, 59, 111)`,
-          //   contrastText: "rgb(255, 255, 255)",
-          // },
         },
-        //   colorSchemes: {
-        //     light: {
-        //       palette: {
-        //         primary: {
-        //           main: `rgb(10, 18, 42)`,
-        //         },
-        //         secondary: {
-        //           main: `rgb(27, 59, 111)`,
-        //         },
-        //       },
-        //     },
-        //     dark: {
-        //       palette: {
-        //         primary: {
-        //           main: `rgb(10, 18, 42)`,
-        //         },
-        //         secondary: {
-        //           main: `rgb(27, 59, 111)`,
-        //         },
-        //       },
-        //     },
-        //   },
+        colorSchemes: {
+          // https://mui.com/material-ui/customization/default-theme/?expand-path=$.palette
+          light: {
+            palette: {
+              primary: {
+                main: `#7f9975`,
+              },
+              secondary: {
+                main: `#aac0b7`,
+              },
+              error: {
+                main: `#ff0000`,
+              },
+              // warning: {
+              //   main: `#ff0000`,
+              // },
+              info: {
+                main: `#95b1ac`,
+              },
+              // success: {
+              //   main: `#7f9975`,
+              // },
+              background: {
+                default: `#fafbf9`,
+              },
+              text: {
+                primary: `#0c0f0b`,
+              },
+            },
+          },
+          dark: {
+            palette: {
+              primary: {
+                main: `#708a66`,
+              },
+              secondary: {
+                main: `#3f554c`,
+              },
+              error: {
+                main: `#ff0000`,
+              },
+              // warning: {
+              //   main: `#ff0000`,
+              // },
+              info: {
+                main: `#95b1ac`,
+              },
+              // success: {
+              //   main: `#7f9975`,
+              // },
+              background: {
+                default: `#050604`,
+              },
+              text: {
+                primary: `#f1f4f0`,
+              },
+            },
+          },
+        },
       })
     );
   }, [mode]);
