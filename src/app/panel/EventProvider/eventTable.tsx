@@ -17,17 +17,30 @@ export const EventTable = ({
   renderActionColumn,
   actionColumnTitle,
 }: {
-  mapTable: { [key: string]: string };
+  mapTable: {
+    [key: string]: {
+      label: string;
+      type: string;
+      sortKey?: string;
+    };
+  };
   eventDataArray: { [key: string]: any }[];
   setEventData: (data: { [key: string]: any }[]) => void;
   renderActionColumn?: (data: { [key: string]: any }) => JSX.Element;
   actionColumnTitle?: string;
 }) => {
-  function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-    if (b[orderBy] < a[orderBy]) {
+  function descendingComparator<T>(
+    a: T,
+    b: T,
+    orderBy: keyof T,
+    sortKey?: string
+  ) {
+    const aValue = sortKey ? a[sortKey] : a[orderBy];
+    const bValue = sortKey ? b[sortKey] : b[orderBy];
+    if (bValue < aValue) {
       return -1;
     }
-    if (b[orderBy] > a[orderBy]) {
+    if (bValue > aValue) {
       return 1;
     }
     return 0;
@@ -37,22 +50,24 @@ export const EventTable = ({
 
   function getComparator<Key extends keyof any>(
     order: Order,
-    orderBy: Key
+    orderBy: Key,
+    sortKey?: string
   ): (
     a: { [key in Key]: number | string },
     b: { [key in Key]: number | string }
   ) => number {
     return order === "desc"
-      ? (a, b) => descendingComparator(a, b, orderBy)
-      : (a, b) => -descendingComparator(a, b, orderBy);
+      ? (a, b) => descendingComparator(a, b, orderBy, sortKey)
+      : (a, b) => -descendingComparator(a, b, orderBy, sortKey);
   }
 
   const headCells = Object.entries(mapTable)
     .map(([key, value]) => ({
       id: key,
-      numeric: false,
+      numeric: value.type === "number",
       disablePadding: true,
-      label: value,
+      label: value.label,
+      sortKey: value.sortKey || key,
     }))
     .concat(
       renderActionColumn && actionColumnTitle
@@ -62,6 +77,7 @@ export const EventTable = ({
               numeric: false,
               disablePadding: true,
               label: actionColumnTitle,
+              sortKey: "",
             },
           ]
         : []
@@ -69,18 +85,27 @@ export const EventTable = ({
 
   interface EnhancedTableProps {
     numSelected: number;
-    onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
+    onRequestSort: (
+      event: React.MouseEvent<unknown>,
+      property: string,
+      sort?: string
+    ) => void;
     onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
     order: Order;
     orderBy: string;
     rowCount: number;
   }
 
+  const [activeSortKey, setActiveSortKey] = React.useState<string | undefined>(
+    headCells[0]?.sortKey
+  );
+
   function EnhancedTableHead(props: EnhancedTableProps) {
     const { order, orderBy, onRequestSort } = props;
     const createSortHandler =
-      (property: string) => (event: React.MouseEvent<unknown>) => {
-        onRequestSort(event, property);
+      (property: string, sort?: string) =>
+      (event: React.MouseEvent<unknown>) => {
+        onRequestSort(event, property, sort);
       };
 
     return (
@@ -93,20 +118,24 @@ export const EventTable = ({
               padding={headCell.disablePadding ? "none" : "normal"}
               sortDirection={orderBy === headCell.id ? order : false}
             >
-              <TableSortLabel
-                active={orderBy === headCell.id}
-                direction={orderBy === headCell.id ? order : "asc"}
-                onClick={createSortHandler(headCell.id)}
-              >
-                {headCell.label}
-                {orderBy === headCell.id ? (
-                  <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
-                  </Box>
-                ) : null}
-              </TableSortLabel>
+              {headCell.sortKey ? (
+                <TableSortLabel
+                  active={orderBy === headCell.id}
+                  direction={orderBy === headCell.id ? order : "asc"}
+                  onClick={createSortHandler(headCell.id, headCell.sortKey)}
+                >
+                  {headCell.label}
+                  {orderBy === headCell.id ? (
+                    <Box component="span" sx={visuallyHidden}>
+                      {order === "desc"
+                        ? "sorted descending"
+                        : "sorted ascending"}
+                    </Box>
+                  ) : null}
+                </TableSortLabel>
+              ) : (
+                headCell.label
+              )}
             </TableCell>
           ))}
         </TableRow>
@@ -123,11 +152,13 @@ export const EventTable = ({
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof typeof headCells | string
+    property: keyof typeof headCells | string,
+    sortKey?: string
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
+    setActiveSortKey(sortKey);
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -144,19 +175,16 @@ export const EventTable = ({
       ? Math.max(0, (1 + page) * rowsPerPage - eventDataArray.length)
       : 0;
 
-  const visibleRows = React.useMemo(
-    () => [...eventDataArray].sort(getComparator(order, orderBy)),
-    [order, orderBy, page, rowsPerPage, eventDataArray]
-  );
+  const visibleRows = React.useMemo(() => {
+    return [...eventDataArray].sort(
+      getComparator(order, orderBy, activeSortKey)
+    );
+  }, [order, orderBy, activeSortKey, eventDataArray]);
 
   return (
-    <Box sx={{ width: "100%" }}>
+    <Box>
       <TableContainer>
-        <Table
-          sx={{ minWidth: 750 }}
-          aria-labelledby="tableTitle"
-          size={dense ? "small" : "medium"}
-        >
+        <Table aria-labelledby="tableTitle" size={dense ? "small" : "medium"}>
           <EnhancedTableHead
             numSelected={selected.length}
             order={order}
@@ -172,7 +200,7 @@ export const EventTable = ({
                   {Object.keys(mapTable).map((key: string) => {
                     const value = data[key as keyof typeof data];
                     return (
-                      <TableCell key={key}>
+                      <TableCell key={key} align="left">
                         {typeof value === "object" ? (
                           <Link href={value.url || ""}>{value.name}</Link>
                         ) : (

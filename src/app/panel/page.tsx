@@ -74,10 +74,26 @@ export default function Home() {
   });
   const [favoriteData, setFavoriteData] = useState<Object[] | null>(null);
 
-  const eventKeyMap: { [key: string]: string } = {
-    "@_id": "ID",
-    venueURL: "Location",
-    "@_eventCount": "Number of Events",
+  const eventKeyMap: {
+    [key: string]: {
+      label: string;
+      type: string;
+      sortKey?: string;
+    };
+  } = {
+    "@_id": {
+      label: "ID",
+      type: "string",
+    },
+    venueURL: {
+      label: "Location",
+      type: "link",
+      sortKey: "venuee",
+    },
+    "@_eventCount": {
+      label: "Number of Events",
+      type: "number",
+    },
   };
 
   const modifiedEventData = eventData?.map((event: Record<string, any>) => {
