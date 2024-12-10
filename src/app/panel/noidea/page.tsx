@@ -40,41 +40,42 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <h1>Suggestions</h1>
-
-      <FormControl sx={{ width: "30%", minWidth: "300px" }}>
-        <InputLabel id="demo-simple-select-label">Age</InputLabel>
-        <Select
-          value={filterSettings.VenuePreference}
-          onChange={(e) =>
-            setFilterSettings({
-              ...filterSettings,
-              VenuePreference: e.target.value,
-            })
-          }
-          label="My Preference"
-        >
-          <MenuItem value="">All</MenuItem>
-          {allVenues?.map((venue: string) => (
-            <MenuItem key={venue} value={venue}>
-              {venue}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-      <FormControlLabel
-        label="From Government"
-        control={
-          <Checkbox
+      <div className={styles.filter}>
+        <FormControl sx={{ width: "30%", minWidth: "300px" }}>
+          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <Select
+            value={filterSettings.VenuePreference}
             onChange={(e) =>
               setFilterSettings({
                 ...filterSettings,
-                fromDownloaded: e.target.checked,
+                VenuePreference: e.target.value,
               })
             }
-            checked={filterSettings.fromDownloaded}
-          />
-        }
-      />
+            label="My Preference"
+          >
+            <MenuItem value="">All</MenuItem>
+            {allVenues?.map((venue: string) => (
+              <MenuItem key={venue} value={venue}>
+                {venue}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <FormControlLabel
+          label="From Government"
+          control={
+            <Checkbox
+              onChange={(e) =>
+                setFilterSettings({
+                  ...filterSettings,
+                  fromDownloaded: e.target.checked,
+                })
+              }
+              checked={filterSettings.fromDownloaded}
+            />
+          }
+        />
+      </div>
       <EventList
         mapTable={eventKeyMap}
         eventDataArray={events

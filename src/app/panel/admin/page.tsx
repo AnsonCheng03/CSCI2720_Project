@@ -89,12 +89,14 @@ export default function Home() {
   return (
     <div className={styles.page}>
       <h1>Download Event</h1>
-      <Button onClick={handleDownload} variant="contained">
-        Download
-      </Button>
-      <Button onClick={deleteAll} variant="contained" color="error">
-        Delete All
-      </Button>
+      <div className={styles.buttons}>
+        <Button onClick={handleDownload} variant="contained">
+          Download
+        </Button>
+        <Button onClick={deleteAll} variant="contained" color="error">
+          Delete All
+        </Button>
+      </div>
       <EventList
         mapTable={eventKeyMap}
         eventDataArray={events}
