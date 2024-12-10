@@ -1,6 +1,7 @@
 import Link from "next/link";
 import styles from "./page.module.css";
 import { JSX } from "react";
+import { Box } from "@mui/material";
 
 export default function NavBar({
   navItems,
@@ -19,7 +20,7 @@ export default function NavBar({
 }) {
   return (
     <nav className={styles.nav}>
-      <div className={styles.navContainer}>
+      <Box className={styles.navContainer}>
         <ul>
           {navItems.map((item) => (
             <li key={item.href + item.name}>
@@ -56,7 +57,7 @@ export default function NavBar({
             ))}
           </ul>
         )}
-      </div>
+      </Box>
     </nav>
   );
 }

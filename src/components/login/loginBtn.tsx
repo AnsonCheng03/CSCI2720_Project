@@ -2,18 +2,19 @@
 
 import { use, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
-import { Button, Chip, Input, useColorScheme } from "@mui/material";
+import { Button, Chip, Input } from "@mui/material";
 import { useSessionContext } from "./context";
 import { FaUserShield } from "react-icons/fa";
 import { FaRegCircleUser } from "react-icons/fa6";
 import Link from "next/link";
 import styles from "./page.module.css";
 import { useSearchParams } from "next/navigation";
+import { useAppThemeContext } from "@/app/context/AppThemeContext";
 
 export function LoginBtn() {
   const sessionPromise = useSessionContext();
   const session = use(sessionPromise);
-  const { mode, systemMode, setMode } = useColorScheme();
+  const { mode, setMode } = useAppThemeContext();
 
   const searchParams = useSearchParams();
   const errorPrams = searchParams.get("error");
@@ -44,15 +45,22 @@ export function LoginBtn() {
           <Button
             className={styles.button}
             onClick={() => {
-              document.documentElement.style.setProperty(
-                "color-scheme",
-                mode === "light" ? "dark" : "light"
+              console.log(
+                "mode",
+                window.matchMedia("(prefers-color-scheme: dark)").matches
               );
+              document.documentElement.style.setProperty("color-scheme", mode);
+              document.documentElement.setAttribute("data-theme", mode);
+
               setMode(mode === "light" ? "dark" : "light");
+              console.log(
+                "mode",
+                window.matchMedia("(prefers-color-scheme: dark)").matches
+              );
             }}
             variant="outlined"
           >
-            Change to {mode === "light" ? "dark" : "light"} mode
+            {mode === "light" ? "Dark" : "Light"} mode
           </Button>
         </div>
       </div>
