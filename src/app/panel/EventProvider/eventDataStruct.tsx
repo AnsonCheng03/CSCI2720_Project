@@ -282,29 +282,31 @@ export const EventTable = ({
               rowCount={rows.length}
             />
             <TableBody>
-              {visibleRows?.map((data, index) => {
-                // const isItemSelected = selected.includes(row.id);
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow key={index}>
-                    {Object.keys(mapTable).map((key: string) => {
-                      const value = data[key as keyof typeof data];
-                      return (
-                        <TableCell key={key}>
-                          {typeof value === "object" ? (
-                            <Link href={value.url || ""}>{value.name}</Link>
-                          ) : (
-                            value
-                          )}
-                        </TableCell>
-                      );
-                    })}
-                    {renderActionColumn && (
-                      <TableCell>{renderActionColumn(data)}</TableCell>
-                    )}
-                  </TableRow>
-                );
-              })}
+              {visibleRows?.map(
+                (data: { [key: string]: any }, index: number) => {
+                  // const isItemSelected = selected.includes(row.id);
+                  const labelId = `enhanced-table-checkbox-${index}`;
+                  return (
+                    <TableRow key={index}>
+                      {Object.keys(mapTable).map((key: string) => {
+                        const value = data[key as keyof typeof data];
+                        return (
+                          <TableCell key={key}>
+                            {typeof value === "object" ? (
+                              <Link href={value.url || ""}>{value.name}</Link>
+                            ) : (
+                              value
+                            )}
+                          </TableCell>
+                        );
+                      })}
+                      {renderActionColumn && (
+                        <TableCell>{renderActionColumn(data)}</TableCell>
+                      )}
+                    </TableRow>
+                  );
+                }
+              )}
               {emptyRows > 0 && (
                 <TableRow
                   style={{
