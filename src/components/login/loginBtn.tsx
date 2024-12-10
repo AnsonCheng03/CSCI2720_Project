@@ -36,9 +36,11 @@ export function LoginBtn() {
           >
             Sign out
           </Button>
-          <Button className={styles.button} variant="outlined">
-            <Link href="/panel">Go to panel</Link>
-          </Button>
+          <Link href="/panel">
+            <Button className={styles.button} variant="outlined">
+              Go to panel
+            </Button>
+          </Link>
           <Button
             className={styles.button}
             onClick={() => {
