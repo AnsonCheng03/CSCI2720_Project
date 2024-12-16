@@ -1,5 +1,5 @@
 // Importing mongoose library along with Document and Model types from it
-import mongoose, { Document, Model } from "mongoose";
+import mongoose, { Document, Model } from "mongoose"
 
 export interface IEvent {
   "@_id": string;
@@ -55,9 +55,9 @@ export const eventSchema = new mongoose.Schema<IEventDocument>(
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
         validate: {
-          validator: function (v) {
+          validator: function (v: mongoose.Schema.Types.ObjectId) {
             if (this.quota === undefined) return true;
-            return v.length <= this.quota;
+            return this.joinedUsers.length <= this.quota;
           },
           message: "Joined users must be less than quota",
         },
