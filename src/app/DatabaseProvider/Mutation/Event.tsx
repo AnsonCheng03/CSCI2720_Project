@@ -37,14 +37,17 @@ export async function editData(data: any) {
   await connectToMongoDB();
   try {
     const elementVenue = data.venueid;
-    const venue = await Venue.find({ "@_id": elementVenue });
-    if (venue.length === 0) {
-      return JSON.stringify({
-        error: true,
-        message: "Venue not found",
-      });
+    if (elementVenue) {
+      const venue = await Venue.find({ "@_id": elementVenue });
+      if (venue.length === 0) {
+        return JSON.stringify({
+          error: true,
+          message: "Venue not found",
+        });
+      }
+
+      data.venueid = venue[0]._id;
     }
-    data.venueid = venue[0]._id;
 
     const updatedEvent = await Event.findOneAndUpdate(
       { "@_id": data["@_id"] },
