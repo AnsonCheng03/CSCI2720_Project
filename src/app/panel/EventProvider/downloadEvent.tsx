@@ -14,6 +14,7 @@ export default function DownloadEventPage() {
   useEffect(() => {
     downloadEventData().then(async (rawData) => {
       const data = JSON.parse(rawData);
+      console.log(data);
       if (data.error) {
         setEventData([]);
         setVenueData([]);
@@ -42,8 +43,8 @@ export default function DownloadEventPage() {
                 ...v,
                 "@_eventCount": data?.filter((doc: any) => {
                   return (
-                    doc["venueid"] == v["@_id"] ||
-                    (v["_id"] && doc["venueid"] == v["_id"])
+                    doc["venueid"] && doc["venueid"]["_id"] == v["@_id"] ||
+                    (v["_id"] && doc["venueid"] && doc["venueid"]["_id"] == v["_id"])
                   );
                 }).length,
               };
