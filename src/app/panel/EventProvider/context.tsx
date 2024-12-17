@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState } from "react";
 import DownloadEventPage from "./downloadEvent";
+import styles from "./children.module.css";
 
 const EventContext = createContext<{
   eventData: object[] | null;
@@ -57,7 +58,7 @@ export default function EventProvider({
       {eventData === null || venueData === null ? (
         <DownloadEventPage />
       ) : (
-        children
+        <div className={styles.page}>{children}</div>
       )}
     </EventContext.Provider>
   );
