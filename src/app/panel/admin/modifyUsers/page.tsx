@@ -118,6 +118,7 @@ export default function Home() {
               label="Original Username"
               name="originalUsername"
               fullWidth
+              value={userList[0]._id}
             >
               {userList.map((user: any) => (
                 <MenuItem key={user._id} value={user._id}>

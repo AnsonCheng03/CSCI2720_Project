@@ -86,7 +86,6 @@ export default function Home() {
 
   const updateData = async (event: any, previousVenueId: string | null) => {
     const newData = JSON.parse(await editData(event));
-    console.log(newData);
     if (newData.error) {
       console.error(newData.message);
       window.alert(newData.message);
@@ -140,6 +139,7 @@ export default function Home() {
             id="demo-simple-select"
             label="Event ID"
             name="eventID"
+            value={eventIds?.[0]}
           >
             {eventIds?.map((eventId: any) => (
               <MenuItem key={eventId} value={eventId}>
@@ -161,12 +161,17 @@ export default function Home() {
             id="demo-simple-select"
             label="Location ID"
             name="locationID"
+            defaultValue=""
           >
-            {venueIds?.map((venueId: any) => (
-              <MenuItem key={venueId} value={venueId}>
-                {venueId}
-              </MenuItem>
-            ))}
+            <MenuItem value="">Preserve Location</MenuItem>
+            {venueIds?.map(
+              (venueId: any) =>
+                venueId && (
+                  <MenuItem key={venueId} value={venueId}>
+                    {venueId}
+                  </MenuItem>
+                )
+            )}
           </Select>
           <p>
             Input: ID of location. The ID should be corresponding to the IDs in
@@ -174,7 +179,6 @@ export default function Home() {
           </p>
         </FormControl>
         <TextField
-          
           id="standard-required"
           label="Date/Time"
           name="dateTime"

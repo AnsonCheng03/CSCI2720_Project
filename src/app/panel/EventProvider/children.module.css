@@ -1,6 +1,6 @@
 .page {
   overflow: auto;
-  max-height: 100vh;
-  max-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   overscroll-behavior: none;
 }

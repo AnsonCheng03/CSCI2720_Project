@@ -88,6 +88,7 @@ export default function Home() {
             id="demo-simple-select"
             label="Location ID"
             name="locationID"
+            defaultValue={venueIds?.[0]}
           >
             {venueIds?.map((venueId: any) => (
               <MenuItem key={venueId} value={venueId}>

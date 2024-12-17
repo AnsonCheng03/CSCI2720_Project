@@ -14,7 +14,6 @@ export default function DownloadEventPage() {
   useEffect(() => {
     downloadEventData().then(async (rawData) => {
       const data = JSON.parse(rawData);
-      console.log(data);
       if (data.error) {
         setEventData([]);
         setVenueData([]);
