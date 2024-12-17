@@ -27,7 +27,7 @@ async function initDatabase() {
 
     const randomVenues = outputVenue
       .sort(() => 0.5 - Math.random())
-      .slice(0, Math.floor(Math.random() * 3) + 3)
+      .slice(0, 10)
       .map((venue: any) => venue["@_id"]);
 
     const events = randomVenues.map((venueId: string, index: number) => {
