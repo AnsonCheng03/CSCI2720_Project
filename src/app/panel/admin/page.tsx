@@ -15,21 +15,26 @@ export default function Home() {
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
 
   const handleDownload = async () => {
-    if (!venueIds) {
-      console.error("Venue IDs are undefined");
-      return;
+    try {
+      if (!venueIds) {
+        console.error("Venue IDs are undefined");
+        return;
+      }
+      const data = JSON.parse(await downloadData(venueIds)) as {
+        event: Record<string, any>[];
+        venue: Record<string, any>[];
+      };
+      const filteredData = data.event.filter(
+        (event) =>
+          !Object.values(eventData as Record<string, any>).find(
+            (e) => e["@_id"] === event["@_id"]
+          )
+      );
+      setEvents(filteredData as any[]);
+    } catch (e) {
+      console.error(e);
+      window.alert("Failed to download data");
     }
-    const data = JSON.parse(await downloadData(venueIds)) as {
-      event: Record<string, any>[];
-      venue: Record<string, any>[];
-    };
-    const filteredData = data.event.filter(
-      (event) =>
-        !Object.values(eventData as Record<string, any>).find(
-          (e) => e["@_id"] === event["@_id"]
-        )
-    );
-    setEvents(filteredData as any[]);
   };
 
   const handleAddToDatabase = async (event: any) => {
