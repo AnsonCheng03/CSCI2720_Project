@@ -3,27 +3,6 @@ import { useEffect, useRef } from "react";
 import styles from "./canvas.module.css";
 import { useAppThemeContext } from "./context/AppThemeContext";
 
-export default function Canvas() {
-
-const canvasRef = useRef<HTMLCanvasElement>(null);
-const { mode, setMode } = useAppThemeContext();
-let color = {light:[
-    "#91a88a",
-    "#91a88a",
-    "#91a88a",
-    "#c8d4c4"
-], dark:["#697565", "#697565", "#697565", "#EEEEEE"]};
-
-    useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext("2d", { willReadFrequently: true });
-    if (!ctx) return;
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
     class Particle {
       effect: Effect;
       x: number;
@@ -89,12 +68,14 @@ let color = {light:[
       maxTWidth: number;
       lineHeight: number;
       particles: Particle[];
+      color: string[];
       gap: number;
       mouse: { radius: number; x: number; y: number };
       constructor(
         context: CanvasRenderingContext2D,
         cvWidth: number,
-        cvHeight: number
+        cvHeight: number,
+        color: string[]
       ) {
         this.context = context;
         this.canvasWidth = cvWidth;
@@ -104,6 +85,7 @@ let color = {light:[
         this.fontSize = 150;
         this.maxTWidth = this.canvasWidth * 0.8;
         this.lineHeight = 120;
+        this.color = color;
 
         this.particles = [];
         this.gap = 1;
@@ -120,14 +102,14 @@ let color = {light:[
           this.canvasWidth,
           this.canvasHeight
         );
-        gradient.addColorStop(0, color[mode][0]);
-        gradient.addColorStop(0.5, color[mode][1]);
-        gradient.addColorStop(1, color[mode][2]);
+        gradient.addColorStop(0, this.color[0]);
+        gradient.addColorStop(0.5, this.color[1]);
+        gradient.addColorStop(1, this.color[2]);
         this.context.fillStyle = gradient;
         this.context.textAlign = "center";
         this.context.textBaseline = "bottom";
         this.context.lineWidth = 3;
-        this.context.strokeStyle = color[mode][3];
+        this.context.strokeStyle = this.color[3];
         this.context.font = this.fontSize + "px Helvetica";
         this.context.fillText(text, this.textX, this.textY);
         this.context.strokeText(text, this.textX, this.textY);
@@ -209,39 +191,60 @@ let color = {light:[
       }
     }
 
-    const effect = new Effect(ctx, canvas.width, canvas.height);
-    effect.wrapText("CSCI—2720");
-    effect.render();
+    export default function Canvas() {
+      const canvasRef = useRef<HTMLCanvasElement>(null);
+      const { mode, setMode } = useAppThemeContext();
+      let color = {
+        light: ["#91a88a", "#91a88a", "#91a88a", "#c8d4c4"],
+        dark: ["#697565", "#697565", "#697565", "#EEEEEE"],
+      };
 
-    function animation() {
-      if (canvas) {
-        if (ctx) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-        }
-      }
-      effect.render();
-      requestAnimationFrame(animation);
-    }
-    animation();
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
 
-    window.addEventListener("resize", () => {
+        const ctx = canvas.getContext("2d", { willReadFrequently: true });
+        if (!ctx) return;
+
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        effect.resize(canvas.width, canvas.height);
+
+        const effect = new Effect(
+          ctx,
+          canvas.width,
+          canvas.height,
+          mode == "light" ? color.light : color.dark
+        );
         effect.wrapText("CSCI—2720");
-    });
+        effect.render();
 
-    })
+        function animation() {
+          if (canvas) {
+            if (ctx) {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+          }
+          effect.render();
+          requestAnimationFrame(animation);
+        }
+        animation();
 
-  return (
-    <div className={styles.page}>
-      <div className={styles.container}>
-        <div className={styles.full}>
-          <canvas id="canvas1" ref={canvasRef}></canvas>
+        window.addEventListener("resize", () => {
+          canvas.width = window.innerWidth;
+          canvas.height = window.innerHeight;
+          effect.resize(canvas.width, canvas.height);
+          effect.wrapText("CSCI—2720");
+        });
+      });
+
+      return (
+        <div className={styles.page}>
+          <div className={styles.container}>
+            <div className={styles.full}>
+              <canvas id="canvas1" ref={canvasRef}></canvas>
+            </div>
+            <div></div>
+          </div>
         </div>
-        <div>
-        </div>
-      </div>
-    </div>
-  );
-}
+      );
+    }

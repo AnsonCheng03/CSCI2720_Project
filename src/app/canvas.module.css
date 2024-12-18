@@ -18,3 +18,9 @@
     margin: 10px;
     z-index: 100;
 }
+
+@media (max-width: 900px) {
+    .full {
+        display: none;
+    }
+}
