@@ -1,3 +1,4 @@
+import Canvas from "./canvas";
 import styles from "./page.module.css";
 
 import LoginBtnProvider from "@/components/login/loginElementProvider";
@@ -7,6 +8,7 @@ export default function Home() {
     <div className={styles.page}>
       <div className={styles.container}>
         <div>
+          <Canvas />
           <h1>Welcome!</h1>
           <p>
             This is an web application to check information on some locations.
