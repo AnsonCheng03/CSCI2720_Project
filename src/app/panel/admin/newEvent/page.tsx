@@ -78,6 +78,12 @@ export default function Home() {
       <form onSubmit={handleSubmit}>
         <TextField
           id="standard-required"
+          label="Event ID"
+          name="eventID"
+          fullWidth
+        />
+        <TextField
+          id="standard-required"
           label="Event Title"
           name="eventTitle"
           fullWidth
