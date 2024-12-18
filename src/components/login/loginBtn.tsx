@@ -81,9 +81,9 @@ export function LoginBtn() {
           value={username}
           onChange={(e) => {
             setUsername(e.target.value);
-            deleteAllQuery();
             setError("");
           }}
+          onFocus={deleteAllQuery}
         />
         <Input
           placeholder="Password"
@@ -91,9 +91,9 @@ export function LoginBtn() {
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
-            deleteAllQuery();
             setError("");
           }}
+          onFocus={deleteAllQuery}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               login();
