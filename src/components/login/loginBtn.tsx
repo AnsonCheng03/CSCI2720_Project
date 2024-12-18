@@ -2,7 +2,7 @@
 
 import { use, useState } from "react";
 import { signIn, signOut } from "next-auth/react";
-import { Button, Chip, Input } from "@mui/material";
+import { Button, Chip, CircularProgress, Input } from "@mui/material";
 import { FaUserShield } from "react-icons/fa";
 import { FaRegCircleUser } from "react-icons/fa6";
 import Link from "next/link";
@@ -21,6 +21,24 @@ export function LoginBtn() {
   const [error, setError] = useState(errorPrams);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const deleteAllQuery = () => {
+    const url = new URL(location.href);
+    url.search = "";
+    history.replaceState(null, "", url.toString());
+  };
+
+  const login = async () => {
+    setError("");
+    setLoading(true);
+    await signIn("credentials", {
+      username: username,
+      password: password,
+    });
+    setPassword("");
+    setLoading(false);
+  }
 
   if (session && session.user) {
     return (
@@ -65,32 +83,36 @@ export function LoginBtn() {
             setUsername(e.target.value);
             setError("");
           }}
+          onFocus={deleteAllQuery}
         />
         <Input
           placeholder="Password"
+          type="password"
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
             setError("");
           }}
+          onFocus={deleteAllQuery}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setError("");
-              signIn("credentials", { username: username, password: password });
+              login();
             }
           }}
         />
-        <Button
-          className={styles.button}
-          onClick={() => {
-            setPassword("");
-            setError("");
-            signIn("credentials", { username: username, password: password });
-          }}
-          variant="outlined"
-        >
-          Sign in
-        </Button>
+        {
+          loading ? (
+            <CircularProgress size={15} />
+          ) : (
+            <Button
+              className={styles.button}
+              onClick={login}
+              variant="outlined"
+            >
+              Sign in
+            </Button>
+          )
+        }
       </div>
       {error && <div className={styles.error}>Error: {error}</div>}
     </div>

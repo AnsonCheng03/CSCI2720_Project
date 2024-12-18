@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { Alert, Button } from "@mui/material";
+import { Alert, Button, CircularProgress } from "@mui/material";
 import { useEventContext } from "../EventProvider/context";
 import { EventList } from "../EventProvider/eventList";
 import { downloadData } from "./downloadData";
@@ -11,11 +11,13 @@ export default function Home() {
   const { eventData, venueData, setEventData, setVenueData } =
     useEventContext();
   const [events, setEvents] = useState<any[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
 
   const handleDownload = async () => {
     try {
+      setLoading(true);
       if (!venueIds) {
         console.error("Venue IDs are undefined");
         return;
@@ -31,8 +33,10 @@ export default function Home() {
           )
       );
       setEvents(filteredData as any[]);
+      setLoading(false);
     } catch (e) {
       console.error(e);
+      setLoading(false);
       window.alert("Failed to download data");
     }
   };
@@ -99,8 +103,9 @@ export default function Home() {
           {events.length == 0 ? "Download" : "Refresh"}
         </Button>
         <Button onClick={deleteAll} variant="contained" color="error">
-          Delete All
+          Delete All Event
         </Button>
+        {loading && <CircularProgress size={14} />}
       </div>
       {events.length == 0 ? (
         <Alert variant="filled" severity="info">

@@ -8,9 +8,7 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
 import { TiLightbulb } from "react-icons/ti";
 import { RiAdminFill } from "react-icons/ri";
-
 import { FaRegUserCircle } from "react-icons/fa";
-import { IoLogOut } from "react-icons/io5";
 import EventProvider from "./EventProvider/context";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import NavBar from "@/components/navBar/navBar";
@@ -61,11 +59,6 @@ export default async function RootLayout({
               {
                 name: sessionPromise.user?.name || "User",
                 icon: <FaRegUserCircle />,
-              },
-              {
-                name: "Sign out",
-                href: "/api/auth/signout",
-                icon: <IoLogOut />,
               },
             ]}
           />

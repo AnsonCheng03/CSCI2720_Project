@@ -56,7 +56,7 @@ export const eventSchema = new mongoose.Schema<IEventDocument>(
         ref: "User",
         validate: {
           validator: function (v: mongoose.Schema.Types.ObjectId) {
-            if (this.quota === undefined) return true;
+            if (!this.quota) return true;
             return this.joinedUsers.length <= this.quota;
           },
           message: "Joined users must be less than quota",

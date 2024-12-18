@@ -20,7 +20,7 @@ export default function Home() {
   const eventIds = eventData?.map((event: any) => event["@_id"]);
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
 
-  const form = useRef(null);
+  const form = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (type: string) => {
     if (!form.current) return;
@@ -54,6 +54,7 @@ export default function Home() {
     } else if (type === "delete") {
       deleteData(event, formData.get("eventID"));
     }
+    form.current.reset();
   };
 
   const deleteData = async (event: any, eventId: any) => {
@@ -96,13 +97,13 @@ export default function Home() {
       const index = prev.findIndex((e) => e["@_id"] == event["@_id"]);
       if (index >= 0) {
         previousVenueId = prev[index].venueid;
-        return [...prev.slice(0, index), event, ...prev.slice(index + 1)];
+        return [...prev.slice(0, index), newData, ...prev.slice(index + 1)];
       }
       return [...prev, event];
     });
     setVenueData((prev: Record<string, any>[]) => {
       // change the event count for the venue matching the event
-      const venueId = event.venueid;
+      const venueId = newData.venueid;
       const venue = prev.find((v) => v["@_id"] == venueId);
       const previousVenue = prev.find((v) => v["@_id"] == previousVenueId);
       if (venue) {
@@ -139,7 +140,7 @@ export default function Home() {
             id="demo-simple-select"
             label="Event ID"
             name="eventID"
-            value={eventIds?.[0]}
+            defaultValue={eventIds?.[0]}
           >
             {eventIds?.map((eventId: any) => (
               <MenuItem key={eventId} value={eventId}>

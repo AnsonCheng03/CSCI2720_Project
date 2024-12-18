@@ -67,6 +67,7 @@ export default function Home() {
       }
       return prev;
     });
+    e.target.reset();
   };
 
   return (
@@ -75,6 +76,12 @@ export default function Home() {
         <h2> Add New Event</h2>
       </div>
       <form onSubmit={handleSubmit}>
+        <TextField
+          id="standard-required"
+          label="Event ID"
+          name="eventID"
+          fullWidth
+        />
         <TextField
           id="standard-required"
           label="Event Title"

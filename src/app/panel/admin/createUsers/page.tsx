@@ -37,6 +37,8 @@ export default function Home() {
       return;
     }
     console.log("Event added to database", newEvent);
+    e.target.reset();
+
   };
 
   return (
