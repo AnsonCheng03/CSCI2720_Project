@@ -101,7 +101,7 @@ export default function Home() {
                 event.venueid && event.venueid["@_id"]
                   ? `/panel/location/${event.venueid["@_id"]}`
                   : "",
-              name: event.venueid.venuee,
+              name: event.venueid && event.venueid.venuee,
               ...event.venueid,
             },
             participants:
