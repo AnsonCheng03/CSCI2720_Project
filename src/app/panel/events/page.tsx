@@ -46,10 +46,12 @@ const BookingButton = ({
   dataID,
   userID,
   booked,
+  setEventData,
 }: {
   dataID: string;
   userID: string;
   booked: boolean;
+  setEventData: any;
 }) => {
   const [isBooked, setIsBooked] = useState(booked);
   return (
@@ -63,6 +65,19 @@ const BookingButton = ({
             window.alert(result.message);
             return;
           }
+          setEventData((prev: any) => {
+            console.log(prev, dataID);
+            return prev.map((event: any) => {
+              if (event["@_id"] === dataID) {
+                return {
+                  ...event,
+                  joinedUsers: result["_doc"].joinedUsers,
+                };
+              }
+              return event;
+            });
+          });
+          console.log(result);
           setIsBooked(result["@_joinAction"]);
         });
       }}
@@ -136,6 +151,7 @@ export default function Home() {
                     return user?.userName === session?.user?.name;
                   }).length > 0
                 }
+                setEventData={setEvents}
               />
             </div>
           );

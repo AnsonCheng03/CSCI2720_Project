@@ -167,14 +167,34 @@ export async function joinEvent(eventId: string, userName: string) {
       });
     }
 
+    // const updatedEvent = await Event.findOneAndUpdate(
+    //   { "@_id": eventId },
+    //   { $push: { joinedUsers: user._id } },
+    //   {
+    //     new: true,
+    //   }
+    // );
+    const oldEvent = await Event.findOne({ "@_id": eventId });
+    if (!oldEvent) {
+      return JSON.stringify({
+        error: true,
+        message: "Event not found",
+      });
+    }
+
+    if (oldEvent.quota && (oldEvent.joinedUsers ? oldEvent.joinedUsers.length : 0) >= oldEvent.quota) {
+      return JSON.stringify({
+        error: true,
+        message: "Event is full",
+      });
+    }
+
     const updatedEvent = await Event.findOneAndUpdate(
       { "@_id": eventId },
       { $push: { joinedUsers: user._id } },
-      {
-        new: true,
-        runValidators: true,
-      }
+      { new: true }
     );
+
     if (!updatedEvent) {
       return JSON.stringify({
         error: true,
