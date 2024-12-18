@@ -170,7 +170,10 @@ export async function joinEvent(eventId: string, userName: string) {
     const updatedEvent = await Event.findOneAndUpdate(
       { "@_id": eventId },
       { $push: { joinedUsers: user._id } },
-      { new: true }
+      {
+        new: true,
+        runValidators: true,
+      }
     );
     if (!updatedEvent) {
       return JSON.stringify({

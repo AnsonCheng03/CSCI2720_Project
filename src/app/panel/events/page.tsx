@@ -98,7 +98,10 @@ export default function Home() {
           const newEvent = {
             ...event,
             venueid: {
-              url: `/panel/location/${event.venueid["@_id"]}`,
+              url:
+                event.venueid && event.venueid["@_id"]
+                  ? `/panel/location/${event.venueid["@_id"]}`
+                  : "",
               name: event.venueid.venuee,
               ...event.venueid,
             },
