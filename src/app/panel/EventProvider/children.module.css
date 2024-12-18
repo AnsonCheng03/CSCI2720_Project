@@ -1,0 +1,6 @@
+.page {
+  overflow: auto;
+  height: 100vh;
+  height: 100dvh;
+  overscroll-behavior: none;
+}

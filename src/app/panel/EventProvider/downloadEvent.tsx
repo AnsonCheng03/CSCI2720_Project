@@ -42,8 +42,8 @@ export default function DownloadEventPage() {
                 ...v,
                 "@_eventCount": data?.filter((doc: any) => {
                   return (
-                    doc["venueid"] == v["@_id"] ||
-                    (v["_id"] && doc["venueid"] == v["_id"])
+                    doc["venueid"] && doc["venueid"]["_id"] == v["@_id"] ||
+                    (v["_id"] && doc["venueid"] && doc["venueid"]["_id"] == v["_id"])
                   );
                 }).length,
               };

@@ -45,18 +45,7 @@ export function LoginBtn() {
           <Button
             className={styles.button}
             onClick={() => {
-              console.log(
-                "mode",
-                window.matchMedia("(prefers-color-scheme: dark)").matches
-              );
-              document.documentElement.style.setProperty("color-scheme", mode);
-              document.documentElement.setAttribute("data-theme", mode);
-
               setMode(mode === "light" ? "dark" : "light");
-              console.log(
-                "mode",
-                window.matchMedia("(prefers-color-scheme: dark)").matches
-              );
             }}
             variant="outlined"
           >

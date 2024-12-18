@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { JSX } from "react";
 import { Box, Checkbox, FormControl } from "@mui/material";
-import styles from "./page.module.css";
 import { TiThMenu } from "react-icons/ti";
+import styles from "./page.module.css";
 
 export default function NavBar({
   navItems,

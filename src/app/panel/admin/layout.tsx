@@ -34,18 +34,14 @@ export default async function RootLayout({
 
   return (
     <div className={styles.page}>
-      <Box sx={{ width: "100%" }}>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs aria-label="basic tabs example" className={styles.tabs}>
-            {navItems.map((item, index) => (
-              <Link key={index} href={item.href}>
-                <Tab key={index} label={item.name} {...a11yProps(index)} />
-              </Link>
-            ))}
-          </Tabs>
-        </Box>
-        {children}
-      </Box>
+      <Tabs aria-label="basic tabs example" className={styles.tabs}>
+        {navItems.map((item, index) => (
+          <Link key={index} href={item.href}>
+            <Tab label={item.name} {...a11yProps(index)} />
+          </Link>
+        ))}
+      </Tabs>
+      {children}
     </div>
   );
 }

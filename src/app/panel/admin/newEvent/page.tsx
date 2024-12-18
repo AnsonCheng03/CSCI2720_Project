@@ -76,7 +76,6 @@ export default function Home() {
       </div>
       <form onSubmit={handleSubmit}>
         <TextField
-          required
           id="standard-required"
           label="Event Title"
           name="eventTitle"
@@ -89,6 +88,7 @@ export default function Home() {
             id="demo-simple-select"
             label="Location ID"
             name="locationID"
+            defaultValue={venueIds?.[0]}
           >
             {venueIds?.map((venueId: any) => (
               <MenuItem key={venueId} value={venueId}>
@@ -102,35 +102,30 @@ export default function Home() {
           </p>
         </FormControl>
         <TextField
-          required
           id="standard-required"
           label="Date/Time"
           name="dateTime"
           fullWidth
         />
         <TextField
-          required
           id="standard-required"
           label="Description"
           name="description"
           fullWidth
         />
         <TextField
-          required
           id="standard-required"
           label="Presenter"
           name="presenter"
           fullWidth
         />
         <TextField
-          required
           id="standard-required"
           label="Price"
           name="price"
           fullWidth
         />
         <TextField
-          required
           id="standard-required"
           label="Quota"
           name="quota"

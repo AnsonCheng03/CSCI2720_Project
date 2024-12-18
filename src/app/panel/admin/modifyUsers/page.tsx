@@ -118,6 +118,7 @@ export default function Home() {
               label="Original Username"
               name="originalUsername"
               fullWidth
+              value={userList[0]._id}
             >
               {userList.map((user: any) => (
                 <MenuItem key={user._id} value={user._id}>
@@ -127,14 +128,12 @@ export default function Home() {
             </Select>
           </FormControl>
           <TextField
-            required
             id="standard-required"
             label="Username"
             name="username"
             fullWidth
           />
           <TextField
-            required
             id="standard-required"
             label="Password"
             name="password"
@@ -142,7 +141,6 @@ export default function Home() {
             fullWidth
           />
           <TextField
-            required
             id="standard-required"
             label="Enter Password Again"
             name="password2"
