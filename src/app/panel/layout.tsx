@@ -8,13 +8,10 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 import { MdFavorite } from "react-icons/md";
 import { TiLightbulb } from "react-icons/ti";
 import { RiAdminFill } from "react-icons/ri";
-
 import { FaRegUserCircle } from "react-icons/fa";
-import { IoLogOut } from "react-icons/io5";
 import EventProvider from "./EventProvider/context";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import NavBar from "@/components/navBar/navBar";
-import { signOut } from "next-auth/react";
 
 const userNavItems = [
   { name: "Home", href: "/", icon: <FaHome /> },
