@@ -199,7 +199,7 @@ import { useAppThemeContext } from "./context/AppThemeContext";
         dark: ["#697565", "#697565", "#697565", "#EEEEEE"],
       };
 
-      useEffect(() => {
+      const loadCanvas = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
@@ -235,7 +235,11 @@ import { useAppThemeContext } from "./context/AppThemeContext";
           effect.resize(canvas.width, canvas.height);
           effect.wrapText("CSCI—2720");
         });
-      });
+      };
+
+      useEffect(() => {
+        loadCanvas();
+      }, []);
 
       return (
         <div className={styles.page}>
