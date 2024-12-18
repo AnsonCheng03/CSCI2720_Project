@@ -14,6 +14,7 @@ import { IoLogOut } from "react-icons/io5";
 import EventProvider from "./EventProvider/context";
 import { authOptions } from "@/app/api/auth/[...nextauth]/authDetails";
 import NavBar from "@/components/navBar/navBar";
+import { signOut } from "next-auth/react";
 
 const userNavItems = [
   { name: "Home", href: "/", icon: <FaHome /> },
@@ -61,11 +62,6 @@ export default async function RootLayout({
               {
                 name: sessionPromise.user?.name || "User",
                 icon: <FaRegUserCircle />,
-              },
-              {
-                name: "Sign out",
-                href: "/api/auth/signout",
-                icon: <IoLogOut />,
               },
             ]}
           />

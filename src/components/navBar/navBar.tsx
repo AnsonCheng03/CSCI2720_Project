@@ -3,6 +3,7 @@ import { JSX } from "react";
 import { Box, Checkbox, FormControl } from "@mui/material";
 import { TiThMenu } from "react-icons/ti";
 import styles from "./page.module.css";
+import { NavLink, NavLogoutLink } from "./navLinks";
 
 export default function NavBar({
   navItems,
@@ -36,10 +37,7 @@ export default function NavBar({
           {navItems.map((item) => (
             <li key={item.href + item.name}>
               {item.href ? (
-                <Link href={item.href} className={styles.link}>
-                  <span className={styles.icon}>{item.icon}</span>
-                  {item.name}
-                </Link>
+                <NavLink item={item} />
               ) : (
                 <>
                   <span className={styles.icon}>{item.icon}</span>
@@ -54,10 +52,7 @@ export default function NavBar({
             {navFooterItems.map((item) => (
               <li key={item.href + item.name}>
                 {item.href ? (
-                  <Link href={item.href} className={styles.link}>
-                    <span className={styles.icon}>{item.icon}</span>
-                    {item.name}
-                  </Link>
+                  <NavLink item={item} />
                 ) : (
                   <>
                     <span className={styles.icon}>{item.icon}</span>
@@ -66,6 +61,7 @@ export default function NavBar({
                 )}
               </li>
             ))}
+            <NavLogoutLink />
           </ul>
         )}
       </Box>
