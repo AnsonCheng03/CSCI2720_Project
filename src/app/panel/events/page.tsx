@@ -37,8 +37,7 @@ const LikeButton = ({
         });
       }}
     >
-      {isLiked ? "Unlike" : "Like"}
-      {likes > 0 && ` (${likes})`}
+      {`${isLiked ? "Unlike" : "Like"} (${likes})`}
     </Button>
   );
 };
