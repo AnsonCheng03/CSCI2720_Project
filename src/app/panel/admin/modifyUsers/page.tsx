@@ -16,7 +16,7 @@ import { getUsers, modifyUsers } from "@/app/DatabaseProvider/Mutation/User";
 
 export default function Home() {
   const [userList, setUserList] = useState<any[] | null>(null);
-  const form = useRef(null);
+  const form = useRef<HTMLFormElement>(null);
 
   const getUser = async () => {
     const users = JSON.parse(await getUsers());
@@ -49,6 +49,7 @@ export default function Home() {
     } else if (type === "delete") {
       deleteData(event);
     }
+    form.current.reset();
   };
 
   const deleteData = async (event: any) => {

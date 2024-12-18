@@ -20,7 +20,7 @@ export default function Home() {
   const eventIds = eventData?.map((event: any) => event["@_id"]);
   const venueIds = venueData?.map((venue: any) => venue["@_id"]);
 
-  const form = useRef(null);
+  const form = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (type: string) => {
     if (!form.current) return;
@@ -54,6 +54,7 @@ export default function Home() {
     } else if (type === "delete") {
       deleteData(event, formData.get("eventID"));
     }
+    form.current.reset();
   };
 
   const deleteData = async (event: any, eventId: any) => {

@@ -67,6 +67,7 @@ export default function Home() {
       }
       return prev;
     });
+    e.target.reset();
   };
 
   return (
