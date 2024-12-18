@@ -1,10 +1,18 @@
 "use client";
 import { useEffect, useRef } from "react";
 import styles from "./canvas.module.css";
+import { useAppThemeContext } from "./context/AppThemeContext";
 
 export default function Canvas() {
 
 const canvasRef = useRef<HTMLCanvasElement>(null);
+const { mode, setMode } = useAppThemeContext();
+let color = {light:[
+    "#91a88a",
+    "#91a88a",
+    "#91a88a",
+    "#c8d4c4"
+], dark:["#697565", "#697565", "#697565", "#EEEEEE"]};
 
     useEffect(() => {
     const canvas = canvasRef.current;
@@ -77,14 +85,14 @@ const canvasRef = useRef<HTMLCanvasElement>(null);
         }
         wrapText(text){
             const gradient = this.context.createLinearGradient(0, 0, this.canvasWidth, this.canvasHeight);
-            gradient.addColorStop(0, "red");
-            gradient.addColorStop(0.5, "yellow");
-            gradient.addColorStop(1, "blue");
+            gradient.addColorStop(0, color[mode][0]);
+            gradient.addColorStop(0.5, color[mode][1]);
+            gradient.addColorStop(1, color[mode][2]);
             this.context.fillStyle = gradient;
             this.context.textAlign = "center";
             this.context.textBaseline = "bottom";
             this.context.linewidth = 3;
-            this.context.strokeStyle = "white";
+            this.context.strokeStyle = color[mode][3];
             this.context.font = this.fontSize + "px Helvetica";
             this.context.fillText(text, this.textX, this.textY);
             this.context.strokeText(text, this.textX, this.textY);
